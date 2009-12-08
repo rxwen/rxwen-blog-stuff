@@ -4,17 +4,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="app2 act"
-    />
     
 <Button  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="start local svc"
     android:id="@+id/btnStartSelf"
+    />
+    
+<Button  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="call rpc"
+    android:id="@+id/btnCallRPC"
     />
     
 </LinearLayout>

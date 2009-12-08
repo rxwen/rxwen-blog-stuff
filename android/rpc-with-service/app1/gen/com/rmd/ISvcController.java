@@ -48,15 +48,6 @@ case INTERFACE_TRANSACTION:
 reply.writeString(DESCRIPTOR);
 return true;
 }
-case TRANSACTION_newFunc:
-{
-data.enforceInterface(DESCRIPTOR);
-int _arg0;
-_arg0 = data.readInt();
-this.newFunc(_arg0);
-reply.writeNoException();
-return true;
-}
 case TRANSACTION_foo:
 {
 data.enforceInterface(DESCRIPTOR);
@@ -72,6 +63,15 @@ data.enforceInterface(DESCRIPTOR);
 java.lang.String _arg0;
 _arg0 = data.readString();
 this.bar(_arg0);
+reply.writeNoException();
+return true;
+}
+case TRANSACTION_newFunc:
+{
+data.enforceInterface(DESCRIPTOR);
+int _arg0;
+_arg0 = data.readInt();
+this.newFunc(_arg0);
 reply.writeNoException();
 return true;
 }
@@ -101,21 +101,6 @@ return mRemote;
 public java.lang.String getInterfaceDescriptor()
 {
 return DESCRIPTOR;
-}
-public void newFunc(int arg) throws android.os.RemoteException
-{
-android.os.Parcel _data = android.os.Parcel.obtain();
-android.os.Parcel _reply = android.os.Parcel.obtain();
-try {
-_data.writeInterfaceToken(DESCRIPTOR);
-_data.writeInt(arg);
-mRemote.transact(Stub.TRANSACTION_newFunc, _data, _reply, 0);
-_reply.readException();
-}
-finally {
-_reply.recycle();
-_data.recycle();
-}
 }
 public void foo(java.lang.String arg) throws android.os.RemoteException
 {
@@ -147,6 +132,21 @@ _reply.recycle();
 _data.recycle();
 }
 }
+public void newFunc(int arg) throws android.os.RemoteException
+{
+android.os.Parcel _data = android.os.Parcel.obtain();
+android.os.Parcel _reply = android.os.Parcel.obtain();
+try {
+_data.writeInterfaceToken(DESCRIPTOR);
+_data.writeInt(arg);
+mRemote.transact(Stub.TRANSACTION_newFunc, _data, _reply, 0);
+_reply.readException();
+}
+finally {
+_reply.recycle();
+_data.recycle();
+}
+}
 public void newFunc2(int arg) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
@@ -163,13 +163,13 @@ _data.recycle();
 }
 }
 }
-static final int TRANSACTION_newFunc = (IBinder.FIRST_CALL_TRANSACTION + 0);
-static final int TRANSACTION_foo = (IBinder.FIRST_CALL_TRANSACTION + 1);
-static final int TRANSACTION_bar = (IBinder.FIRST_CALL_TRANSACTION + 2);
+static final int TRANSACTION_foo = (IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_bar = (IBinder.FIRST_CALL_TRANSACTION + 1);
+static final int TRANSACTION_newFunc = (IBinder.FIRST_CALL_TRANSACTION + 2);
 static final int TRANSACTION_newFunc2 = (IBinder.FIRST_CALL_TRANSACTION + 3);
 }
-public void newFunc(int arg) throws android.os.RemoteException;
 public void foo(java.lang.String arg) throws android.os.RemoteException;
 public void bar(java.lang.String arg) throws android.os.RemoteException;
+public void newFunc(int arg) throws android.os.RemoteException;
 public void newFunc2(int arg) throws android.os.RemoteException;
 }
