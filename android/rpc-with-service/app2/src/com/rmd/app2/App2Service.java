@@ -10,22 +10,27 @@ import com.rmd.ISvcController;
 
 public class App2Service extends Service {
 
+	IBinder svcController = null;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.v("App2", "App2 service onBind.");
-		ISvcController svc = new ISvcController.Stub() {
-			
-			@Override
-			public void foo(String arg) throws RemoteException {
-				Log.v("App2Service", "foo fired with argument: " + arg);
-			}
-			
-			@Override
-			public void bar(String arg) throws RemoteException {
-				Log.v("App2Service", "bar fired with argument: " + arg);
-			}
-		};
-		return svc.asBinder();
+		if(null == svcController)
+		{
+			svcController = new ISvcController.Stub() {
+				
+				@Override
+				public void foo(String arg) throws RemoteException {
+					Log.v("App2Service", "foo fired with argument: " + arg);
+				}
+				
+				@Override
+				public void bar(String arg) throws RemoteException {
+					Log.v("App2Service", "bar fired with argument: " + arg);
+				}
+			};
+		}
+		return svcController;
 	}
 
 	public void onCreate() {
@@ -39,6 +44,7 @@ public class App2Service extends Service {
 	}
 	
 	public void onStart(Intent intent, int startId) {
+		
 		Log.v("App2", "App2 service start.");
 	};
 	
