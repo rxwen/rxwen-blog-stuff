@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: C:\\Users\\Raymond\\Desktop\\android_service_run_in_main_thread\\app1\\src\\com\\rmd\\ISvcController.aidl
+ * Original file: D:\\home\\documents\\rxwen-blog-stuff\\android\\rpc-with-service\\app1\\src\\com\\rmd\\ISvcController.aidl
  */
 package com.rmd;
 import java.lang.String;
@@ -46,6 +46,15 @@ switch (code)
 case INTERFACE_TRANSACTION:
 {
 reply.writeString(DESCRIPTOR);
+return true;
+}
+case TRANSACTION_anotherFunc:
+{
+data.enforceInterface(DESCRIPTOR);
+java.lang.String _arg0;
+_arg0 = data.readString();
+this.anotherFunc(_arg0);
+reply.writeNoException();
 return true;
 }
 case TRANSACTION_foo:
@@ -101,6 +110,21 @@ return mRemote;
 public java.lang.String getInterfaceDescriptor()
 {
 return DESCRIPTOR;
+}
+public void anotherFunc(java.lang.String arg) throws android.os.RemoteException
+{
+android.os.Parcel _data = android.os.Parcel.obtain();
+android.os.Parcel _reply = android.os.Parcel.obtain();
+try {
+_data.writeInterfaceToken(DESCRIPTOR);
+_data.writeString(arg);
+mRemote.transact(Stub.TRANSACTION_anotherFunc, _data, _reply, 0);
+_reply.readException();
+}
+finally {
+_reply.recycle();
+_data.recycle();
+}
 }
 public void foo(java.lang.String arg) throws android.os.RemoteException
 {
@@ -163,11 +187,13 @@ _data.recycle();
 }
 }
 }
-static final int TRANSACTION_foo = (IBinder.FIRST_CALL_TRANSACTION + 0);
-static final int TRANSACTION_bar = (IBinder.FIRST_CALL_TRANSACTION + 1);
-static final int TRANSACTION_newFunc = (IBinder.FIRST_CALL_TRANSACTION + 2);
-static final int TRANSACTION_newFunc2 = (IBinder.FIRST_CALL_TRANSACTION + 3);
+static final int TRANSACTION_anotherFunc = (IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_foo = (IBinder.FIRST_CALL_TRANSACTION + 1);
+static final int TRANSACTION_bar = (IBinder.FIRST_CALL_TRANSACTION + 2);
+static final int TRANSACTION_newFunc = (IBinder.FIRST_CALL_TRANSACTION + 3);
+static final int TRANSACTION_newFunc2 = (IBinder.FIRST_CALL_TRANSACTION + 4);
 }
+public void anotherFunc(java.lang.String arg) throws android.os.RemoteException;
 public void foo(java.lang.String arg) throws android.os.RemoteException;
 public void bar(java.lang.String arg) throws android.os.RemoteException;
 public void newFunc(int arg) throws android.os.RemoteException;

@@ -28,8 +28,15 @@ public class App2Service extends Service {
 				public void bar(String arg) throws RemoteException {
 					Log.v("App2Service", "bar fired with argument: " + arg);
 				}
+
+				@Override
+				public void func(int arg, String str) throws RemoteException {
+					Log.v("App2Service", "func fired with argument: " + str);
+				}
 			};
 		}
+		Log.v("App2", "App2 service onBind.");
+		Log.v("App2", svcController.getClass().toString() + "\t hash code: " + svcController.hashCode());
 		return svcController;
 	}
 

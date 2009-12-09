@@ -1,6 +1,7 @@
 package com.rmd;
 
 interface ISvcController {
+	void anotherFunc(String arg);
 	void foo(String arg);
 	void bar(String arg);
 	void newFunc(int arg);
