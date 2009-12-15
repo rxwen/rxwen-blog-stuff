@@ -18,6 +18,7 @@
 #include	<cstdlib>
 #include	<vector>
 #include	<iostream>
+#include	<assert.h>
 
 typedef std::vector<int> int_vector;
 
@@ -83,6 +84,28 @@ void quickSort(int_vector& vec)
     vec.insert(vec.end(), high.begin(), high.end());
 }		// ----------  end of function quickSort----------
 
+int getKthItem (int_vector& vec, int k)
+{
+    assert(k <= vec.size());
+    int i = 0;
+    i = partition(vec);
+    if(i == k - 1)
+        return vec[i];
+    else
+    {
+        if(i > k - 1)
+        {
+            vec.erase(vec.begin() + i, vec.end());
+            return getKthItem(vec, k);
+        }
+        else
+        {
+            vec.erase(vec.begin(), vec.begin() + i + 1);
+            return getKthItem(vec, k-i-1);
+        }
+    }
+}		// -----  end of function getIthItem  -----
+
 void printVec (const int_vector& vec)
 {
    for each(int i in vec)
@@ -99,7 +122,8 @@ int main ( int argc, char *argv[] )
     for(int i = 0; i < size; ++i)
         vec.push_back(random()%100);
     printVec(vec);
-    quickSort(vec);
-    printVec(vec);
+//    quickSort(vec);
+//    printVec(vec);
+    std::cout << getKthItem(vec, 3) << std::endl;
     return 0;
 }		// ----------  end of function main  ----------
