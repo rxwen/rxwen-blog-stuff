@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Folder\shell\CMD]
+@="cm&d Prompt"
+
+[HKEY_CLASSES_ROOT\Folder\shell\CMD\command]
+@="cmd.exe /k pushd \"%1\""
