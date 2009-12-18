@@ -1,0 +1,80 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.pyc]
+@="Python.CompiledFile"
+
+[HKEY_CLASSES_ROOT\.pyw]
+@="Python.NoConFile"
+"Content Type"="text/plain"
+
+[HKEY_CLASSES_ROOT\.pyo]
+@="Python.CompiledFile"
+
+[HKEY_CLASSES_ROOT\.py]
+@="Python.File"
+"Content Type"="text/plain"
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile]
+@="Compiled Python File"
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\DefaultIcon]
+@="E:\\Python31\\DLLs\\pyc.ico"
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\shell]
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\shell\open]
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\shell\open\command]
+@="\"E:\\Python31\\python.exe\" \"%1\" %*"
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\shellex]
+
+[HKEY_CLASSES_ROOT\Python.CompiledFile\shellex\DropHandler]
+@="{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+
+[HKEY_CLASSES_ROOT\Python.File]
+@="Python File"
+
+[HKEY_CLASSES_ROOT\Python.File\DefaultIcon]
+@="E:\\Python31\\DLLs\\py.ico"
+
+[HKEY_CLASSES_ROOT\Python.File\shell]
+
+[HKEY_CLASSES_ROOT\Python.File\shell\Edit with IDLE]
+
+[HKEY_CLASSES_ROOT\Python.File\shell\Edit with IDLE\command]
+@="\"E:\\Python31\\pythonw.exe\" \"E:\\Python31\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
+
+[HKEY_CLASSES_ROOT\Python.File\shell\open]
+
+[HKEY_CLASSES_ROOT\Python.File\shell\open\command]
+@="\"E:\\Python31\\python.exe\" \"%1\" %*"
+
+[HKEY_CLASSES_ROOT\Python.File\shellex]
+
+[HKEY_CLASSES_ROOT\Python.File\shellex\DropHandler]
+@="{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+
+[HKEY_CLASSES_ROOT\Python.NoConFile]
+@="Python File (no console)"
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\DefaultIcon]
+@="E:\\Python31\\DLLs\\py.ico"
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shell]
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shell\Edit with IDLE]
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shell\Edit with IDLE\command]
+@="\"E:\\Python31\\pythonw.exe\" \"E:\\Python31\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shell\open]
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shell\open\command]
+@="\"E:\\Python31\\pythonw.exe\" \"%1\" %*"
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shellex]
+
+[HKEY_CLASSES_ROOT\Python.NoConFile\shellex\DropHandler]
+@="{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+
