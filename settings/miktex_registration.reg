@@ -1,0 +1,47 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\MiKTeX.org]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\MiKTeX.org\MiKTeX]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\MiKTeX.org\MiKTeX\2.7]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\MiKTeX.org\MiKTeX\2.7\Core]
+"SharedSetup"="1"
+"Install"="D:\\MiKTeX"
+
+[HKEY_CLASSES_ROOT\.dvi]
+@="miktex_dvi"
+
+[HKEY_CLASSES_ROOT\miktex_dvi]
+@="DVI File"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\DefaultIcon]
+@="D:\\MIKTEX\\miktex\\bin\\yap.exe,1"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell]
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\open]
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\open\command]
+@="D:\\MIKTEX\\miktex\\bin\\yap.exe /dde"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\open\ddeexec]
+@="[open(\"%1\")]"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\print]
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\print\command]
+@="D:\\MIKTEX\\miktex\\bin\\yap.exe /dde"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\print\ddeexec]
+@="[print(\"%1\")]"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\printto]
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\printto\command]
+@="D:\\MIKTEX\\miktex\\bin\\yap.exe /dde"
+
+[HKEY_CLASSES_ROOT\miktex_dvi\shell\printto\ddeexec]
+@="[printto(\"%1\",\"%2\",\"%3\",\"%4\")]"
+
