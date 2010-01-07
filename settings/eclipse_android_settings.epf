@@ -1,4 +1,4 @@
-#Tue Dec 15 19:45:58 GMT+08:00 2009
+#Thu Jan 07 12:52:44 GMT+08:00 2010
 /instance/org.eclipse.jdt.debug.ui/org.eclipse.jdt.debug.ui.javaDebug.alertHCRNotSupported=false
 /instance/org.eclipse.jdt.ui/sp_cleanup.add_missing_annotations=true
 @org.eclipse.ui.editors=3.5.0.v20090527-2000
@@ -54,8 +54,8 @@
 /instance/org.eclipse.jdt.ui/sp_cleanup.remove_trailing_whitespaces_ignore_empty=false
 /instance/org.eclipse.jdt.ui/sp_cleanup.always_use_this_for_non_static_field_access=false
 /instance/org.eclipse.ui.editors/overviewRuler_migration=migrated_3.1
-@org.eclipse.mylyn.context.core=3.3.0.v20091015-0500-e3x
 /instance/org.eclipse.help.base/remoteHelpPort=
+@org.eclipse.mylyn.context.core=3.3.0.v20091015-0500-e3x
 /instance/org.eclipse.jdt.ui/sp_cleanup.organize_imports=true
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.gettersetter.use.is=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFinalFieldSuffixes=
@@ -93,8 +93,8 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.source=1.6
 /instance/org.eclipse.wst.validation/USER_PREFERENCE=saveAutomaticallyfalseprojectsCanOverridetruedisableAllValidationfalseversion1.2.102.v200905201610
 /instance/org.eclipse.jdt.ui/content_assist_number_of_computers=16
-/instance/org.eclipse.mylyn.java.ui/org.eclipse.mylyn.java.ui.run.count.3_1_0=1
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.argumentPrefixes=
+/instance/org.eclipse.mylyn.java.ui/org.eclipse.mylyn.java.ui.run.count.3_1_0=1
 /instance/org.eclipse.ui.workbench/resourcetypes=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<editors version\="3.1">\r\n<info extension\="xml" name\="AndroidManifest">\r\n<editor id\="com.android.ide.eclipse.editors.manifest.ManifestEditor"/>\r\n<defaultEditor id\="com.android.ide.eclipse.editors.manifest.ManifestEditor"/>\r\n</info>\r\n<info extension\="html" name\="*">\r\n<editor id\="org.eclipse.ui.browser.editorSupport"/>\r\n<defaultEditor id\="org.eclipse.ui.browser.editor"/>\r\n</info>\r\n<info extension\="htm" name\="*">\r\n<editor id\="org.eclipse.ui.browser.editorSupport"/>\r\n<defaultEditor id\="org.eclipse.ui.browser.editor"/>\r\n</info>\r\n<info extension\="xml" name\="*">\r\n<editor id\="com.android.ide.eclipse.editors.resources.ResourcesEditor"/>\r\n<editor id\="com.android.ide.eclipse.editors.layout.LayoutEditor"/>\r\n<editor id\="com.android.ide.eclipse.editors.menu.MenuEditor"/>\r\n<editor id\="com.android.ide.eclipse.editors.xml.XmlEditor"/>\r\n</info>\r\n<info extension\="jardesc" name\="*">\r\n<editor id\="org.eclipse.jdt.ui.JARDescEditor"/>\r\n<defaultEditor id\="org.eclipse.jdt.ui.JARDescEditor"/>\r\n</info>\r\n<info extension\="jpage" name\="*">\r\n<editor id\="org.eclipse.jdt.debug.ui.SnippetEditor"/>\r\n</info>\r\n<info extension\="shtml" name\="*">\r\n<editor id\="org.eclipse.ui.browser.editorSupport"/>\r\n<defaultEditor id\="org.eclipse.ui.browser.editor"/>\r\n</info>\r\n</editors>
 /instance/org.eclipse.ui.ide/platformState=1253528859925
 /instance/org.eclipse.jdt.ui/breadcrumb.<RMD>=true
@@ -202,12 +202,12 @@
 /instance/org.eclipse.ui.browser/browser-choice=0
 /instance/org.eclipse.jdt.ui/editor_folding_enabled=false
 /instance/org.eclipse.jdt.ui/sp_cleanup.sort_members_all=false
-/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.templates_migrated=true
 /instance/org.eclipse.help.base/always_external_browser=false
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.text.templates_migrated=true
 /instance/org.eclipse.jdt.ui/content_assist_proposals_foreground=0,0,0
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.visibilityCheck=enabled
-/instance/org.eclipse.mylyn.monitor.ui/org.eclipse.mylyn.monitor.activity.tracking.enabled.checked=true
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.formatterprofiles.version=11
+/instance/org.eclipse.mylyn.monitor.ui/org.eclipse.mylyn.monitor.activity.tracking.enabled.checked=true
 @org.eclipse.epp.usagedata.recording=1.1.0.R200906100410
 /instance/org.eclipse.epp.usagedata.gathering/org.eclipse.epp.usagedata.gathering.terms_accepted=true
 @org.eclipse.wst.sse.core=1.1.401.v200909172215
@@ -288,13 +288,13 @@ file_export_version=3.0
 /instance/org.eclipse.help.base/search_from_browser=false
 /instance/com.android.ide.eclipse.ddms/com.android.ide.eclipse.ddms.explorer.data=68
 /instance/org.eclipse.team.cvs.ui/pref_first_startup=false
-/instance/org.eclipse.jdt.ui/breadcrumb.org.eclipse.debug.ui.DebugPerspective=true
 /instance/org.eclipse.help.base/dialog_infopop=false
+/instance/org.eclipse.jdt.ui/breadcrumb.org.eclipse.debug.ui.DebugPerspective=true
 /instance/org.eclipse.jdt.ui/spelling_ignore_mixed=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
 /instance/org.eclipse.jdt.ui/sp_cleanup.use_this_for_non_static_field_access_only_if_necessary=true
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.VariableView=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\r\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.VariableView"/>\r\n</VariablesViewMemento>
 /instance/com.android.ide.eclipse.ddms/com.android.ide.eclipse.ddms.explorer.info=72
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.javadoclocations.migrated=true
-/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.user_view_bindings=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<viewBindings>\r\n<view id\="org.eclipse.jdt.debug.ui.DisplayView">\r\n<perspective id\="org.eclipse.debug.ui.DebugPerspective" userAction\="opened"/>\r\n</view>\r\n<view id\="org.eclipse.debug.ui.DebugView">\r\n<perspective id\="RMD" userAction\="closed"/>\r\n</view>\r\n<view id\="org.eclipse.debug.ui.ExpressionView">\r\n<perspective id\="org.eclipse.debug.ui.DebugPerspective" userAction\="opened"/>\r\n</view>\r\n<view id\="org.eclipse.ui.console.ConsoleView">\r\n<perspective id\="org.eclipse.jdt.ui.JavaPerspective" userAction\="opened"/>\r\n<perspective id\="com.android.ide.eclipse.ddms.Perspective" userAction\="closed"/>\r\n</view>\r\n</viewBindings>\r\n
+/instance/org.eclipse.debug.ui/org.eclipse.debug.ui.user_view_bindings=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<viewBindings>\r\n<view id\="org.eclipse.jdt.debug.ui.DisplayView">\r\n<perspective id\="org.eclipse.debug.ui.DebugPerspective" userAction\="opened"/>\r\n</view>\r\n<view id\="org.eclipse.debug.ui.DebugView">\r\n<perspective id\="RMD" userAction\="closed"/>\r\n</view>\r\n<view id\="org.eclipse.debug.ui.ExpressionView">\r\n<perspective id\="org.eclipse.debug.ui.DebugPerspective" userAction\="opened"/>\r\n</view>\r\n<view id\="org.eclipse.ui.console.ConsoleView">\r\n<perspective id\="com.android.ide.eclipse.ddms.Perspective" userAction\="opened"/>\r\n<perspective id\="org.eclipse.jdt.ui.JavaPerspective" userAction\="opened"/>\r\n</view>\r\n</viewBindings>\r\n
 /instance/org.eclipse.jdt.ui/sp_cleanup.use_blocks_only_for_return_and_throw=false
