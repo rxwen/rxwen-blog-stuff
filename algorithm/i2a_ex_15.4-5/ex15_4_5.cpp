@@ -48,32 +48,60 @@ void LMIS(const vector<int> &a)
         }
         else
         {
-            for(int i = 0; i <= j - 1; ++i)
+            if(a[j] > m[j-1])
             {
-                if(a[j] > m[i])
-                {
-                    s[j] = s[i] + 1;
-                    m[j] = a[j];
-                }
+                s[j] = s[j-1] + 1;
+                m[j] = a[j];
+            }
+            else
+            {
+                s[j] = s[j-1];
+                if(a[j] > m[j-1])
+                    m[j] = m[j-1];
                 else
                 {
-                    if(s[j] < s[i])
+                    // find out the smallest value for M[j]
+                    int min = m[j-1];
+                    int i;
+                    for(i = j - 1; i >= 0; --i)
                     {
-                        s[j] = s[i];
-                        m[j] = m[i] < a[j] ? m[i] : a[j];
+                        if(s[j] > s[i])
+                        {
+                            if(a[j] > m[i])
+                                min = a[j];
+                            break;
+                        }
                     }
+                    if(i < 0 && a[j] < m[0])
+                        min = a[j];
+                    m[j] = min;
                 }
-           }
+            }
         }
+        cout << j << endl;
+    cout << "S:\t";
+    for(int k = 0; k < ARRAYSIZE; ++k)
+        cout << s[k] << ' ';
+    cout << endl;
+    cout << "M:\t";
+    for(int k = 0; k < ARRAYSIZE; ++k)
+        cout << m[k] << ' ';
+    cout << endl;
+ 
     }
 }
 
 int main ( int argc, char *argv[] )
 {
     vector<int> a;
-    ARRAYSIZE = 3;
+    ARRAYSIZE = 5;
     if(argc > 1)
         ARRAYSIZE = atoi(argv[1]);
+//    a.push_back(70);
+//    a.push_back(62);
+//    a.push_back(27);
+//    a.push_back(57);
+//    a.push_back(47);
     for(int k = 0; k < ARRAYSIZE; ++k)
     {
         a.push_back(random());
