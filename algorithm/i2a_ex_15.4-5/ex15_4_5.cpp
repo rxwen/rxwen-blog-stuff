@@ -38,56 +38,29 @@ int random()
 
 void LMIS(const vector<int> &a)
 {
-    int j = 0;
+    int j = 1;
     for(; j < ARRAYSIZE; ++j)
     {
-        if(j == 0)
+        if(a[j] > m[j-1])
         {
-            s[j] = 1;
+            s[j] = s[j-1] + 1;
             m[j] = a[j];
         }
         else
         {
-            if(a[j] > m[j-1])
+            s[j] = s[j-1];
+            m[j] = m[j-1];
+            int sToCheck = s[j]-1; 
+            for(int i = j-1; i >= 0; --i)
             {
-                s[j] = s[j-1] + 1;
-                m[j] = a[j];
-            }
-            else
-            {
-                s[j] = s[j-1];
-                if(a[j] > m[j-1])
-                    m[j] = m[j-1];
-                else
+                if(sToCheck > s[i])
+                    break;
+                if(s[i] == sToCheck && a[j] > m[i])
                 {
-                    // find out the smallest value for M[j]
-                    int min = m[j-1];
-                    int i;
-                    for(i = j - 1; i >= 0; --i)
-                    {
-                        if(s[j] > s[i])
-                        {
-                            if(a[j] > m[i])
-                                min = a[j];
-                            break;
-                        }
-                    }
-                    if(i < 0 && a[j] < m[0])
-                        min = a[j];
-                    m[j] = min;
+                    m[j] = a[j];
                 }
             }
         }
-        cout << j << endl;
-    cout << "S:\t";
-    for(int k = 0; k < ARRAYSIZE; ++k)
-        cout << s[k] << ' ';
-    cout << endl;
-    cout << "M:\t";
-    for(int k = 0; k < ARRAYSIZE; ++k)
-        cout << m[k] << ' ';
-    cout << endl;
- 
     }
 }
 
@@ -97,11 +70,11 @@ int main ( int argc, char *argv[] )
     ARRAYSIZE = 5;
     if(argc > 1)
         ARRAYSIZE = atoi(argv[1]);
-//    a.push_back(70);
-//    a.push_back(62);
-//    a.push_back(27);
-//    a.push_back(57);
-//    a.push_back(47);
+    ARRAYSIZE += 1;
+    // the 0th item is used as sentinel so that we can use consistent code to maintain M in LMIS
+    a.push_back(0);
+    m.push_back(0);
+    s.push_back(0);
     for(int k = 0; k < ARRAYSIZE; ++k)
     {
         a.push_back(random());
@@ -112,11 +85,11 @@ int main ( int argc, char *argv[] )
     cout << endl;
     LMIS(a);
     cout << "S:\t";
-    for(int i = 0; i < ARRAYSIZE; ++i)
+    for(int i = 1; i < ARRAYSIZE; ++i)
         cout << s[i] << ' ';
     cout << endl;
     cout << "M:\t";
-    for(int i = 0; i < ARRAYSIZE; ++i)
+    for(int i = 1; i < ARRAYSIZE; ++i)
         cout << m[i] << ' ';
     cout << endl;
     return 0;
