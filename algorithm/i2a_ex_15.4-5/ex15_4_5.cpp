@@ -21,7 +21,6 @@
 
 using namespace std;
 vector<int> s;
-vector<int> m;
 static int ARRAYSIZE;
 
 int random()
@@ -38,28 +37,14 @@ int random()
 
 void LMIS(const vector<int> &a)
 {
-    int j = 1;
-    for(; j < ARRAYSIZE; ++j)
+    int size = static_cast<int>(a.size());
+    for(int i = 0; i < size; ++i)
     {
-        if(a[j] > m[j-1])
+        s[i] = 1;
+        for(int j = 0; j < i; ++j)
         {
-            s[j] = s[j-1] + 1;
-            m[j] = a[j];
-        }
-        else
-        {
-            s[j] = s[j-1];
-            m[j] = m[j-1];
-            int sToCheck = s[j]-1; 
-            for(int i = j-1; i >= 0; --i)
-            {
-                if(sToCheck > s[i])
-                    break;
-                if(s[i] == sToCheck && a[j] > m[i])
-                {
-                    m[j] = a[j];
-                }
-            }
+            if(s[i] <= s[j] && a[i] > a[j])
+                s[i] = s[j] + 1;
         }
     }
 }
@@ -70,27 +55,17 @@ int main ( int argc, char *argv[] )
     ARRAYSIZE = 5;
     if(argc > 1)
         ARRAYSIZE = atoi(argv[1]);
-    ARRAYSIZE += 1;
-    // the 0th item is used as sentinel so that we can use consistent code to maintain M in LMIS
-    a.push_back(0);
-    m.push_back(0);
-    s.push_back(0);
     for(int k = 0; k < ARRAYSIZE; ++k)
     {
         a.push_back(random());
         cout << a[k] << ' ';
-        m.push_back(0);
         s.push_back(0);
     }
     cout << endl;
     LMIS(a);
     cout << "S:\t";
-    for(int i = 1; i < ARRAYSIZE; ++i)
+    for(int i = 0; i < ARRAYSIZE; ++i)
         cout << s[i] << ' ';
-    cout << endl;
-    cout << "M:\t";
-    for(int i = 1; i < ARRAYSIZE; ++i)
-        cout << m[i] << ' ';
     cout << endl;
     return 0;
 }				// ----------  end of function main  ----------
