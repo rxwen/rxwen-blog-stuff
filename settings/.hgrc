@@ -1,0 +1,240 @@
+### --- User interface
+
+[ui]
+
+### show changed files and be a bit more verbose if True
+
+# verbose = True
+
+### username data to appear in comits
+### it usually takes the form: Joe User <joe.user@host.com>
+
+username = raymond
+editor = vim 
+
+# print debugging information
+# debug = True
+
+# verbose = True
+
+# In order to push/pull over ssh you must specify an ssh tool
+#ssh = "C:\Progra~1\TortoiseSVN\bin\TortoisePlink.exe" -ssh -2
+#ssh = C:\cygwin\bin\ssh
+
+#  Warn if a .hg/hgrc file is ignored due to not being owned by a
+#  trusted user or group.  True or False.  Default is True.
+# report_untrusted = False
+
+
+### --- Extensions
+
+[extensions]
+
+### each extension has its own 'extension_name=path' line
+### the default python library path is used when path is left blank
+### the hgext dir is used when 'hgext.extension_name=' is written
+
+### acl - Access control lists
+### hg help acl
+
+# hgext.acl =
+
+### bisect - binary search changesets to detect bugs
+### hg help bisect
+
+# hgext.hbisect =
+
+### bugzilla - update bugzilla bugs when changesets mention them
+### hg help bugzilla
+
+# hgext.bugzilla =
+
+### extdiff - Use external diff application instead of builtin one
+
+# hgext.extdiff =
+
+### gpg - GPG checks and signing
+### hg help gpg
+
+# hgext.gpg =
+
+### graphlog - ASCII graph log
+### hg help glog
+
+# hgext.graphlog =
+
+### hgk - GUI repository browser
+### hg help view
+
+# hgext.hgk =
+
+### mq - Mercurial patch queues
+### hg help mq
+
+# hgext.mq =
+
+### notify - Template driven e-mail notifications
+### hg help notify
+
+# hgext.notify =
+
+### patchbomb - send changesets as a series of patch emails
+### hg help email
+
+# hgext.patchbomb =
+
+### churn - create a graph showing who changed the most lines
+### hg help churn
+
+# hgext.churn = /home/user/hg/hg/contrib/churn.py
+
+### win32text - line ending conversion filters for the Windows platform
+
+# hgext.win32text =
+
+### --- hgk additional configuration
+
+[hgk]
+
+### set executable path
+
+# path = /home/user/hg/hg/contrib/hgk
+
+### --- Hook to Mercurial actions - See hgrc man page for avaliable hooks
+
+[extdiff]
+#cmd.bc3diff = C:\Program Files\Beyond Compare 3\BCompare.exe
+#cmd.vdiff = C:\Progra~1\TortoiseSVN\bin\TortoiseMerge.exe
+#cmd.vimdiff = gvim.exe
+#opts.vimdiff = -f '+next' '+execute "DirDiff ".argv(0)." ".argv(1)'
+
+
+
+[hooks]
+
+### Example notify hooks (load hgext.notify extension before use)
+
+# incoming.notify = python:hgext.notify.hook
+# changegroup.notify = python:hgext.notify.hook
+
+### Email configuration for the notify and patchbomb extensions
+
+[email]
+
+### Your email address
+
+# from = user@example.com
+
+### Method to send email - smtp or /usr/sbin/sendmail or other program name
+
+# method = smtp
+
+### smtp server to send email to
+
+[smtp]
+
+# host = mail
+# port = 25
+# tls = false
+# username = user
+# password = blivet
+# local_hostname = myhost
+
+### --- Email notification hook for server
+
+[notify]
+### multiple sources can be specified as a whitespace or comma separated list
+
+# sources = serve push pull bundle
+
+### set this to False when you're ready for mail to start sending
+
+# test = True
+
+### path to config file with names of subscribers
+
+# config = /path/to/subscription/file
+
+[server]
+### Controls generic server settings
+
+# uncompressed = True
+
+
+[web]
+### Web interface configuration
+
+# Where to output the access log. Default is stdout. 
+# accesslog = 
+# Interface address to bind to. Default is all. 
+# address = 0.0.0.0
+# List of archive format (bz2, gz, zip) allowed for downloading. Default is empty. 
+# allow_archive = 
+# Whether to allow pulling from the repository. Default is true. 
+# allowpull = false
+
+# Whether to allow pushing to the repository. If empty or not set, push is not allowed. 
+# If the special value "*", any remote user can push, including unauthenticated users. 
+# Otherwise, the remote user must have been authenticated, and the authenticated user 
+# name must be present in this list (separated by whitespace or ","). The contents of 
+# the allow_push list are examined after the deny_push list. 
+# allow_push = *
+# Base URL to use when publishing URLs in other locations, so third-party tools like 
+# email notification hooks can construct URLs.
+# baseurl = http://ghserver/repos/
+# Name or email address of the person in charge of the repository. Defaults to ui.username
+# or $EMAIL or "unknown" if unset or empty. 
+# contact = anyone
+
+# Whether to deny pushing to the repository. If empty or not set, push is not denied. 
+# If the special value "*", all remote users are denied push. Otherwise, unauthenticated 
+# users are all denied, and any authenticated user name present in this list (separated 
+# by whitespace or ",") is also denied. The contents of the deny_push list are examined 
+# before the allow_push list. 
+# deny_push = *
+# Textual description of the repository?s purpose or contents. Default is "unknown". 
+# description = unknown
+# Character encoding name. 
+# encoding = UTF-8
+# Where to output the error log. Default is stderr. 
+# errorlog = 
+# Whether to hide the repository in the hgwebdir index. Default is false. 
+# hidden = true
+# Whether to use IPv6. Default is false. 
+# ipv6 = true
+# Repository name to use in the web interface. Default is current working directory. 
+# name = repository
+# Maximum number of changes to list on the changelog. Default is 10. 
+# maxchanges = 10
+# Maximum number of files to list per changeset. Default is 10. 
+# maxfiles = 10
+# Port to listen on. Default is 8000. 
+# port = 8000
+# Prefix path to serve from. 
+# prefix = repository
+# Whether to require that inbound pushes be transported over SSL to prevent password sniffing. Default is true. 
+# push_ssl = false
+# Base URL to use for static files. If unset, static files (e.g. the hgicon.png favicon)
+# will be served by the CGI script itself. Use this setting to serve them directly with 
+# the HTTP server.
+# staticurl = "http://hgserver/static/" 
+# How many lines a "zebra stripe" should span in multiline output. Default is 1; set to 0 to disable. 
+# stripes  = 0
+# Which template map style to use. 
+# style = template.css
+# Where to find the HTML templates. Default is install path. 
+# templates = install_path
+
+
+[trusted]
+### For security reasons, Mercurial will not use the settings in the .hg/hgrc file from a 
+#   repository if it doesn't belong to a trusted user or to a trusted group. The main 
+#   exception is the web interface, which automatically uses some safe settings, since 
+#   it's common to serve repositories from different users. 
+
+### This section specifies what users and groups are trusted.  The
+#   current user is always trusted.  To trust everybody, list a user
+#   or a group with name "*".
+
+#users = *
+#groups = *
