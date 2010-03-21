@@ -221,9 +221,9 @@ editor = vim
 # How many lines a "zebra stripe" should span in multiline output. Default is 1; set to 0 to disable. 
 # stripes  = 0
 # Which template map style to use. 
-# style = template.css
+# style = paper|coal|gitweb|monoblue|spartan
 # Where to find the HTML templates. Default is install path. 
-# templates = install_path
+# templates = install_directory
 
 
 [trusted]
