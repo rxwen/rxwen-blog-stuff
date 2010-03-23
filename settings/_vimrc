@@ -8,6 +8,8 @@ if has("gui")
   noremap <M-Space> :simalt ~<CR>
   inoremap <M-Space> <C-O>:simalt ~<CR>
   cnoremap <M-Space> <C-C>:simalt ~<CR>
+
+  set guifont=Consolas:h11 " set font to Consolas, height 11
 endif
 
 
