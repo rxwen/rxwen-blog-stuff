@@ -46,7 +46,12 @@ void DumpGraph(const IGraphBuilder *pGraph)
 			else
 				OutputDebugString(TEXT("[Out]\t"));
 			OutputDebugString(pinInfo.achName);
-			OutputDebugString(TEXT("\n"));
+			IPin *pConnected = NULL;
+			if(S_OK == pPin->ConnectedTo(&pConnected) && NULL != pConnected)
+				wsprintf(ptr, TEXT("\t\tConnected to:0x%08X\n"), pConnected);
+			else
+				wsprintf(ptr, TEXT("\t\tNot Connected\n"));
+			OutputDebugString(ptr);
 
 			pPin->Release();
 		} while(S_OK == hr2);
