@@ -224,7 +224,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="e:\Projects\7000v\apps\googletest\include\"
+				AdditionalIncludeDirectories="..\googletest\include\"
 				PreprocessorDefinitions="_DEBUG;WIN32;DEBUG;_CONSOLE;_UNICODE;UNICODE"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
@@ -250,7 +250,7 @@
 				AdditionalDependencies="gtestd.lib"
 				OutputFile="$(OutDir)/ce_gtest_proj.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;E:\Projects\7000v\apps\googletest\msvc\gtest\Debug&quot;"
+				AdditionalLibraryDirectories="..\googletest\msvc\gtest\Debug"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/ce_gtest_proj.pdb"
