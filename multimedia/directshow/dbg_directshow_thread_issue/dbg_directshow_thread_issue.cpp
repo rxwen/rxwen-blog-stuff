@@ -40,8 +40,8 @@ void Render(void* para)
 	assert(S_OK == hr);
 	hr = pControl->Run();
 	//PostMessage(hWnd, 
-	HANDLE hEvt = CreateEvent(NULL, false, false, NULL);
-	WaitForSingleObject(hEvt, 8000);//INFINITE);
+//	HANDLE hEvt = CreateEvent(NULL, false, false, NULL);
+//	WaitForSingleObject(hEvt, 8000);//INFINITE);
 }
 
 #define MAX_LOADSTRING 100
