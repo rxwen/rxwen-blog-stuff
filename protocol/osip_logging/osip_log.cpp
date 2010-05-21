@@ -36,7 +36,7 @@ void printf_trace_func (char *fi, int li, osip_trace_level_t level, char *chfr, 
     }
     
     printf ("|%s| <%s: %i> | ", desc, fi, li);
-    printf(chfr, ap);
+    vprintf(chfr, ap);
     printf ("\n");
 }
 
