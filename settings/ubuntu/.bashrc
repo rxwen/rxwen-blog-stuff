@@ -73,7 +73,6 @@ fi
 
  
 alias bcscope="echo find source files; find ./ -regex '.*\.\(cpp\|c\|cxx\|cc\|h\|hpp\|hxx\)' > cscope.files; echo build cscope; cscope -b; echo done "
-alias ipy='~/bin/ipython/ipython.py'
 
 alias mgrep='grep --color=auto -n -H --exclude=*.svn-base --exclude=cscope.* -I -r -E '
 # --exclude svn files
