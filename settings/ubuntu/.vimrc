@@ -3,6 +3,11 @@ source $VIMRUNTIME/vimrc_example.vim
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
 
+" tcsh-style editing keys
+:cnoremap <C-A> <Home>
+:cnoremap <C-F> <Right>
+:cnoremap <C-B> <Left>
+
 syntax on
 set nocompatible
 set nu

@@ -12,6 +12,10 @@ if has("gui")
   set guifont=Consolas:h11 " set font to Consolas, height 11
 endif
 
+" tcsh-style editing keys
+:cnoremap <C-A> <Home>
+:cnoremap <C-F> <Right>
+:cnoremap <C-B> <Left>
 
 syntax on
 set nocompatible
