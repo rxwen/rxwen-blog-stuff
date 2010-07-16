@@ -15,8 +15,8 @@ Windows Registry Editor Version 5.00
 "LogFlush"=dword:00000001
 "SSHLogOmitPasswords"=dword:00000001
 "SSHLogOmitData"=dword:00000000
-"Protocol"="ssh"
-"PortNumber"=dword:00000016
+"Protocol"="telnet"
+"PortNumber"=dword:00000017
 "CloseOnExit"=dword:00000001
 "WarnOnClose"=dword:00000001
 "PingInterval"=dword:00000000
