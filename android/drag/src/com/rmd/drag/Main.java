@@ -27,6 +27,13 @@ public class Main extends Activity {
 					case MotionEvent.ACTION_MOVE:
 						int x = (int)event.getX() - offset_x;
 						int y = (int)event.getY() - offset_y;
+
+                        int w = getWindowManager().getDefaultDisplay().getWidth() - 100;
+                        int h = getWindowManager().getDefaultDisplay().getHeight() - 100;
+                        if(x > w)
+                            x = w;
+                        if(y > h)
+                            y = h;
 				         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 	                                new ViewGroup.MarginLayoutParams(
 	                                                LinearLayout.LayoutParams.WRAP_CONTENT,
