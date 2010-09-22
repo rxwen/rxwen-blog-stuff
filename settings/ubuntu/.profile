@@ -21,6 +21,6 @@ if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"    
 fi
 
-export JAVA_HOME=/usr/local/jdk1.5.0_22/
+export JAVA_HOME=/usr/lib/jvm/java-6-sun
 export PATH=$JAVA_HOME/bin/:$PATH
 export ANDROID_JAVA_HOME=$JAVA_HOME
