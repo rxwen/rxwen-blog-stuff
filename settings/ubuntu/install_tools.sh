@@ -3,7 +3,7 @@
 # run this script as root, sudo su -l
 
 # sun-java6-jdk must be the last one in array
-array=(subversion mercurial ipython wireshark vim-gnome ctags cscope expect ant sun-java6-jdk)
+array=(subversion mercurial valgrind ipython wireshark vim-gnome ctags cscope expect ant sun-java6-jdk)
 
 len=${#array[*]}
 i=0
