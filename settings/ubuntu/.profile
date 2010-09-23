@@ -21,6 +21,7 @@ if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"    
 fi
 
+export EDITOR=vim
 export JAVA_HOME=/usr/lib/jvm/java-6-sun
 export PATH=$JAVA_HOME/bin/:$PATH
 export PATH=~/android-sdk-linux_x86/tools/:$PATH
