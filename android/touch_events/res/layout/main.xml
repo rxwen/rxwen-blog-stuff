@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"  android:background="#FF000000"
+    android:id="@+id/root"
+    >
+<RelativeLayout 
+    android:layout_width="200px"
+    android:layout_height="200px"
+    android:layout_marginTop="50px" android:background="#FFFF0000" android:id="@+id/level1_1">
+    <Button android:layout_width="50px"
+    android:layout_height="50px"
+    android:layout_marginTop="30px" android:background="#FF00FF00" android:id="@+id/level2_1" android:text="level2_1"/>
+    </RelativeLayout>
+    
+<RelativeLayout 
+    android:layout_width="150px"
+    android:layout_height="200px"
+    android:layout_marginLeft="150px" android:background="#FF0000FF" android:id="@+id/level1_2">
+    <TextView android:layout_width="50px"
+    android:layout_height="50px"
+    android:layout_marginTop="30px" android:layout_marginLeft="10px"
+    android:background="#FF00FF00" android:id="@+id/level2_2" android:text="level2_2"/>
+    </RelativeLayout>
+</LinearLayout>
