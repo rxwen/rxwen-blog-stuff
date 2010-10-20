@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rmd.touchevent.MyViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"  android:background="#FF000000"
@@ -23,4 +23,4 @@
     android:layout_marginTop="30px" android:layout_marginLeft="10px"
     android:background="#FF00FF00" android:id="@+id/level2_2" android:text="level2_2"/>
     </RelativeLayout>
-</LinearLayout>
+</com.rmd.touchevent.MyViewGroup>
