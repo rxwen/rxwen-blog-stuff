@@ -17,7 +17,7 @@ public class Main extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			Log.v(LOG_TAG, String.format("onClick event fired on %s",v.getTag()));
+			Log.v(LOG_TAG, String.format("%d onClick event fired on %s", System.currentTimeMillis(), v.getTag()));
 		}
 	};
 	
@@ -25,7 +25,8 @@ public class Main extends Activity {
 		
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			Log.v(LOG_TAG, String.format("onTouch event " + event.getAction()+ " fired on %s, returns true",v.getTag()));
+            if(event.getAction() != MotionEvent.ACTION_MOVE)
+			Log.v(LOG_TAG, String.format(System.currentTimeMillis() + " onTouch event " + event.getAction()+ " fired on %s, returns true",v.getTag()));
 			return true;
 		}
 	};
@@ -34,7 +35,8 @@ public class Main extends Activity {
 		
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			Log.v(LOG_TAG, String.format("onTouch event " + event.getAction()+ " fired on %s, returns false",v.getTag()));
+            if(event.getAction() != MotionEvent.ACTION_MOVE)
+			Log.v(LOG_TAG, String.format(System.currentTimeMillis() + " onTouch event " + event.getAction()+ " fired on %s, returns false",v.getTag()));
 			return false;
 		}
 	};
@@ -43,7 +45,7 @@ public class Main extends Activity {
 		
 		@Override
 		public boolean onLongClick(View v) {
-			Log.v(LOG_TAG, String.format("OnLongClickListener event fired on %s, returns true",v.getTag()));
+			Log.v(LOG_TAG, String.format(System.currentTimeMillis() + " OnLongClickListener event fired on %s, returns true",v.getTag()));
 			return true;
 		}
 	};
@@ -52,7 +54,7 @@ public class Main extends Activity {
 		
 		@Override
 		public boolean onLongClick(View v) {
-			Log.v(LOG_TAG, String.format("OnLongClickListener event fired on %s, returns false",v.getTag()));
+			Log.v(LOG_TAG, String.format(System.currentTimeMillis() + " OnLongClickListener event fired on %s, returns false",v.getTag()));
 			return false;
 		}
 	};
