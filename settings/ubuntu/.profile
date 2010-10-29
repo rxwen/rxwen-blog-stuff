@@ -27,3 +27,4 @@ export PATH=$JAVA_HOME/bin/:$PATH
 export PATH=~/android-sdk-linux_x86/tools/:$PATH
 export ANDROID_JAVA_HOME=$JAVA_HOME
 export PYTHONPATH=$HOME/python_libs
+. ~/.env
