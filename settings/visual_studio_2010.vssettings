@@ -947,7 +947,7 @@
 						<Column Name="Bitmap" Width="17" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
 						<Column Name="ProviderKnowsOrder" Width="19" Visibility="Visible" SortPriority="0" SortDirection="Up"/>
 						<Column Name="Checked" Width="28" Visibility="Invisible" SortPriority="-1" SortDirection="Up"/>
-						<Column Name="Description" Width="171" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
+						<Column Name="Description" Width="896" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
 						<Column Name="File" Width="120" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
 						<Column Name="Line" Width="70" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
 						<Column Name="Column" Width="70" Visibility="Visible" SortPriority="-1" SortDirection="Up"/>
@@ -1120,6 +1120,8 @@
 					<RemoveShortcut Command="Edit.CreateCopyofWorkItem" Scope="Work Item Results View">Shift+Alt+C</RemoveShortcut>
 					<RemoveShortcut Command="Edit.CreateCopyofWorkItem" Scope="Work Item Editor">Shift+Alt+C</RemoveShortcut>
 					<RemoveShortcut Command="Edit.CreateCopyofWorkItem" Scope="Work Item Query View">Shift+Alt+C</RemoveShortcut>
+					<Shortcut Command="File.Close" Scope="Global">Ctrl+W</Shortcut>
+					<RemoveShortcut Command="Edit.SelectCurrentWord" Scope="Text Editor">Ctrl+W</RemoveShortcut>
 				</UserShortcuts>
 			</KeyboardShortcuts>
 		</Category>
