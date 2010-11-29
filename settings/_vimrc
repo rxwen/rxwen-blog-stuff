@@ -19,6 +19,7 @@ endif
 
 syntax on
 set nocompatible
+let g:html_use_css = 0
 set nu
 set ic
 colo darkblue
