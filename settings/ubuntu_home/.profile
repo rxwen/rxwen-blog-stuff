@@ -24,7 +24,8 @@ fi
 export EDITOR=vim
 export JAVA_HOME=/usr/lib/jvm/java-6-sun
 export PATH=$JAVA_HOME/bin/:$PATH
-export PATH=~/android-sdk-linux_x86/tools/:$PATH
+export ANDROID_HOME=~/android-sdk-linux_x86/
+export PATH=$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools:$PATH
 export ANDROID_JAVA_HOME=$JAVA_HOME
 export PYTHONPATH=$HOME/python_libs
 
