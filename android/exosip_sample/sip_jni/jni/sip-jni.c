@@ -1,5 +1,5 @@
-#include <string.h>
-#include <jni.h>
+#include    <string.h>
+#include    <jni.h>
 
 #include	<unistd.h>
 #include	<android/log.h>
@@ -15,13 +15,11 @@ static void android_trace_func(char *fi, int li, osip_trace_level_t level, char 
 
 void Java_com_rmd_sipjni_SipJni_startSipService(JNIEnv* env, jobject thiz )
 {
-    jclass cls = (*env)->FindClass(env, "com/rmd/sipjni/SipJni");
+    //jclass cls = (*env)->FindClass(env, "com/rmd/sipjni/SipJni");
+    // retrieve cls, mid only once for the sake of performance
+    jclass cls = (*env)->GetObjectClass(env, thiz);
     jmethodID mid = (*env)->GetMethodID(env, cls, "onIncomingCall", "(Ljava/lang/String;)Z");
-    __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s:%d mid is %d, thiz is %p", __FILE__, __LINE__, mid, thiz);
     jstring js = (*env)->NewStringUTF(env, "incoming call");
-    __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s:%d", __FILE__, __LINE__);
-    jboolean bl = (*env)->CallBooleanMethod(env, thiz, js);
-    __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s:%d", __FILE__, __LINE__);
     int i, port = 5060;
     osip_trace_initialize_func(END_TRACE_LEVEL, &android_trace_func);
     i=eXosip_init();
@@ -47,6 +45,8 @@ void Java_com_rmd_sipjni_SipJni_startSipService(JNIEnv* env, jobject thiz )
         if (je->type == EXOSIP_CALL_INVITE)
         {
             __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s", "incomingCall returns\n");
+            // call java callback function
+            jboolean bl = (*env)->CallBooleanMethod(env, thiz, mid, js);
         }
     }
 
