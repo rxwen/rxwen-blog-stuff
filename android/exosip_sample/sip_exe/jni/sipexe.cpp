@@ -1,6 +1,6 @@
 // =====================================================================================
 // 
-//       Filename:  sipexe.c
+//       Filename:  sipexe.cpp
 // 
 //    Description:  
 // 
@@ -18,6 +18,8 @@
 #include	<android/log.h>
 #include	<netinet/in.h>
 #include    <eXosip2/eXosip.h>
+#include    <iostream>
+#include	<complex>
 
 const char* const LOG_TAG = "SIP_EXE";
 
@@ -53,6 +55,7 @@ int main ( int argc, char *argv[] )
         if (je->type == EXOSIP_CALL_INVITE)
         {
             __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, "%s", "incoming call\n");
+            std::cout << "incoming call" << std::endl;
         }
     }
 
