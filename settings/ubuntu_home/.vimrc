@@ -22,9 +22,7 @@ set shiftwidth=4 " set auto indent width to 4 when switch lines
 set tabstop=4 " set indent width to 4
 set expandtab " use spaces instead of tab 
 
-"autocmd BufNewFile *.cpp    0r ~/.vim/skeleton/cpp.skel
-"autocmd BufNewFile *.c      0r ~/.vim/skeleton/c.skel
-"autocmd BufNewFile *.h      0r ~/.vim/skeleton/h.skel
+autocmd BufNewFile *.py      0r ~/.vim/skeleton/py.skel
 
 " nmap // <ESC>^i//<ESC>
 
