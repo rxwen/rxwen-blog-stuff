@@ -92,8 +92,13 @@
 <node CREATED="1292829721105" ID="ID_484575385" MODIFIED="1292829725421" TEXT="git commit"/>
 </node>
 <node CREATED="1292830556034" ID="ID_661701994" MODIFIED="1292830561037" TEXT="branching and merging">
-<node CREATED="1292897087720" ID="ID_309463663" MODIFIED="1292897155543" TEXT="branch is a lightweight movable pointer to a commit">
+<node CREATED="1292897087720" ID="ID_309463663" MODIFIED="1292898667885" TEXT="branch is a lightweight movable pointer to a commit">
+<font NAME="WenQuanYi Micro Hei" SIZE="12"/>
 <node CREATED="1292897149024" ID="ID_1519812667" MODIFIED="1292897149827" TEXT="it&apos;s actually a file containing the SHA of target commit"/>
+<node CREATED="1292898678618" ID="ID_831366063" MODIFIED="1292898732772" TEXT="movable means the pointer proceeds automatically">
+<font NAME="WenQuanYi Micro Hei" SIZE="12"/>
+</node>
+<node CREATED="1292898766112" ID="ID_426229431" MODIFIED="1292898777932" TEXT="HEAD is a special pointer to current local branch"/>
 </node>
 <node CREATED="1292830597489" ID="ID_1862277896" MODIFIED="1292830614341" TEXT="git branch: list all branches"/>
 <node CREATED="1292830616625" ID="ID_1815954488" MODIFIED="1292830629365" TEXT="git branch NAME: create new branch">
