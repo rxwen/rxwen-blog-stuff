@@ -41,6 +41,7 @@ set guioptions-=R " remove scrollbars from gui
 au GUIEnter * simalt ~x " start gvim in maximazed mode
 
 autocmd BufNewFile makefile 0r $VIMRUNTIME/../vimfiles/skeleton/makefile.skel
+autocmd BufNewFile Andoird.mk 0r $VIMRUNTIME/../vimfiles/skeleton/Android.mk.skel
 autocmd BufNewFile *.tex    0r $VIMRUNTIME/../vimfiles/skeleton/tex.skel
 autocmd BufNewFile *.py     0r $VIMRUNTIME/../vimfiles/skeleton/py.skel
 
