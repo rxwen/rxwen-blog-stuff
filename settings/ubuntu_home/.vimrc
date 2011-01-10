@@ -103,3 +103,16 @@ endif
 " integrate svn blame function   
 " to use it, select desired code in visual mode then type gl
 vmap gl :<C-U>!svn blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+
+
+" start fuzzyfinder mapping 
+nmap \ff :FufFile<CR>
+nmap \fb :FufBuffer<CR>
+nmap \fd :FufDir<CR>
+"nmap \fc :FufMruCmd<CR>
+nmap \ft :FufTag<CR>
+nmap \fj :FufJumpList<CR>
+nmap \fq :FufQuickfix<CR>
+nmap \fl :FufLine<CR>
+nmap \fh :FufHelp<CR>
+" end fuzzyfind mapping

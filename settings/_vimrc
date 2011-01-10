@@ -70,3 +70,14 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
+" start fuzzyfinder mapping 
+nmap \ff :FufFile<CR>
+nmap \fb :FufBuffer<CR>
+nmap \fd :FufDir<CR>
+"nmap \fc :FufMruCmd<CR>
+nmap \ft :FufTag<CR>
+nmap \fj :FufJumpList<CR>
+nmap \fq :FufQuickfix<CR>
+nmap \fl :FufLine<CR>
+nmap \fh :FufHelp<CR>
+" end fuzzyfind mapping
