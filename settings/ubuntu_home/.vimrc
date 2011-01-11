@@ -10,14 +10,14 @@ function Csfind(type, pattern)
     execute ":cs find " . a:type " " . a:pattern
 endfunction
 
-nnoremap <C-\>C :call Csfind("c", inputdialog('Find functions calling this function: ', ''))<CR>
-nnoremap <C-\>D :call Csfind("d", inputdialog('Find functions called by this function: ', ''))<CR>
-nnoremap <C-\>E :call Csfind("e", inputdialog('Find this egrep pattern: ', ''))<CR>
-nnoremap <C-\>F :call Csfind("f", inputdialog('Find this file: ', ''))<CR>
-nnoremap <C-\>G :call Csfind("g", inputdialog('Find this definition: ', ''))<CR>
-nnoremap <C-\>I :call Csfind("i", inputdialog('Find files #including this file: ', ''))<CR>
-nnoremap <C-\>S :call Csfind("s", inputdialog('Find this C symbol: ', ''))<CR>
-nnoremap <C-\>T :call Csfind("t", inputdialog('Find assignments to: ', ''))<CR>
+nnoremap <C-\>C :call Csfind("c", input('Find functions calling this function: ', ''))<CR>
+nnoremap <C-\>D :call Csfind("d", input('Find functions called by this function: ', ''))<CR>
+nnoremap <C-\>E :call Csfind("e", input('Find this egrep pattern: ', ''))<CR>
+nnoremap <C-\>F :call Csfind("f", input('Find this file: ', ''))<CR>
+nnoremap <C-\>G :call Csfind("g", input('Find this definition: ', ''))<CR>
+nnoremap <C-\>I :call Csfind("i", input('Find files #including this file: ', ''))<CR>
+nnoremap <C-\>S :call Csfind("s", input('Find this C symbol: ', ''))<CR>
+nnoremap <C-\>T :call Csfind("t", input('Find assignments to: ', ''))<CR>
 
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
