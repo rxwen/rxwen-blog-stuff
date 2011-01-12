@@ -7,6 +7,8 @@ source $VIMRUNTIME/vimrc_example.vim
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
 function Csfind(type, pattern)
+    if a:pattern == ""
+        return
     execute ":cs find " . a:type " " . a:pattern
 endfunction
 
