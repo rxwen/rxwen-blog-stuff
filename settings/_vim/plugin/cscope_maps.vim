@@ -122,15 +122,52 @@ if has("cscope")
     " (Note: you may wish to put a 'set splitright' in your .vimrc
     " if you prefer the new window on the right instead of the left
 
-    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\><C-\>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
+    nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
+    nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
+
+    " Hit 'CTRL-\', followed by one of the
+    " cscope search types above (S,G,C,T,E,F,I,D) in capital form. The result of your cscope
+    " search will be displayed in the current window.  You can use CTRL-T to
+    " go back to where you were before the search.  
+    "
+    function Csfind(type, new_window, pattern)
+        if a:pattern == ""
+            echo ""
+            return
+        endif
+        if a:new_window == 1
+"            tabnew
+            execute ":vert scs find " . a:type " " . a:pattern
+        else 
+            execute ":cs find " . a:type " " . a:pattern
+        endif
+    endfunction
+
+    nnoremap <C-\>C :call Csfind("c", 0, input('Find functions calling this function: ', ''))<CR>
+    nnoremap <C-\>D :call Csfind("d", 0, input('Find functions called by this function: ', ''))<CR>
+    nnoremap <C-\>E :call Csfind("e", 0, input('Find this egrep pattern: ', ''))<CR>
+    nnoremap <C-\>F :call Csfind("f", 0, input('Find this file: ', ''))<CR>
+    nnoremap <C-\>G :call Csfind("g", 0, input('Find this definition: ', ''))<CR>
+    nnoremap <C-\>I :call Csfind("i", 0, input('Find files #including this file: ', ''))<CR>
+    nnoremap <C-\>S :call Csfind("s", 0, input('Find this C symbol: ', ''))<CR>
+    nnoremap <C-\>T :call Csfind("t", 0, input('Find assignments to: ', ''))<CR>
+
+    " Hitting CTRL-\ *twice* before the search type shows result in a new window
+    nnoremap <C-\><C-\>C :call Csfind("c", 1, input('Find functions calling this function: ', ''))<CR>
+    nnoremap <C-\><C-\>D :call Csfind("d", 1, input('Find functions called by this function: ', ''))<CR>
+    nnoremap <C-\><C-\>E :call Csfind("e", 1, input('Find this egrep pattern: ', ''))<CR>
+    nnoremap <C-\><C-\>F :call Csfind("f", 1, input('Find this file: ', ''))<CR>
+    nnoremap <C-\><C-\>G :call Csfind("g", 1, input('Find this definition: ', ''))<CR>
+    nnoremap <C-\><C-\>I :call Csfind("i", 1, input('Find files #including this file: ', ''))<CR>
+    nnoremap <C-\><C-\>S :call Csfind("s", 1, input('Find this C symbol: ', ''))<CR>
+    nnoremap <C-\><C-\>T :call Csfind("t", 1, input('Find assignments to: ', ''))<CR>
 
     """"""""""""" key map timeouts
     "

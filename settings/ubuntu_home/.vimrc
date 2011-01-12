@@ -6,23 +6,6 @@ source $VIMRUNTIME/vimrc_example.vim
 " use quickfix window as cscope's output window
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
-function Csfind(type, new_tab, pattern)
-    if a:pattern == ""
-        return
-    if a:new_tab == 1
-        tabnew
-    execute ":cs find " . a:type " " . a:pattern
-endfunction
-
-nnoremap <C-\>C :call Csfind("c", 0, input('Find functions calling this function: ', ''))<CR>
-nnoremap <C-\>D :call Csfind("d", 0, input('Find functions called by this function: ', ''))<CR>
-nnoremap <C-\>E :call Csfind("e", 0, input('Find this egrep pattern: ', ''))<CR>
-nnoremap <C-\>F :call Csfind("f", 0, input('Find this file: ', ''))<CR>
-nnoremap <C-\>G :call Csfind("g", 0, input('Find this definition: ', ''))<CR>
-nnoremap <C-\>I :call Csfind("i", 0, input('Find files #including this file: ', ''))<CR>
-nnoremap <C-\>S :call Csfind("s", 0, input('Find this C symbol: ', ''))<CR>
-nnoremap <C-\>T :call Csfind("t", 0, input('Find assignments to: ', ''))<CR>
-
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
 :cnoremap <C-F> <Right>
