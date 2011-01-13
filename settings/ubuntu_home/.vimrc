@@ -6,6 +6,7 @@ source $VIMRUNTIME/vimrc_example.vim
 " use quickfix window as cscope's output window
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
+nnoremap <C-W>t :tabnew<CR> 
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
 :cnoremap <C-F> <Right>
