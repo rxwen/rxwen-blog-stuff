@@ -132,11 +132,9 @@ if has("cscope")
     nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 
-    " Hit 'CTRL-\', followed by one of the
-    " cscope search types above (S,G,C,T,E,F,I,D) in capital form. The result of your cscope
-    " search will be displayed in the current window.  You can use CTRL-T to
-    " go back to where you were before the search.  
-    "
+    " Hit 'CTRL-\', followed by one of the cscope search types above (S,G,C,T,E,F,I,D) 
+    " in capital form, you will be asked to input search term. The result of your cscope
+    " search will be displayed in the current window. 
     function Csfind(type, new_window, pattern)
         if a:pattern == ""
             echo ""
