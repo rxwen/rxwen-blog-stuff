@@ -7,6 +7,8 @@ source $VIMRUNTIME/vimrc_example.vim
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
 nnoremap <C-W>t :tabnew<CR> 
+nnoremap \cn :cnext<CR> 
+nnoremap \cp :cprevious<CR> 
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
 :cnoremap <C-F> <Right>
