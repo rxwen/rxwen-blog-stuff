@@ -18,14 +18,14 @@ Windows Registry Editor Version 5.00
 @="Compiled Python File"
 
 [HKEY_CLASSES_ROOT\Python.CompiledFile\DefaultIcon]
-@="E:\\Python26\\DLLs\\pyc.ico"
+@="E:\\Python27\\DLLs\\pyc.ico"
 
 [HKEY_CLASSES_ROOT\Python.CompiledFile\shell]
 
 [HKEY_CLASSES_ROOT\Python.CompiledFile\shell\open]
 
 [HKEY_CLASSES_ROOT\Python.CompiledFile\shell\open\command]
-@="\"E:\\Python26\\python.exe\" \"%1\" %*"
+@="\"E:\\Python27\\python.exe\" \"%1\" %*"
 
 [HKEY_CLASSES_ROOT\Python.CompiledFile\shellex]
 
@@ -36,19 +36,19 @@ Windows Registry Editor Version 5.00
 @="Python File"
 
 [HKEY_CLASSES_ROOT\Python.File\DefaultIcon]
-@="E:\\Python26\\DLLs\\py.ico"
+@="E:\\Python27\\DLLs\\py.ico"
 
 [HKEY_CLASSES_ROOT\Python.File\shell]
 
 [HKEY_CLASSES_ROOT\Python.File\shell\Edit with IDLE]
 
 [HKEY_CLASSES_ROOT\Python.File\shell\Edit with IDLE\command]
-@="\"E:\\Python26\\pythonw.exe\" \"E:\\Python26\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
+@="\"E:\\Python27\\pythonw.exe\" \"E:\\Python27\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
 
 [HKEY_CLASSES_ROOT\Python.File\shell\open]
 
 [HKEY_CLASSES_ROOT\Python.File\shell\open\command]
-@="\"E:\\Python26\\python.exe\" \"%1\" %*"
+@="\"E:\\Python27\\python.exe\" \"%1\" %*"
 
 [HKEY_CLASSES_ROOT\Python.File\shellex]
 
@@ -59,19 +59,19 @@ Windows Registry Editor Version 5.00
 @="Python File (no console)"
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\DefaultIcon]
-@="E:\\Python26\\DLLs\\py.ico"
+@="E:\\Python27\\DLLs\\py.ico"
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shell]
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shell\Edit with IDLE]
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shell\Edit with IDLE\command]
-@="\"E:\\Python26\\pythonw.exe\" \"E:\\Python26\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
+@="\"E:\\Python27\\pythonw.exe\" \"E:\\Python27\\Lib\\idlelib\\idle.pyw\" -n -e \"%1\""
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shell\open]
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shell\open\command]
-@="\"E:\\Python26\\pythonw.exe\" \"%1\" %*"
+@="\"E:\\Python27\\pythonw.exe\" \"%1\" %*"
 
 [HKEY_CLASSES_ROOT\Python.NoConFile\shellex]
 
