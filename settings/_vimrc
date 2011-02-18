@@ -81,6 +81,9 @@ endfunction
 nmap \ff :FufFile<CR>
 nmap \fb :FufBuffer<CR>
 nmap \fd :FufDir<CR>
+nmap \fma :FufBookmarkFileAdd<CR>
+nmap \fmf :FufBookmarkFile<CR>
+nmap \fmd :FufBookmarkDir<CR>
 "nmap \fc :FufMruCmd<CR>
 nmap \ft :FufTag<CR>
 nmap \fj :FufJumpList<CR>
