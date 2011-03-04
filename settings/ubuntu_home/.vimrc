@@ -6,6 +6,9 @@ source $VIMRUNTIME/vimrc_example.vim
 " use quickfix window as cscope's output window
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
+:set grepprg=grep\ -nrIE
+nnoremap \gp :grep 
+
 nnoremap \cn :cnext<CR> 
 nnoremap \cp :cprevious<CR> 
 nnoremap <C-W>t :tabnew<CR> 
