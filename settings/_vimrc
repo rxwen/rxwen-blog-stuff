@@ -93,4 +93,5 @@ nmap \fj :FufJumpList<CR>
 nmap \fq :FufQuickfix<CR>
 nmap \fl :FufLine<CR>
 nmap \fh :FufHelp<CR>
+let g:fuf_keyOpenTabpage = '<C-CR>'
 " end fuzzyfind mapping
