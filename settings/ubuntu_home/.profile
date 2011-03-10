@@ -30,5 +30,6 @@ export ANDROID_JAVA_HOME=$JAVA_HOME
 export PYTHONPATH=$HOME/python_libs
 
 # setup machine specific environment variables sotred in .env
-# !! make sure this file exist or login may fail
-. ~/.env
+if [ -f ~/.env ] ; then
+    . ~/.env
+fi
