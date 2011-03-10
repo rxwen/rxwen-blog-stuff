@@ -128,4 +128,5 @@ nmap \fq :FufQuickfix<CR>
 nmap \fl :FufLine<CR>
 nmap \fh :FufHelp<CR>
 "let g:fuf_keyOpenTabpage = '<C-CR>'
+let g:fuf_maxMenuWidth = 160
 " end fuzzyfind mapping
