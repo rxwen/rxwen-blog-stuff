@@ -118,11 +118,14 @@ vmap gl :<C-U>!svn blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR
 nmap \ff :FufFile<CR>
 nmap \fb :FufBuffer<CR>
 nmap \fd :FufDir<CR>
+nmap \fma :FufBookmarkFileAdd<CR>
+nmap \fmf :FufBookmarkFile<CR>
+nmap \fmd :FufBookmarkDir<CR>
 "nmap \fc :FufMruCmd<CR>
 nmap \ft :FufTag<CR>
 nmap \fj :FufJumpList<CR>
 nmap \fq :FufQuickfix<CR>
 nmap \fl :FufLine<CR>
 nmap \fh :FufHelp<CR>
-let g:fuf_keyOpenTabpage = '<C-CR>'
+"let g:fuf_keyOpenTabpage = '<C-CR>'
 " end fuzzyfind mapping
