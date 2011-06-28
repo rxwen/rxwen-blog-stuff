@@ -7,7 +7,7 @@ source $VIMRUNTIME/vimrc_example.vim
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
 :set grepprg=grep\ -nrIE
-nnoremap \gp :grep --include=* 
+nnoremap \gp :grep  
 
 nnoremap \cn :cnext<CR> 
 nnoremap \cp :cprevious<CR> 
