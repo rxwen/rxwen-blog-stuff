@@ -12,6 +12,9 @@ nnoremap \gp :grep
 nnoremap \cn :cnext<CR> 
 nnoremap \cp :cprevious<CR> 
 nnoremap <C-W>t :tabnew<CR> 
+" yank current file name to unamed register
+nnoremap \fp :let @"=expand("%:p")<CR> 
+nnoremap \fn :let @"=expand("%")<CR> 
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
 :cnoremap <C-F> <Right>
