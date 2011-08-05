@@ -14,9 +14,10 @@ nnoremap \cp :cprevious<CR>
 nnoremap <C-W>t :tabnew<CR> 
 " yank current file name to unamed register
 nnoremap \fp :let @"=expand("%:p")<CR> 
-nnoremap \fn :let @"=expand("%")<CR> 
+nnoremap \fn :let @"=expand("%:t")<CR> 
+" yank current file name to clipboard 
 nnoremap \fP :let @*=expand("%:p")<CR> 
-nnoremap \fN :let @*=expand("%")<CR> 
+nnoremap \fN :let @*=expand("%:t")<CR> 
 " tcsh-style editing keys
 :cnoremap <C-A> <Home>
 :cnoremap <C-F> <Right>
