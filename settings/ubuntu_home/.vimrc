@@ -3,6 +3,7 @@ source $VIMRUNTIME/vimrc_example.vim
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
 
+source $VIMRUNTIME/ftplugin/man.vim
 " use quickfix window as cscope's output window
 :set cscopequickfix=s-,g-,d-,c-,t-,e-,f-,i-
 
