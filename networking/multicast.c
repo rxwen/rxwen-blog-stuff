@@ -71,6 +71,9 @@ int main(int argc, char* argv[])
 	if (argc > 1) {
 		// sender
 		static int i = 0;
+        unsigned char ttl = 32;
+        setsockopt(sock, IPPROTO_IP, IP_MULTICAST_TTL, &ttl,
+              sizeof(unsigned char));
 		addr.sin_addr.s_addr = inet_addr(GROUPIP);
 		while (1) {
 			sprintf(message, "counter is %d", ++i);
