@@ -3,7 +3,7 @@
 # run this script as root, sudo su -l
 
 # sun-java6-jdk must be the last one in array
-array=(ncurses-dev p7zip tofrodos check g++ cppcheck subversion mercurial git-core gitk valgrind cgdb ipython python-setuptools mit-scheme wireshark nmap vim-gnome ctags cscope expect flex doxygen sdcv ant sun-java6-jdk)
+array=(ncurses-dev p7zip tofrodos check g++ cppcheck pylint subversion mercurial git-core gitk valgrind cgdb ipython python-setuptools mit-scheme wireshark nmap vim-gnome ctags cscope expect flex doxygen sdcv ant sun-java6-jdk)
 
 len=${#array[*]}
 i=0
