@@ -15,6 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/** Main activity mimics the audio streaming, 
+ * instead of streaming audio data on network,
+ * it reads data from local file
+ * The main purpose is to show how to play data 
+ * buffer in chunks with AudioTrack class */
 public class Main extends Activity {
     /** Called when the activity is first created. */
     @Override
