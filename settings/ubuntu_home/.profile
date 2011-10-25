@@ -27,7 +27,7 @@ export PATH=$JAVA_HOME/bin/:$PATH
 export ANDROID_HOME=$HOME/android_sdk/
 export PATH=$ANDROID_HOME/tools/:$ANDROID_HOME/platform-tools:$ANDROID_HOME/ndk:$PATH
 export ANDROID_JAVA_HOME=$JAVA_HOME
-export PYTHONPATH=$HOME/python_libs
+#export PYTHONPATH=$HOME/python_libs
 
 # setup machine specific environment variables sotred in .env
 if [ -f ~/.env ] ; then
