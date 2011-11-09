@@ -137,3 +137,7 @@ nmap \fh :FufHelp<CR>
 "let g:fuf_keyOpenTabpage = '<C-CR>'
 let g:fuf_maxMenuWidth = 160
 " end fuzzyfind mapping
+
+" doxygentoolkit mapping
+nmap \dx :Dox<CR>
+" end doxygentoolkit mapping
