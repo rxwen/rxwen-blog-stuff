@@ -141,3 +141,7 @@ let g:fuf_maxMenuWidth = 160
 " doxygentoolkit mapping
 nmap \dx :Dox<CR>
 " end doxygentoolkit mapping
+
+nmap \pd :Pydoc 
+nmap \pD :Pydoc expand("<cword>")<CR>
+" nmap \ps :PydocSearch  

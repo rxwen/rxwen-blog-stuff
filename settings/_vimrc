@@ -106,3 +106,9 @@ let g:fuf_maxMenuWidth = 160
 " doxygentoolkit mapping
 nmap \dx :Dox<CR>
 " end doxygentoolkit mapping
+
+" windows specific pydoc setting
+let g:pydoc_cmd = 'python -m pydoc'
+nmap \pd :Pydoc 
+nmap \pD :Pydoc expand("<cword>")<CR>
+" nmap \ps :PydocSearch  
