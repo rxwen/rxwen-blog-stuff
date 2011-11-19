@@ -143,5 +143,5 @@ nmap \dx :Dox<CR>
 " end doxygentoolkit mapping
 
 nmap \pd :Pydoc 
-nmap \pD :Pydoc expand("<cword>")<CR>
+nmap \pD :Pydoc <C-R>=expand("<cword>")<CR><CR>
 " nmap \ps :PydocSearch  
