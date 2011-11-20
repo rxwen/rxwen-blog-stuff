@@ -1,5 +1,11 @@
 Windows Registry Editor Version 5.00
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\2.7\InstallPath]
+@="E:\\Python27\\"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Python\PythonCore\2.7\PythonPath]
+@="E:\\Python27\\Lib"
+
 [HKEY_CLASSES_ROOT\.pyc]
 @="Python.CompiledFile"
 
