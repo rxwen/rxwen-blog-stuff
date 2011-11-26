@@ -103,7 +103,7 @@ au FileType python,man map <buffer> <leader>pk :call ShowPyDoc('<C-R><C-W>', 0)<
 au FileType python,man map <buffer> <leader>pK :call ShowPyDoc('<C-R><C-A>', 0)<CR>
 
 " remap the K (or 'help') key
-nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
+" nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
 
 
 "commands
