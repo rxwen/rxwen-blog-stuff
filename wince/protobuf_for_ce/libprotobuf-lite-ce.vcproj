@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="gb2312"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="libprotobuf-lite-ce"
 	ProjectGUID="{6E1C795C-A69E-49E3-A6AD-42BE03CDBF91}"
 	RootNamespace="libprotobuf-lite-ce"
