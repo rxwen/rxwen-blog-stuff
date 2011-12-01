@@ -109,6 +109,6 @@ nmap \dx :Dox<CR>
 
 " windows specific pydoc setting
 let g:pydoc_cmd = 'python -m pydoc'
-nmap \pd :Pydoc 
-nmap \pD :Pydoc <C-R>=expand("<cword>")<CR><CR>
+nmap \pD :Pydoc 
+nmap \pd :Pydoc <C-R>=expand("<cword>")<CR><CR>
 " nmap \ps :PydocSearch  
