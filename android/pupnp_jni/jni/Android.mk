@@ -1,10 +1,7 @@
-# A simple test for the minimal standard C++ library
-#
-
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := test-libupnp
+LOCAL_MODULE := libpupnp
 LOCAL_C_INCLUDES := upnp/inc upnp/src/inc build/inc \
 	threadutil/inc/ ixml/inc/ ixml/src/inc/
 #LOCAL_SRC_FILES := a/b/test-libstl.cpp
