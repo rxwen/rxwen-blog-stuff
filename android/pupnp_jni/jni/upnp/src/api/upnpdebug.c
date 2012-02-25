@@ -47,6 +47,15 @@
 
 #ifdef DEBUG
 
+#ifdef ANDROID
+#include	<android/log.h>
+
+#define  LOG_TAG    "libupnp"
+#define  LOGV(fmt, arg_list)  __android_log_vprint(ANDROID_LOG_VERBOSE,LOG_TAG,fmt,arg_list)
+#define  LOGI(fmt, arg_list)  __android_log_vprint(ANDROID_LOG_INFO,LOG_TAG,fmt,arg_list)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#endif
+
 /*! Mutex to synchronize all the log file opeartions in the debug mode */
 static ithread_mutex_t GlobalDebugMutex;
 
@@ -67,6 +76,7 @@ static const char *infoFileName = "IUpnpInfoFile.txt";
 
 int UpnpInitLog(void)
 {
+#ifndef ANDROID
 	ithread_mutex_init(&GlobalDebugMutex, NULL);
 	if (DEBUG_TARGET == 1) {
 		if ((ErrFileHnd = fopen(errFileName, "a")) == NULL) {
@@ -76,6 +86,7 @@ int UpnpInitLog(void)
 			return -1;
 		}
 	}
+#endif
 	return UPNP_E_SUCCESS;
 }
 
@@ -86,12 +97,14 @@ void UpnpSetLogLevel(Upnp_LogLevel log_level)
 
 void UpnpCloseLog(void)
 {
+#ifndef ANDROID
 	if (DEBUG_TARGET == 1) {
 		fflush(ErrFileHnd);
 		fflush(InfoFileHnd);
 		fclose(ErrFileHnd);
 		fclose(InfoFileHnd);
 	}
+#endif
 	ithread_mutex_destroy(&GlobalDebugMutex);
 }
 
@@ -131,6 +144,10 @@ void UpnpPrintf(Upnp_LogLevel DLevel,
 		return;
 	ithread_mutex_lock(&GlobalDebugMutex);
 	va_start(ArgList, FmtStr);
+#ifdef ANDROID
+    __android_log_print(ANDROID_LOG_VERBOSE,LOG_TAG, "%s:%u", DbgFileName, DbgLineNo);
+    __android_log_vprint(ANDROID_LOG_INFO,LOG_TAG, FmtStr, ArgList);
+#else
 	if (!DEBUG_TARGET) {
 		if (DbgFileName)
 			UpnpDisplayFileAndLine(stdout, DbgFileName, DbgLineNo);
@@ -149,6 +166,7 @@ void UpnpPrintf(Upnp_LogLevel DLevel,
 		vfprintf(InfoFileHnd, FmtStr, ArgList);
 		fflush(InfoFileHnd);
 	}
+#endif
 	va_end(ArgList);
 	ithread_mutex_unlock(&GlobalDebugMutex);
 }
@@ -244,5 +262,4 @@ void UpnpDisplayBanner(FILE * fd,
 	free(rightMargin);
 	free(leftMargin);
 }
-
 #endif /* DEBUG */

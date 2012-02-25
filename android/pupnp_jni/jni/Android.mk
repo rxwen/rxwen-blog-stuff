@@ -4,8 +4,12 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libpupnp
 LOCAL_C_INCLUDES := upnp/inc upnp/src/inc build/inc \
 	threadutil/inc/ ixml/inc/ ixml/src/inc/
-#LOCAL_SRC_FILES := a/b/test-libstl.cpp
+
+LOCAL_LDLIBS    := -llog
+LOCAL_CFLAGS := -DDEBUG -g
+
 LOCAL_SRC_FILES := \
+	upnp_jni.c \
 	upnp/src/ssdp/ssdp_device.c \
 	upnp/src/ssdp/ssdp_server.c \
 	upnp/src/ssdp/ssdp_ctrlpt.c \
