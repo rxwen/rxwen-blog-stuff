@@ -145,7 +145,7 @@ void UpnpPrintf(Upnp_LogLevel DLevel,
 	ithread_mutex_lock(&GlobalDebugMutex);
 	va_start(ArgList, FmtStr);
 #ifdef ANDROID
-    __android_log_print(ANDROID_LOG_VERBOSE,LOG_TAG, "%s:%u", DbgFileName, DbgLineNo);
+//    __android_log_print(ANDROID_LOG_VERBOSE,LOG_TAG, "%s:%u", DbgFileName, DbgLineNo);
     __android_log_vprint(ANDROID_LOG_INFO,LOG_TAG, FmtStr, ArgList);
 #else
 	if (!DEBUG_TARGET) {
