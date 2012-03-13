@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 
+#include "ClientSubscription.h"
 #include "service_table.h"
 #include "upnp.h"
 #include "UpnpString.h"
@@ -32,154 +33,6 @@ extern TimerThread gTimerThread;
 #ifdef INCLUDE_CLIENT_APIS
 
 
-typedef struct s_ClientSubscription ClientSubscription;
-
-
-/*!
- * \brief Constructor.
- */
-ClientSubscription *UpnpClientSubscription_new();
-
-
-/*!
- * \brief Destructor.
- */
-void UpnpClientSubscription_delete(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p);
-
-
-/*!
- * \brief Copy Constructor.
- */
-ClientSubscription *UpnpClientSubscription_dup(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief Assignment operator.
- */
-void UpnpClientSubscription_assign(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *q,
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-int UpnpClientSubscription_get_RenewEventId(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_set_RenewEventId(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	/*! [in] . */
-	int n);
-
-
-/*!
- * \brief 
- */
-const UpnpString *UpnpClientSubscription_get_SID(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_set_SID(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const UpnpString *s);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_strcpy_SID(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const char *s);
-
-
-/*!
- * \brief 
- */
-const UpnpString *UpnpClientSubscription_get_ActualSID(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_set_ActualSID(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const UpnpString *s);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_strcpy_ActualSID(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const char *s);
-
-
-/*!
- * \brief 
- */
-const UpnpString *UpnpClientSubscription_get_EventURL(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_set_EventURL(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const UpnpString *s);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_strcpy_EventURL(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	const char *s);
-
-
-/*!
- * \brief 
- */
-ClientSubscription *UpnpClientSubscription_get_Next(
-	/*! [in] The \b this pointer. */
-	const ClientSubscription *p);
-
-
-/*!
- * \brief 
- */
-void UpnpClientSubscription_set_Next(
-	/*! [in] The \b this pointer. */
-	ClientSubscription *p,
-	ClientSubscription *q);
-
-
-
 /*!
  * \brief Free memory allocated for client subscription data.
  *
@@ -187,7 +40,7 @@ void UpnpClientSubscription_set_Next(
  */
 void free_client_subscription(
 	/*! [in] Client subscription to be freed. */
-	ClientSubscription *sub);
+	GenlibClientSubscription *sub);
 
 
 /*!
@@ -195,7 +48,7 @@ void free_client_subscription(
  */
 void freeClientSubList(
 	/*! [in] Client subscription list to be freed. */
-	ClientSubscription *list);
+	GenlibClientSubscription *list);
 
 
 /*!
@@ -205,7 +58,7 @@ void freeClientSubList(
  */
 void RemoveClientSubClientSID(
 	/*! [in] Head of the subscription list. */
-	ClientSubscription **head,
+	GenlibClientSubscription **head,
 	/*! [in] Subscription ID to be mactched. */
 	const UpnpString *sid);
 
@@ -216,9 +69,9 @@ void RemoveClientSubClientSID(
  *
  * \return The matching subscription.
  */
-ClientSubscription *GetClientSubClientSID(
+GenlibClientSubscription *GetClientSubClientSID(
 	/*! [in] Head of the subscription list. */
-	ClientSubscription *head,
+	GenlibClientSubscription *head,
 	/*! [in] Subscription ID to be mactched. */
 	const UpnpString *sid);
 
@@ -229,9 +82,9 @@ ClientSubscription *GetClientSubClientSID(
  *
  * \return The matching subscription.
  */
-ClientSubscription *GetClientSubActualSID(
+GenlibClientSubscription *GetClientSubActualSID(
 	/*! [in] Head of the subscription list. */
-	ClientSubscription *head,
+	GenlibClientSubscription *head,
 	/*! [in] Subscription ID to be mactched. */
 	token *sid);
 

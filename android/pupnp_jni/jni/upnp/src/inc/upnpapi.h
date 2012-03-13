@@ -113,7 +113,7 @@ struct Handle_Info
 	/* Client only */
 #ifdef INCLUDE_CLIENT_APIS
 	/*! Client subscription list. */
-	ClientSubscription *ClientSubList;
+	GenlibClientSubscription *ClientSubList;
 	/*! Active SSDP searches. */
 	LinkedList SsdpSearchList;
 #endif

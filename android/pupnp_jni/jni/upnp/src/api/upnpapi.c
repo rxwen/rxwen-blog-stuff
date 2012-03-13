@@ -3393,7 +3393,7 @@ int UpnpGetIfInfo(const char *IfName)
 #ifdef INCLUDE_CLIENT_APIS
 void UpnpThreadDistribution(struct UpnpNonblockParam *Param)
 {
-	/*int errCode = 0;*/
+	int errCode = 0;
 
 	UpnpPrintf(UPNP_ALL, API, __FILE__, __LINE__,
 		"Inside UpnpThreadDistribution \n");
@@ -3401,84 +3401,86 @@ void UpnpThreadDistribution(struct UpnpNonblockParam *Param)
 	switch (Param->FunName) {
 #if EXCLUDE_GENA == 0
 	case SUBSCRIBE: {
-		struct Upnp_Event_Subscribe Evt;
+		UpnpEventSubscribe *evt = UpnpEventSubscribe_new();
 		/* Cast away constness */
-		/*UpnpString *Sid = (UpnpString *)UpnpEventSubscribe_get_SID(evt);*/
 		UpnpString *Sid = UpnpString_new();
-		UpnpString *Url = UpnpString_new();
-		UpnpString_set_String(Url, Param->Url);
-		Evt.ErrCode = genaSubscribe(
+
+		UpnpEventSubscribe_strcpy_PublisherUrl(evt, Param->Url);
+		errCode = genaSubscribe(
 			Param->Handle,
-			Url,
+			UpnpEventSubscribe_get_PublisherUrl(evt),
 			(int *)&Param->TimeOut,
 			Sid);
-		strcpy(Evt.PublisherUrl, Param->Url);
-		Evt.TimeOut = Param->TimeOut;
-		strcpy((char *)Evt.Sid, UpnpString_get_String(Sid));
-		Param->Fun(UPNP_EVENT_SUBSCRIBE_COMPLETE, &Evt, Param->Cookie);
-		UpnpString_delete(Sid);
-		UpnpString_delete(Url);
+		UpnpEventSubscribe_set_ErrCode(evt, errCode);
+		UpnpEventSubscribe_set_TimeOut(evt, Param->TimeOut);
+		UpnpEventSubscribe_set_SID(evt, Sid);
+		Param->Fun(UPNP_EVENT_SUBSCRIBE_COMPLETE, evt, Param->Cookie);
+ 		UpnpString_delete(Sid);
+	    	UpnpEventSubscribe_delete(evt);
 		free(Param);
 		break;
 	}
 	case UNSUBSCRIBE: {
-		struct Upnp_Event_Subscribe Evt;
-		UpnpString *Sid = UpnpString_new();
-		UpnpString_set_String(Sid, Param->SubsId);
-		Evt.ErrCode = genaUnSubscribe(
+		UpnpEventSubscribe *evt = UpnpEventSubscribe_new();
+		UpnpEventSubscribe_strcpy_SID(evt, Param->SubsId);
+		errCode = genaUnSubscribe(
 			Param->Handle,
-			Sid);
-		strcpy((char *)Evt.Sid, UpnpString_get_String(Sid));
-		strcpy(Evt.PublisherUrl, "");
-		Evt.TimeOut = 0;
-		Param->Fun(UPNP_EVENT_UNSUBSCRIBE_COMPLETE, &Evt, Param->Cookie);
-		UpnpString_delete(Sid);
+			UpnpEventSubscribe_get_SID(evt));
+		UpnpEventSubscribe_set_ErrCode(evt, errCode);
+		UpnpEventSubscribe_strcpy_PublisherUrl(evt, "");
+		UpnpEventSubscribe_set_TimeOut(evt, 0);
+		Param->Fun(UPNP_EVENT_UNSUBSCRIBE_COMPLETE, evt, Param->Cookie);
+		UpnpEventSubscribe_delete(evt);
 		free(Param);
 		break;
 	}
 	case RENEW: {
-		struct Upnp_Event_Subscribe Evt;
-		UpnpString *Sid = UpnpString_new();
-		UpnpString_set_String(Sid, Param->SubsId);
-		Evt.ErrCode = genaRenewSubscription(
+		UpnpEventSubscribe *evt = UpnpEventSubscribe_new();
+		UpnpEventSubscribe_strcpy_SID(evt, Param->SubsId);
+		errCode = genaRenewSubscription(
 			Param->Handle,
-			Sid,
+			UpnpEventSubscribe_get_SID(evt),
 			&Param->TimeOut);
-		Evt.TimeOut = Param->TimeOut;
-		strcpy((char *)Evt.Sid, UpnpString_get_String(Sid));
-		Param->Fun(UPNP_EVENT_RENEWAL_COMPLETE, &Evt, Param->Cookie);
-		UpnpString_delete(Sid);
+		UpnpEventSubscribe_set_ErrCode(evt, errCode);
+		UpnpEventSubscribe_set_TimeOut(evt, Param->TimeOut);
+		Param->Fun(UPNP_EVENT_RENEWAL_COMPLETE, evt, Param->Cookie);
+		UpnpEventSubscribe_delete(evt);
 		free(Param);
 		break;
 	}
 #endif /* EXCLUDE_GENA == 0 */
 #if EXCLUDE_SOAP == 0
 	case ACTION: {
-		struct Upnp_Action_Complete Evt;
-		Evt.ActionResult = NULL;
-		Evt.ErrCode = SoapSendAction(
+		UpnpActionComplete *Evt = UpnpActionComplete_new();
+		IXML_Document *actionResult = NULL;
+		int errCode = SoapSendAction(
 			Param->Url,
 			Param->ServiceType,
-			Param->Act, &Evt.ActionResult);
-		Evt.ActionRequest = Param->Act;
-		strcpy(Evt.CtrlUrl, Param->Url);
-		Param->Fun(UPNP_CONTROL_ACTION_COMPLETE, &Evt, Param->Cookie);
-		ixmlDocument_free(Evt.ActionRequest);
-		ixmlDocument_free(Evt.ActionResult);
+			Param->Act,
+			&actionResult);
+		UpnpActionComplete_set_ErrCode(Evt, errCode);
+		UpnpActionComplete_set_ActionRequest(Evt, Param->Act);
+		UpnpActionComplete_set_ActionResult(Evt, actionResult);
+		UpnpActionComplete_strcpy_CtrlUrl(Evt, Param->Url);
+		Param->Fun(UPNP_CONTROL_ACTION_COMPLETE, Evt, Param->Cookie);
 		free(Param);
+		UpnpActionComplete_delete(Evt);
 		break;
 	}
 	case STATUS: {
-		struct Upnp_State_Var_Complete Evt;
-		Evt.ErrCode = SoapGetServiceVarStatus(
+		UpnpStateVarComplete *Evt = UpnpStateVarComplete_new();
+		DOMString currentVal = NULL;
+		int errCode = SoapGetServiceVarStatus(
 			Param->Url,
 			Param->VarName,
-			&Evt.CurrentVal);
-		strcpy(Evt.StateVarName, Param->VarName);
-		strcpy(Evt.CtrlUrl, Param->Url);
-		Param->Fun(UPNP_CONTROL_GET_VAR_COMPLETE, &Evt, Param->Cookie);
-		free(Evt.CurrentVal);
+			&currentVal);
+		UpnpStateVarComplete_set_ErrCode(Evt, errCode);
+		UpnpStateVarComplete_strcpy_CtrlUrl(Evt, Param->Url);
+		UpnpStateVarComplete_strcpy_StateVarName(Evt, Param->VarName);
+		UpnpStateVarComplete_set_CurrentVal(Evt, currentVal);
+		Param->Fun(UPNP_CONTROL_GET_VAR_COMPLETE, Evt, Param->Cookie);
 		free(Param);
+		UpnpStateVarComplete_delete(Evt);
 		break;
 	}
 #endif /* EXCLUDE_SOAP == 0 */

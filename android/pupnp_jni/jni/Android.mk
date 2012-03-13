@@ -13,6 +13,7 @@ LOCAL_SRC_FILES := \
 	upnp/src/ssdp/ssdp_device.c \
 	upnp/src/ssdp/ssdp_server.c \
 	upnp/src/ssdp/ssdp_ctrlpt.c \
+	upnp/src/ssdp/ssdp_ResultData.c \
 	upnp/src/genlib/service_table/service_table.c \
 	upnp/src/genlib/util/upnp_timeout.c \
 	upnp/src/genlib/util/membuffer.c \
@@ -26,11 +27,21 @@ LOCAL_SRC_FILES := \
 	upnp/src/genlib/net/http/parsetools.c \
 	upnp/src/genlib/net/sock.c \
 	upnp/src/genlib/miniserver/miniserver.c \
+	upnp/src/genlib/client_table/ClientSubscription.c \
 	upnp/src/genlib/client_table/client_table.c \
+	upnp/src/api/SubscriptionRequest.c \
+	upnp/src/api/Discovery.c \
+	upnp/src/api/FileInfo.c \
 	upnp/src/api/upnptools.c \
+	upnp/src/api/ActionRequest.c \
+	upnp/src/api/EventSubscribe.c \
 	upnp/src/api/UpnpString.c \
+	upnp/src/api/ActionComplete.c \
+	upnp/src/api/StateVarRequest.c \
+	upnp/src/api/StateVarComplete.c \
 	upnp/src/api/upnpapi.c \
 	upnp/src/api/upnpdebug.c \
+	upnp/src/api/Event.c \
 	upnp/src/uuid/sysdep.c \
 	upnp/src/uuid/uuid.c \
 	upnp/src/uuid/md5.c \

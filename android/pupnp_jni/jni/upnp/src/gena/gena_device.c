@@ -1169,7 +1169,7 @@ void gena_process_subscription_request(
 	SOCKINFO *info,
 	http_message_t *request)
 {
-	struct Upnp_Subscription_Request request_struct;
+	UpnpSubscriptionRequest *request_struct = UpnpSubscriptionRequest_new();
 	Upnp_SID temp_sid;
 	int return_code = 1;
 	int time_out = 1801;
@@ -1328,9 +1328,9 @@ void gena_process_subscription_request(
 	service->TotalSubscriptions++;
 
 	/* finally generate callback for init table dump */
-	request_struct.ServiceId = service->serviceId;
-	request_struct.UDN = service->UDN;
-	strcpy((char *)request_struct.Sid, sub->sid);
+	UpnpSubscriptionRequest_strcpy_ServiceId(request_struct, service->serviceId);
+	UpnpSubscriptionRequest_strcpy_UDN(request_struct, service->UDN);
+	UpnpSubscriptionRequest_strcpy_SID(request_struct, sub->sid);
 
 	/* copy callback */
 	callback_fun = handle_info->Callback;
@@ -1341,10 +1341,10 @@ void gena_process_subscription_request(
 	/* make call back with request struct */
 	/* in the future should find a way of mainting that the handle */
 	/* is not unregistered in the middle of a callback */
-	callback_fun(UPNP_EVENT_SUBSCRIPTION_REQUEST, &request_struct, cookie);
+	callback_fun(UPNP_EVENT_SUBSCRIPTION_REQUEST, request_struct, cookie);
 
 exit_function:
-	return;
+	UpnpSubscriptionRequest_delete(request_struct);
 }
 
 

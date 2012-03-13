@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2000-2003 Intel Corporation 
  * All rights reserved. 
- * Copyright (C) 2011-2012 France Telecom All rights reserved.
+ * Copyright (C) 2011 France Telecom All rights reserved. 
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met: 
@@ -380,7 +380,6 @@
 
 /* @} ErrorCodes */
 
-#if UPNP_VERSION >= 10800
 /* 
  * Opaque data structures. The following includes are data structures that
  * must be externally visible. Since version 1.8.0, only an opaque typedef
@@ -400,7 +399,6 @@
 #include "StateVarComplete.h"
 #include "StateVarRequest.h"
 #include "SubscriptionRequest.h"
-#endif /* UPNP_VERSION >= 10800 */
 
 /*!
  * \name Constants and Types
@@ -432,117 +430,6 @@ typedef int  UpnpClient_Handle;
  * handle.
  */
 typedef int  UpnpDevice_Handle;
-
-/*!
- * \brief The reason code for an event callback.
- *
- * The \b Event parameter will be different depending on the reason for the
- * callback. The descriptions for each event type describe the contents of the
- * \b Event parameter.
- */
-enum Upnp_EventType_e {
-	/*
-	 * Control callbacks
-	 */
-
-	/*! Received by a device when a control point issues a control
-	 * request.  The \b Event parameter contains a pointer to a \b
-	 * UpnpActionRequest structure containing the action.  The application
-	 * stores the results of the action in this structure. */
-	UPNP_CONTROL_ACTION_REQUEST,
-
-	/*! A \b UpnpSendActionAsync call completed. The \b Event
-	 * parameter contains a pointer to a \b UpnpActionComplete structure
-	 * with the results of the action.  */
-	UPNP_CONTROL_ACTION_COMPLETE,
-
-	/*! Received by a device when a query for a single service variable
-	 * arrives.  The \b Event parameter contains a pointer to a \b
-	 * UpnpStateVarRequest structure containing the name of the variable
-	 * and value.  */
-	UPNP_CONTROL_GET_VAR_REQUEST,
-
-	/*! A \b UpnpGetServiceVarStatus call completed. The \b Event
-	 * parameter contains a pointer to a \b UpnpStateVarComplete structure
-	 * containing the value for the variable.  */
-	UPNP_CONTROL_GET_VAR_COMPLETE,
-
-	/*
-	 * Discovery callbacks
-	 */
-
-	/*! Received by a control point when a new device or service is available.  
-	 * The \b Event parameter contains a pointer to a \b
-	 * UpnpDiscovery structure with the information about the device
-	 * or service.  */
-	UPNP_DISCOVERY_ADVERTISEMENT_ALIVE,
-
-	/*! Received by a control point when a device or service shuts down. The \b
-	 * Event parameter contains a pointer to a \b UpnpDiscovery
-	 * structure containing the information about the device or
-	 * service.  */
-	UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE,
-
-	/*! Received by a control point when a matching device or service responds.
-	 * The \b Event parameter contains a pointer to a \b
-	 * UpnpDiscovery structure containing the information about
-	 * the reply to the search request.  */
-	UPNP_DISCOVERY_SEARCH_RESULT,
-
-	/*! Received by a control point when the search timeout expires.  The
-	 * SDK generates no more callbacks for this search after this 
-	 * event.  The \b Event parameter is \c NULL.  */
-	UPNP_DISCOVERY_SEARCH_TIMEOUT,
-
-	/*
-	 * Eventing callbacks
-	 */
-
-	/*! Received by a device when a subscription arrives.
-	 * The \b Event parameter contains a pointer to a \b
-	 * UpnpSubscriptionRequest structure.  At this point, the
-	 * subscription has already been accepted.  \b UpnpAcceptSubscription
-	 * needs to be called to confirm the subscription and transmit the
-	 * initial state table.  This can be done during this callback.  The SDK
-	 * generates no events for a subscription unless the device 
-	 * application calls \b UpnpAcceptSubscription.
-	 */
-	UPNP_EVENT_SUBSCRIPTION_REQUEST,
-
-	/*! Received by a control point when an event arrives. The \b
-	 * Event parameter contains a \b UpnpEvent structure
-	 * with the information about the event.  */
-	UPNP_EVENT_RECEIVED,
-
-	/*! A \b UpnpRenewSubscriptionAsync call completed. The status of
-	 * the renewal is in the \b Event parameter as a \b
-	 * Upnp_Event_Subscription structure.  */
-	UPNP_EVENT_RENEWAL_COMPLETE,
-
-	/*! A \b UpnpSubscribeAsync call completed. The status of the
-	 * subscription is in the \b Event parameter as a \b
-	 * Upnp_Event_Subscription structure.  */
-	UPNP_EVENT_SUBSCRIBE_COMPLETE,
-
-	/*! A \b UpnpUnSubscribeAsync call completed. The status of the
-	 * subscription is in the \b Event parameter as a \b
-	 * UpnpEventSubscribe structure.  */
-	UPNP_EVENT_UNSUBSCRIBE_COMPLETE,
-
-	/*! The auto-renewal of a client subscription failed.   
-	 * The \b Event parameter is a \b UpnpEventSubscribe structure 
-	 * with the error code set appropriately. The subscription is no longer 
-	 * valid. */
-	UPNP_EVENT_AUTORENEWAL_FAILED,
-
-	/*! A client subscription has expired. This will only occur 
-	 * if auto-renewal of subscriptions is disabled.
-	 * The \b Event parameter is a \b UpnpEventSubscribe
-	 * structure. The subscription is no longer valid. */
-	UPNP_EVENT_SUBSCRIPTION_EXPIRED
-};
-
-typedef enum Upnp_EventType_e Upnp_EventType;
 
 /*!
  * \brief Holds the subscription identifier for a subscription between a
@@ -599,264 +486,7 @@ enum Upnp_DescType_e {
 
 typedef enum Upnp_DescType_e Upnp_DescType;
 
-#if UPNP_VERSION < 10800
-/** Returned as part of a {\bf UPNP_CONTROL_ACTION_COMPLETE} callback.  */
-
-struct Upnp_Action_Request
-{
-  /** The result of the operation. */
-  int ErrCode;
-
-  /** The socket number of the connection to the requestor. */
-  int Socket;
-
-  /** The error string in case of error. */
-  char ErrStr[LINE_SIZE];
-
- /** The Action Name. */
-  char ActionName[NAME_SIZE];
-
-  /** The unique device ID. */
-  char DevUDN[NAME_SIZE];
-
-  /** The service ID. */
-  char ServiceID[NAME_SIZE];
-
-  /** The DOM document describing the action. */
-  IXML_Document *ActionRequest;
-
-  /** The DOM document describing the result of the action. */
-  IXML_Document *ActionResult;
-
-  /** IP address of the control point requesting this action. */
-  struct sockaddr_storage CtrlPtIPAddr;
-
-  /** The DOM document containing the information from the
-      the SOAP header. */
-  IXML_Document *SoapHeader;
-};
-
-struct Upnp_Action_Complete
-{
-  /** The result of the operation. */
-  int ErrCode;
-
-  /** The control URL for service. */
-  char CtrlUrl[NAME_SIZE];
-
-  /** The DOM document describing the action. */
-  IXML_Document *ActionRequest;
-
-  /** The DOM document describing the result of the action. */
-  IXML_Document *ActionResult;
-
-};
-
-/** Represents the request for current value of a state variable in a service
- *  state table.  */
-
-struct Upnp_State_Var_Request
-{
-  /** The result of the operation. */
-  int ErrCode;
-
-  /** The socket number of the connection to the requestor. */
-  int Socket;
-
-  /** The error string in case of error. */
-  char ErrStr[LINE_SIZE];
-
-  /** The unique device ID. */
-  char DevUDN[NAME_SIZE];
-
-  /** The  service ID. */
-  char ServiceID[NAME_SIZE];
-
-  /** The name of the variable. */
-  char StateVarName[NAME_SIZE];
-
-  /** IP address of sender requesting the state variable. */
-  struct sockaddr_storage CtrlPtIPAddr;
-
-  /** The current value of the variable. This needs to be allocated by 
-   *  the caller.  When finished with it, the SDK frees this {\bf DOMString}. */
-  DOMString CurrentVal;
-};
-
-/** Represents the reply for the current value of a state variable in an
-    asynchronous call. */
-
-struct Upnp_State_Var_Complete
-{
-  /** The result of the operation. */
-  int ErrCode;
-
-  /** The control URL for the service. */
-  char CtrlUrl[NAME_SIZE];
-
-  /** The name of the variable. */
-  char StateVarName[NAME_SIZE];
-
-  /** The current value of the variable or error string in case of error. */
-  DOMString CurrentVal;
-};
-
-/** Returned along with a {\bf UPNP_EVENT_RECEIVED} callback.  */
-
-struct Upnp_Event
-{
-  /** The subscription ID for this subscription. */
-  Upnp_SID Sid;
-
-  /** The event sequence number. */
-  int EventKey;
-
-  /** The DOM tree representing the changes generating the event. */
-  IXML_Document *ChangedVariables;
-
-};
-
-/*
- * This typedef is required by Doc++ to parse the last entry of the 
- * Upnp_Discovery structure correctly.
- */
-
-
-/** Returned in a {\bf UPNP_DISCOVERY_RESULT} callback. */
-struct Upnp_Discovery
-{
-	/** The result code of the {\bf UpnpSearchAsync} call. */
-	int  ErrCode;                  
-				     
-	/** The expiration time of the advertisement. */
-	int  Expires;                  
-				     
-	/** The unique device identifier. */
-	char DeviceId[LINE_SIZE];      
-
-	/** The device type. */
-	char DeviceType[LINE_SIZE];    
-
-	/** The service type. */
-	char ServiceType[LINE_SIZE];
-
-	/** The service version. */
-	char ServiceVer[LINE_SIZE];    
-
-	/** The URL to the UPnP description document for the device. */
-	char Location[LINE_SIZE];      
-
-	/** The operating system the device is running. */
-	char Os[LINE_SIZE];            
-				     
-	/** Date when the response was generated. */
-	char Date[LINE_SIZE];            
-				     
-	/** Confirmation that the MAN header was understood by the device. */
-	char Ext[LINE_SIZE];           
-				     
-	/** The host address of the device responding to the search. */
-	struct sockaddr_storage DestAddr;
-};
-
-/** Returned along with a {\bf UPNP_EVENT_SUBSCRIBE_COMPLETE} or {\bf
- * UPNP_EVENT_UNSUBSCRIBE_COMPLETE} callback.  */
-
-struct Upnp_Event_Subscribe {
-
-  /** The SID for this subscription.  For subscriptions, this only
-   *  contains a valid SID if the {\bf Upnp_EventSubscribe.result} field
-   *  contains a {\tt UPNP_E_SUCCESS} result code.  For unsubscriptions,
-   *  this contains the SID from which the subscription is being
-   *  unsubscribed.  */
-
-  Upnp_SID Sid;            
-
-  /** The result of the operation. */
-  int ErrCode;              
-
-  /** The event URL being subscribed to or removed from. */
-  char PublisherUrl[NAME_SIZE]; 
-
-  /** The actual subscription time (for subscriptions only). */
-  int TimeOut;              
-                              
-};
-  
-/** Returned along with a {\bf UPNP_EVENT_SUBSCRIPTION_REQUEST}
- *  callback.  */
-
-struct Upnp_Subscription_Request
-{
-  /** The identifier for the service being subscribed to. */
-  char *ServiceId; 
-
-  /** Universal device name. */
-  char *UDN;       
-
-  /** The assigned subscription ID for this subscription. */
-  Upnp_SID Sid;
-
-};
-
-struct File_Info
-{
-	/** The length of the file. A length less than 0 indicates the size 
-	*  is unknown, and data will be sent until 0 bytes are returned from
-	*  a read call. */
-	off_t file_length;
-
-	/** The time at which the contents of the file was modified;
-	*  The time system is always local (not GMT). */
-	time_t last_modified;
-
-	/** If the file is a directory, {\bf is_directory} contains
-	* a non-zero value. For a regular file, it should be 0. */
-	int is_directory;
-
-	/** If the file or directory is readable, this contains 
-	* a non-zero value. If unreadable, it should be set to 0. */
-	int is_readable;
-
-	/** The content type of the file. This string needs to be allocated 
-	*  by the caller using {\bf ixmlCloneDOMString}.  When finished 
-	*  with it, the SDK frees the {\bf DOMString}. */
-	DOMString content_type;
-};
-#endif /* UPNP_VERSION < 10800 */
-
-/*!
- *  All callback functions share the same prototype, documented below.
- *  Note that any memory passed to the callback function
- *  is valid only during the callback and should be copied if it
- *  needs to persist.  This callback function needs to be thread
- *  safe.  The context of the callback is always on a valid thread 
- *  context and standard synchronization methods can be used.  Note, 
- *  however, because of this the callback cannot call SDK functions
- *  unless explicitly noted.
- *
- *  \verbatim
-      int CallbackFxn(Upnp_EventType EventType, void *Event, void *Cookie);
-    \endverbatim 
- *
- *  where \b EventType is the event that triggered the callback, 
- *  \b Event is a structure that denotes event-specific information for that
- *  event, and \b Cookie is the user data passed when the callback was
- *  registered.
- *
- *  See \b Upnp_EventType for more information on the callback values and
- *  the associated \b Event parameter.  
- *
- *  The return value of the callback is currently ignored. It may be used
- *  in the future to communicate results back to the SDK.
- */
-typedef int (*Upnp_FunPtr)(
-	/*! [in] .*/
-	Upnp_EventType EventType,
-	/*! [in] .*/
-	void *Event,
-	/*! [in] .*/
-	void *Cookie);
+#include "Callback.h"
 
 /* @} Constants and Types */
 
@@ -2331,7 +1961,7 @@ EXPORT_SPEC int UpnpOpenHttpGet(
 	int *httpStatus,
 	/*! [in] The time out value sent with the request during which a response
 	 * is expected from the server, failing which, an error is reported
-	 * back to the user. */		 
+	 * back to the user. If value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2377,7 +2007,7 @@ EXPORT_SPEC int UpnpOpenHttpGetProxy(
 	int *httpStatus,
 	/*! [in] The time out value sent with the request during which a response
 	 * is expected from the server, failing which, an error is reported
-	 * back to the user. */		 
+	 * back to the user. If value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2427,7 +2057,7 @@ EXPORT_SPEC int UpnpOpenHttpGetEx(
 	int highRange,
 	/*! [in] A time out value sent with the request during which a response is
 	 * expected from the server, failing which, an error is reported back
-	 * to the user. */	
+	 * to the user. If value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2456,7 +2086,7 @@ EXPORT_SPEC int UpnpReadHttpGet(
 	size_t *size,
 	/*! [in] The time out value sent with the request during which a response is
 	 * expected from the server, failing which, an error is reported back to
-	 * the user. */
+	 * the user. If value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2536,7 +2166,8 @@ EXPORT_SPEC int UpnpOpenHttpPost(
 	/*! [in] The length of the content, in bytes, being posted. */
 	int contentLength,
 	/*! [in] The time out value sent with the request during which a response
-	 * is expected from the receiver, failing which, an error is reported. */
+	 * is expected from the receiver, failing which, an error is reported.
+	 * If value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2561,7 +2192,8 @@ EXPORT_SPEC int UpnpWriteHttpPost(
 	/*! [in] The size, in bytes of \b buf. */
 	size_t *size,
 	/*! [in] A timeout value sent with the request during which a response is
-	 * expected from the server, failing which, an error is reported. */		 
+	 * expected from the server, failing which, an error is reported. If
+	 * value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2584,7 +2216,8 @@ EXPORT_SPEC int UpnpCloseHttpPost(
 	/*! [in,out] A pointer to a buffer to store the final status of the connection. */
 	int *httpStatus,
 	/*! [in] A time out value sent with the request during which a response is
-	 * expected from the server, failing which, an error is reported. */		 
+	 * expected from the server, failing which, an error is reported. If 
+	 * value is negative, timeout is infinite. */
 	int timeout);
 
 /*!
@@ -2668,12 +2301,7 @@ typedef int (*VDCallback_GetInfo)(
 		/*! [in] The name of the file to query. */
 		const char *filename,
 		/*! [out] Pointer to a structure to store the information on the file. */
-#if UPNP_VERSION < 10800
-		struct File_Info *info
-#else
-		UpnpFileInfo *info
-#endif /* UPNP_VERSION < 10800 */
-		);
+		UpnpFileInfo *info);
 
 /*!
  * \brief Sets the get_info callback function to be used to access a virtual

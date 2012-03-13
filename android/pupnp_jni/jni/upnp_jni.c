@@ -121,7 +121,7 @@ int TvCtrlPointCallbackEventHandler(Upnp_EventType EventType, const void *Event,
 	/* SSDP Stuff */
 	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
 	case UPNP_DISCOVERY_SEARCH_RESULT: 
-//        {
+        {
 //		const UpnpDiscovery *d_event = (UpnpDiscovery *)Event;
 //		IXML_Document *DescDoc = NULL;
 //		const char *location = NULL;
@@ -146,8 +146,8 @@ int TvCtrlPointCallbackEventHandler(Upnp_EventType EventType, const void *Event,
 //			ixmlDocument_free(DescDoc);
 //		}
 //		TvCtrlPointPrintList();
-//		break;
-//	}
+		break;
+	}
 	case UPNP_DISCOVERY_SEARCH_TIMEOUT:
 		/* Nothing to do here... */
 		break;
