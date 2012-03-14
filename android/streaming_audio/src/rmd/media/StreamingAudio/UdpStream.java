@@ -52,12 +52,12 @@ public class UdpStream extends Activity {
     }
 
     static final String LOG_TAG = "UdpStream";
-    static final String AUDIO_FILE_PATH = "/data/1.wav";
+    static final String AUDIO_FILE_PATH = "/sdcard/1.wav";
     static final int AUDIO_PORT = 2048;
     static final int SAMPLE_RATE = 8000;
     static final int SAMPLE_INTERVAL = 20; // milliseconds
     static final int SAMPLE_SIZE = 2; // bytes per sample
-    static final int BUF_SIZE = SAMPLE_INTERVAL*SAMPLE_INTERVAL*SAMPLE_SIZE;
+    static final int BUF_SIZE = SAMPLE_INTERVAL*SAMPLE_INTERVAL*SAMPLE_SIZE*2;
     
     public void RecvAudio()
     {
