@@ -244,7 +244,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    -- awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
     awful.key({ modkey }, "x",
               function ()
@@ -255,7 +255,8 @@ globalkeys = awful.util.table.join(
               end),
 
     -- my own key bindings
-    awful.key({ "Mod1", "Control"},  "l",     function () awful.util.spawn('gnome-screensaver-command -l') end)
+    awful.key({ "Mod1", "Control"},  "l",     function () awful.util.spawn('gnome-screensaver-command -l') end),
+    awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end)
 )
 
 clientkeys = awful.util.table.join(
