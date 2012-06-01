@@ -255,8 +255,31 @@ globalkeys = awful.util.table.join(
               end),
 
     -- my own key bindings
-    awful.key({ "Mod1", "Control"},  "l",     function () awful.util.spawn('gnome-screensaver-command -l') end),
-    awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end)
+    awful.key({ "Mod1", "Control" },  "l",     function () awful.util.spawn('gnome-screensaver-command -l') end),
+    awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
+    awful.key({ "Mod1", "Control" }, "s",
+    function ()
+        local f_reader = io.popen( "lsw | dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
+        local command = assert(f_reader:read('*a'))
+        f_reader:close()
+        if command == "" then return end
+
+        -- Check throught the clients if the title match the desired title
+        local desired_title=string.lower(command)
+        for k, c in pairs(client.get()) do
+            local title=string.lower(c.name)
+            --if string.match(title, desired_title) then
+            if title == desired_title then
+                for i, v in ipairs(c:tags()) do
+                    awful.tag.viewonly(v)
+                    c:raise()
+                    c.minimized = false
+                    awful.client.focus.byidx(0, c)
+                    return
+                end
+            end
+        end
+    end)
 )
 
 clientkeys = awful.util.table.join(
