@@ -259,7 +259,14 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
     awful.key({ "Mod1", "Control" }, "s",
     function ()
-        local f_reader = io.popen( "lsw | dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
+        local all_window = "\""
+        for k, c in pairs(client.get()) do
+            all_window = all_window .. 
+            string.gsub(c.name, '"', '\\"') .. "\n"
+        end
+        all_window = all_window .. "\""
+        local f_reader = io.popen( "printf "..all_window.."| dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
+        -- local f_reader = io.popen( "lsw | dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
         local command = assert(f_reader:read('*a'))
         f_reader:close()
         if command == "" then return end
