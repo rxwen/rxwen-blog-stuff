@@ -261,9 +261,10 @@ globalkeys = awful.util.table.join(
     function ()
         local all_window = "\""
         for k, c in pairs(client.get()) do
-            all_window = all_window .. 
-            string.gsub(c.name, '"', '\\"') .. "\n"
-        end
+            if c.name then
+                all_window = all_window .. 
+                string.gsub(c.name, '["]', '\\%1') .. "\n" end
+            end
         all_window = all_window .. "\""
         local f_reader = io.popen( "printf "..all_window.."| dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
         -- local f_reader = io.popen( "lsw | dmenu -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
@@ -274,15 +275,17 @@ globalkeys = awful.util.table.join(
         -- Check throught the clients if the title match the desired title
         local desired_title=string.lower(command)
         for k, c in pairs(client.get()) do
-            local title=string.lower(c.name)
-            --if string.match(title, desired_title) then
-            if title == desired_title then
-                for i, v in ipairs(c:tags()) do
-                    awful.tag.viewonly(v)
-                    c:raise()
-                    c.minimized = false
-                    awful.client.focus.byidx(0, c)
-                    return
+            if c.name then
+                local title=string.lower(c.name)
+                --if string.match(title, desired_title) then
+                if title == desired_title then
+                    for i, v in ipairs(c:tags()) do
+                        awful.tag.viewonly(v)
+                        c:raise()
+                        c.minimized = false
+                        awful.client.focus.byidx(0, c)
+                        return
+                    end
                 end
             end
         end
