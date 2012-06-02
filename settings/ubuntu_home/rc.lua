@@ -307,7 +307,10 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+
+    -- my own key bindings for client
+    awful.key({ "Mod1" },  "F4",     function (c) c:kill() end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
