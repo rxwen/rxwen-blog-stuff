@@ -52,6 +52,7 @@ set guioptions-=l " remove scrollbars from gui
 set guioptions-=L " remove scrollbars from gui
 set guioptions-=r " remove scrollbars from gui
 set guioptions-=R " remove scrollbars from gui
+set encoding=utf8 " use utf8 encoding by default
 
 au GUIEnter * simalt ~x " start gvim in maximazed mode
 
