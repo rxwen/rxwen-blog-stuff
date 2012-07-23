@@ -19,6 +19,8 @@ if awesome.startup_errors then
                      text = awesome.startup_errors })
 end
 
+awful.util.spawn("gnome-settings-daemon")
+
 -- Handle runtime errors after startup
 do
     local in_error = false
