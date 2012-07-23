@@ -100,7 +100,7 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
-
+batterywidget = widget({type="textbox", name="batterywidget", align="right"})
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
@@ -179,6 +179,7 @@ for s = 1, screen.count() do
             layout = awful.widget.layout.horizontal.leftright
         },
         mylayoutbox[s],
+        batterywidget,
         mytextclock,
         s == 1 and mysystray or nil,
         mytasklist[s],
@@ -462,3 +463,25 @@ run_once("gnome-settings-daemon")
 ---- -- differs from the what you want to search.
 ---- run_once("redshift", "nice -n19 redshift -l 51:14 -t 5700:4500")
 
+function batteryInfo(adapter)
+    local fcur = io.open("/sys/class/power_supply/"..adapter.."/energy_now")    
+    local fcap = io.open("/sys/class/power_supply/"..adapter.."/energy_full")
+    local fsta = io.open("/sys/class/power_supply/"..adapter.."/status")
+    local cur = fcur:read()
+    local cap = fcap:read()
+    local sta = fsta:read()
+    local perc = math.floor(cur * 100 / cap)
+    if perc < 15 then
+        batterywidget.text = '<span color="red"> ⚡' .. perc .. '% </span> '
+    elseif perc < 50 then
+        batterywidget.text = '<span color="yellow"> ⚡' .. perc .. '% </span> '
+    else
+        batterywidget.text = '<span> ⚡' .. perc .. '% </span> '
+    end
+    fcur:close()
+    fcap:close()
+    fsta:close()
+end
+
+batteryInfo("BAT0")
+awful.hooks.timer.register(121, function() batteryInfo("BAT0") end)
