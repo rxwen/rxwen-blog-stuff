@@ -471,10 +471,16 @@ function batteryInfo(adapter)
     local cap = fcap:read()
     local sta = fsta:read()
     local perc = math.floor(cur * 100 / cap)
-    if perc < 15 then
-        batterywidget.text = '<span color="red"> ⚡' .. perc .. '% </span> '
-    elseif perc < 50 then
-        batterywidget.text = '<span color="yellow"> ⚡' .. perc .. '% </span> '
+    if sta:match("Charging") then
+        batterywidget.text = '<span color="green"> ⚡' .. perc .. '% </span> '
+    elseif sta:match("Discharging") then
+        if perc < 15 then
+            batterywidget.text = '<span color="red"> ⚡' .. perc .. '% </span> '
+        elseif perc < 50 then
+            batterywidget.text = '<span color="yellow"> ⚡' .. perc .. '% </span> '
+        else
+            batterywidget.text = '<span> ⚡' .. perc .. '% </span> '
+        end
     else
         batterywidget.text = '<span> ⚡' .. perc .. '% </span> '
     end
@@ -484,4 +490,4 @@ function batteryInfo(adapter)
 end
 
 batteryInfo("BAT0")
-awful.hooks.timer.register(121, function() batteryInfo("BAT0") end)
+awful.hooks.timer.register(86, function() batteryInfo("BAT0") end)
