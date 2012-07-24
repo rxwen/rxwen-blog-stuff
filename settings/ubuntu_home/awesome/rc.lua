@@ -9,6 +9,7 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
+require("logger")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -464,9 +465,16 @@ run_once("gnome-settings-daemon")
 ---- run_once("redshift", "nice -n19 redshift -l 51:14 -t 5700:4500")
 
 function batteryInfo(adapter)
-    local fcur = io.open("/sys/class/power_supply/"..adapter.."/energy_now")    
-    local fcap = io.open("/sys/class/power_supply/"..adapter.."/energy_full")
-    local fsta = io.open("/sys/class/power_supply/"..adapter.."/status")
+    local ffile_name = "charge"
+    local fpath = "/sys/class/power_supply/"..adapter.."/"    
+    local fcur = io.open(fpath..ffile_name.."_now")
+    if fcur ==  nil then
+        ffile_name = "energy"
+    end
+    fcur = io.open(fpath..ffile_name.."_now")
+    local fcap = io.open(fpath..ffile_name.."_full")
+    local fsta = io.open(fpath.."status")
+
     local cur = fcur:read()
     local cap = fcap:read()
     local sta = fsta:read()
