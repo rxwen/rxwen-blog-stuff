@@ -285,6 +285,7 @@ globalkeys = awful.util.table.join(
                         awful.tag.viewonly(v)
                         c:raise()
                         c.minimized = false
+                        awful.screen.focus(c.screen)
                         awful.client.focus.byidx(0, c)
                         return
                     end
