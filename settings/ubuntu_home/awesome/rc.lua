@@ -480,6 +480,9 @@ function batteryInfo(adapter)
     local cap = fcap:read()
     local sta = fsta:read()
     local perc = math.floor(cur * 100 / cap)
+    if perc > 100 then
+        perc = 100
+    end
     if sta:match("Charging") then
         batterywidget.text = '<span color="green"> ⚡' .. perc .. '% </span> '
     elseif sta:match("Discharging") then
