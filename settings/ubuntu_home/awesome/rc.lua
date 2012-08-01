@@ -1,3 +1,4 @@
+-- api reference: http://awesome.naquadah.org/doc/api/index.html
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -9,7 +10,7 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
-require("logger")
+--require("logger")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -258,6 +259,29 @@ globalkeys = awful.util.table.join(
 
     -- my own key bindings
     awful.key({ "Mod1", "Control" },  "l",     function () awful.util.spawn('gnome-screensaver-command -l') end),
+    -- use alt+tab to switch to last focus client
+    awful.key({ "Mod1",           }, "Tab",
+        function ()
+            if nil == previous_client then
+            else
+                c = previous_client
+                --debug_message(# c:geometry())
+                if not c.focusable then
+                    return
+                end
+                if pcall(c.tags, c) then -- use pcall to test if c:tags can be called
+                    t = c:tags()[# c:tags()] -- # operator gets the number of tags table, refer to http://lua-users.org/wiki/TablesTutorial
+                    awful.tag.viewonly(t)
+                    c:raise()
+                    c.minimized = false
+                    awful.screen.focus(c.screen)
+                    awful.client.focus.byidx(0, c)
+                else
+                    previous_client = nil
+                end
+            end
+        end),
+
     awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
     awful.key({ "Mod1", "Control" }, "s",
     function ()
@@ -419,8 +443,9 @@ client.add_signal("focus", function(c) c.border_color = beautiful.border_focus e
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-
-
+-- save unfocus client and restore it when alt+tab is pressed
+previous_client = nil
+client.add_signal("unfocus", function(c) previous_client = c end)
 
 -- install liblua5.1-filesystem0 on ubuntu to enable lfs
 require("lfs") 
