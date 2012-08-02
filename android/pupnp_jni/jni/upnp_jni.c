@@ -18,15 +18,15 @@
 #include	<jni.h>
 #include	<android/log.h>
 #include	"upnp.h"
-//#include	"Discovery.h"
-//#include	"ActionRequest.h"
-//#include	"ActionComplete.h"
-//#include	"StateVarRequest.h"
-//#include	"StateVarComplete.h"
-//#include	"SubscriptionRequest.h"
-//#include	"Event.h"
-//#include	"EventSubscribe.h"
-//#include	"poison.h"
+#include	"Discovery.h"
+#include	"ActionRequest.h"
+#include	"ActionComplete.h"
+#include	"StateVarRequest.h"
+#include	"StateVarComplete.h"
+#include	"SubscriptionRequest.h"
+#include	"Event.h"
+#include	"EventSubscribe.h"
+#include	"poison.h"
 
 #define  LOG_TAG    "libtupnp"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
@@ -122,29 +122,27 @@ int TvCtrlPointCallbackEventHandler(Upnp_EventType EventType, const void *Event,
 	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
 	case UPNP_DISCOVERY_SEARCH_RESULT: 
         {
-//		const UpnpDiscovery *d_event = (UpnpDiscovery *)Event;
-//		IXML_Document *DescDoc = NULL;
-//		const char *location = NULL;
-//		int errCode = UpnpDiscovery_get_ErrCode(d_event);
-//
-//		if (errCode != UPNP_E_SUCCESS) {
-//			SampleUtil_Print(
-//				"Error in Discovery Callback -- %d\n", errCode);
-//		}
-//
-//		location = UpnpString_get_String(UpnpDiscovery_get_Location(d_event));
-//		errCode = UpnpDownloadXmlDoc(location, &DescDoc);
-//		if (errCode != UPNP_E_SUCCESS) {
-//			SampleUtil_Print(
-//				"Error obtaining device description from %s -- error = %d\n",
-//				location, errCode);
-//		} else {
+		const UpnpDiscovery *d_event = (UpnpDiscovery *)Event;
+		IXML_Document *DescDoc = NULL;
+		const char *location = NULL;
+		int errCode = UpnpDiscovery_get_ErrCode(d_event);
+
+		if (errCode != UPNP_E_SUCCESS) {
+			LOGI("Error in Discovery Callback -- %d\n", errCode);
+		}
+
+		location = UpnpString_get_String(UpnpDiscovery_get_Location(d_event));
+		errCode = UpnpDownloadXmlDoc(location, &DescDoc);
+		if (errCode != UPNP_E_SUCCESS) {
+			LOGI("Error obtaining device description from %s -- error = %d\n",
+				location, errCode);
+		} else {
 //			TvCtrlPointAddDevice(
 //				DescDoc, location, UpnpDiscovery_get_Expires(d_event));
-//		}
-//		if (DescDoc) {
-//			ixmlDocument_free(DescDoc);
-//		}
+		}
+		if (DescDoc) {
+			ixmlDocument_free(DescDoc);
+		}
 //		TvCtrlPointPrintList();
 		break;
 	}
