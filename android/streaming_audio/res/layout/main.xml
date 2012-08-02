@@ -11,4 +11,5 @@
     />
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnStatic" android:text="static audio" />
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnStream" android:text="stream audio" />
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnStrmic" android:text="stream mic  " />
 </LinearLayout>

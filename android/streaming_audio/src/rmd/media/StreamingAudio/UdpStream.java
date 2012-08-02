@@ -22,6 +22,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.util.Log;
 
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+
 /** UdpStream activity sends and recv audio data through udp */
 public class UdpStream extends Activity {
     /** Called when the activity is first created. */
@@ -46,6 +49,16 @@ public class UdpStream extends Activity {
 			public void onClick(View v) {
                 Log.d(LOG_TAG, "btnRecv clicked");
                 RecvAudio();
+			}
+		});
+        
+        Button btnStrmic = (Button)findViewById(R.id.btnStrmic);
+        btnStrmic.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+                Log.d(LOG_TAG, "btnStrmic clicked");
+                SendMicAudio();
 			}
 		});
         
@@ -155,4 +168,61 @@ public class UdpStream extends Activity {
         thrd.start();
     }
     
+    public void SendMicAudio()
+    {
+        Thread thrd = new Thread(new Runnable() {
+			@Override
+            public void run() 
+            {
+                Log.e(LOG_TAG, "start SendMicAudio thread, thread id: "
+                    + Thread.currentThread().getId());
+                AudioRecord audio_recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, SAMPLE_RATE,
+                            AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                            AudioFormat.ENCODING_PCM_16BIT,
+                            AudioRecord.getMinBufferSize(SAMPLE_RATE,
+                                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                                    AudioFormat.ENCODING_PCM_16BIT) * 10);
+                int bytes_read = 0;
+                int bytes_count = 0;
+                byte[] buf = new byte[BUF_SIZE];
+                try
+                {
+                    InetAddress addr = InetAddress.getLocalHost();
+                    DatagramSocket sock = new DatagramSocket();
+
+                    while(true)
+                    {
+                        bytes_read = audio_recorder.read(buf, 0, BUF_SIZE);
+                        DatagramPacket pack = new DatagramPacket(buf, bytes_read,
+                                addr, AUDIO_PORT);
+                        sock.send(pack);
+                        bytes_count += bytes_read;
+                        Log.d(LOG_TAG, "bytes_count : " + bytes_count);
+                        Thread.sleep(SAMPLE_INTERVAL, 0);
+                    }
+                }
+                catch (InterruptedException ie)
+                {
+                    Log.e(LOG_TAG, "InterruptedException");
+                }
+//                catch (FileNotFoundException fnfe)
+//                {
+//                    Log.e(LOG_TAG, "FileNotFoundException");
+//                }
+                catch (SocketException se)
+                {
+                    Log.e(LOG_TAG, "SocketException");
+                }
+                catch (UnknownHostException uhe)
+                {
+                    Log.e(LOG_TAG, "UnknownHostException");
+                }
+                catch (IOException ie)
+                {
+                    Log.e(LOG_TAG, "IOException");
+                }
+            } // end run
+        });
+        thrd.start();
+    }
 }
