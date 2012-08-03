@@ -53,9 +53,6 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
--- the max number of lines to show in dmenu
-max_dmenu_lines = 50
-
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
@@ -285,8 +282,8 @@ globalkeys = awful.util.table.join(
             end
         end),
 
-    awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run -l "
-        ..max_dmenu_lines.."-i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
+    awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run "
+        .."-i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
     awful.key({ "Mod1", "Control" }, "s",
     function ()
         local all_window = "\""
@@ -296,6 +293,8 @@ globalkeys = awful.util.table.join(
                 string.gsub(c.name, '["]', '\\%1') .. "\n" end
             end
         local lines = # client.get()
+        local max_dmenu_lines = 18
+
         if lines > max_dmenu_lines then
             lines = max_dmenu_lines
         end
