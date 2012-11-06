@@ -493,6 +493,7 @@ end
 
 ---- Usage Example
 run_once("gnome-settings-daemon")
+run_once("gnome-keyring-daemon -s")
 ---- -- Use the second argument, if the programm you wanna start, 
 ---- -- differs from the what you want to search.
 ---- run_once("redshift", "nice -n19 redshift -l 51:14 -t 5700:4500")
