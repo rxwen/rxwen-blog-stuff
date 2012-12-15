@@ -6,9 +6,9 @@
 # touch ~/.mutt/certificates
 
 set imap_user = "USER_NAME@gmail.com"
-set imap_pass = "SECRET"
+#set imap_pass = "SECRET"
 set smtp_url = "smtp://USER_NAME@smtp.gmail.com:587/"
-set smtp_pass = "SECRET"
+#set smtp_pass = "SECRET"
 set from = "USER_NAME@gmail.com"
 set realname = "NAME"
 
