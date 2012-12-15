@@ -1,4 +1,9 @@
 # A basic .muttrc for use with Gmail
+#
+# use commands below to setup cache for mutt:
+# mkdir -p ~/.mutt/cache/headers
+# mkdir ~/.mutt/cache/bodies
+# touch ~/.mutt/certificates
 
 set imap_user = "USER_NAME@gmail.com"
 set imap_pass = "SECRET"
