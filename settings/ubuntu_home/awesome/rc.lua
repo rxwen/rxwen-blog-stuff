@@ -10,7 +10,7 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
---require("logger")
+-- require("logger")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -274,8 +274,11 @@ globalkeys = awful.util.table.join(
                     awful.tag.viewonly(t)
                     c:raise()
                     c.minimized = false
-                    awful.screen.focus(c.screen)
                     awful.client.focus.byidx(0, c)
+                    if current_screen == nil or current_screen ~= c.screen then
+                        awful.screen.focus(c.screen)
+                        current_screen = c.screen
+                    end
                 else
                     previous_client = nil
                 end
@@ -452,6 +455,7 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- save unfocus client and restore it when alt+tab is pressed
 previous_client = nil
+current_screen = nil
 client.add_signal("unfocus", function(c) previous_client = c end)
 
 -- install liblua5.1-filesystem0 on ubuntu to enable lfs
