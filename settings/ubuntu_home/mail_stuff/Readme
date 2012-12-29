@@ -1,0 +1,9 @@
+install:
+        mutt [MUA, Message User Agent], 
+        w3m [text based browser for viewing html type mail in mutt],
+        offlineimap [MRA, Message Retrieval Agent], 
+        msmtp [MTA, Message Transfer Agent]
+
+        procmail & fetchmail isn't used
+
+and place their configuration files in $HOME

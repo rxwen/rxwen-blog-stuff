@@ -44,6 +44,26 @@ def get_password(server):
     (username, password) = keyring.get_credentials()
     return password
 
+folder_mapping = [
+        {"local": "inbox", "remote": "INBOX"},
+        {"local": "drafts", "remote": "[Gmail]/Drafts"},
+        {"local": "sent", "remote": "[Gmail]/Sent Mail"},
+        {"local": "starred", "remote": "[Gmail]/Starred"},
+        {"local": "trash", "remote": "[Gmail]/Trash"}
+        ]
+
+def nametrans_local2remote(folder_name):
+    for item in folder_mapping:
+        if item["local"] == folder_name:
+            return item["remote"]
+    return folder_name
+
+def nametrans_remote2local(folder_name):
+    for item in folder_mapping:
+        if item["remote"] == folder_name:
+            return item["local"]
+    return folder_name
+
 if __name__ == '__main__':
         server = raw_input("server: ")
         user = raw_input("username: ")
