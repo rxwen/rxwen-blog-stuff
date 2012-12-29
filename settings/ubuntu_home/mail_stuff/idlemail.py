@@ -1,5 +1,9 @@
 #!/usr/bin/env python2
 
+# it's based on http://www.cc.gatech.edu/~sburnett/posts/2010-11-21-imap-idle.html
+# changes:
+#   1. instead of use a separate ~/.idleimaprc configuration file, this version will recognize configurations in ~/.offlineimaprc
+
 from OpenSSL import SSL
 import sys
 import os.path
