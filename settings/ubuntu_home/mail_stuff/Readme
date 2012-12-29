@@ -7,3 +7,6 @@ install:
         procmail & fetchmail isn't used
 
 and place their configuration files in $HOME
+
+
+add idlemail.py as utility to start offlineimap process when there are new messages to be synced on the server. run idlemail.py as a daemon.
