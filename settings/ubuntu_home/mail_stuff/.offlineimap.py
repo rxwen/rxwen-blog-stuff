@@ -49,7 +49,8 @@ folder_mapping = [
         {"local": "drafts", "remote": "[Gmail]/Drafts"},
         {"local": "sent", "remote": "[Gmail]/Sent Mail"},
         {"local": "starred", "remote": "[Gmail]/Starred"},
-        {"local": "trash", "remote": "[Gmail]/Trash"}
+        {"local": "trash", "remote": "[Gmail]/Trash"},
+        {"local": "chats", "remote": "[Gmail]/Chats"}
         ]
 
 def nametrans_local2remote(folder_name):

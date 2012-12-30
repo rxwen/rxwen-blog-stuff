@@ -21,7 +21,7 @@ from twisted.protocols.policies import TimeoutMixin
 from twisted.python import log
 
 class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
-    def __init__(self, username, password, mailbox, account, idle_timeout):
+    def __init__(self, username, password, mailbox, account, idle_timeout, should_disable_mbnames=False):
         self.init_state = 'init'
         self.state_machine = { 'init': ('login', self.wait_for_hello)
                              , 'login': ('examine', self.login)
@@ -36,6 +36,7 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
         self.mailbox = mailbox
         self.account = account
         self.idle_timeout = idle_timeout
+        self.should_disable_mbnames = should_disable_mbnames
 
     def connectionMade(self):
         self.factory.resetDelay()
@@ -78,7 +79,10 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
 
     def idle(self, line):
         if re.match(r'\* \d+ (EXISTS|EXPUNGE)', line) is not None:
-            subprocess.Popen(['offlineimap', '-a', self.account, '-f', self.mailbox, '-o', '-k', 'mbnames:enabled=no'])
+            cmd = ['offlineimap', '-a', self.account, '-f', self.mailbox.replace('"', ''), '-o']
+            if self.should_disable_mbnames:
+                cmd.extend(['-k', 'mbnames:enabled=no'])
+            subprocess.Popen(cmd)
             self.sendLine('DONE')
             return True
             print 'Done idling (new mail)'
@@ -100,15 +104,16 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
         print 'Done idle (timeout)'
 
 class ImapClientFactory(ReconnectingClientFactory):
-    def __init__(self, user, password, mailbox, account, timeout):
+    def __init__(self, user, password, mailbox, account, timeout, should_disable_mbnames):
         self.username = user
         self.password = password
         self.mailbox = mailbox
         self.account = account
+        self.should_disable_mbnames = should_disable_mbnames 
         self.timeout = 60*timeout
 
     def buildProtocol(self, addr):
-        proto = ImapIdleClient(self.username, self.password, self.mailbox, self.account, self.timeout)
+        proto = ImapIdleClient(self.username, self.password, self.mailbox, self.account, self.timeout, self.should_disable_mbnames)
         proto.factory = self
         return proto
 
@@ -142,13 +147,16 @@ def get_repository_detail(repository_name, cfg):
             account.server = cfg.get(section, 'server')
             if cfg.has_option(section, 'port'):
                 account.port = cfg.getint(section, 'port')
-            boxes = cfg.get(section, 'mailboxes')
-            account.mailboxes = re.split('[, \t]+', boxes)
         elif server_type == "Gmail":
             account.server = "imap.gmail.com"
             account.port = 993
+
+        if cfg.has_option(section, 'idle_check_mailboxes'):
+            boxes = cfg.get(section, 'idle_check_mailboxes')
+        else:
             boxes = "INBOX"
-            account.mailboxes = re.split('[, \t]+', boxes)
+        account.mailboxes = filter(lambda i: len(i)>0, re.split('[;]+', boxes))
+        print account.mailboxes
 
         if cfg.has_option(section, 'remoteuser'):
             account.user = cfg.get(section, 'remoteuser')
@@ -227,19 +235,18 @@ def parse_options():
     if len(account_settings.keys()) == 0:
         parser.error('No accounts defined')
 
-    return account_settings
+    should_disable_mbnames = cfg.has_section('mbnames')
+
+    return (account_settings, should_disable_mbnames)
 
 def main():
-    accounts = parse_options()
-    #netconf = netrc.netrc().hosts
+    (accounts, should_disable_mbnames) = parse_options()
 
     log.startLogging(sys.stdout)
 
     for (name, settings) in accounts.items():
         for mailbox in settings.mailboxes:
-            #if settings.server not in netconf:
-                #sys.exit('Server "%s" needs an entry in your netrc file' % settings.server)
-            factory = ImapClientFactory(settings.user, settings.password, mailbox, name, settings.timeout)
+            factory = ImapClientFactory(settings.user, settings.password, mailbox, name, settings.timeout, should_disable_mbnames)
             reactor.connectSSL(settings.server, settings.port, factory, ssl.ClientContextFactory())
 
     reactor.run()

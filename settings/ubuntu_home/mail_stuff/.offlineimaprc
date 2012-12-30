@@ -25,8 +25,12 @@ remoteuser = rx.wen218@gmail.com
 remotepasseval = get_password("imap.gmail.com")
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 maxconnections = 3
-folderfilter = lambda folder: folder not in ['Gmail[android]', '[Gmail]/Sent Mail', '[Gmail]/Starred']
+#folderfilter = lambda folder: folder not in ['Gmail[android]', '[Gmail]/Sent Mail', '[Gmail]/Starred']
 nametrans = nametrans_remote2local
 # nametrans = lambda folder: re.sub('^INBOX\.', '', folder)
 # really delete the message on server
 realdelete = yes
+
+# option only meanful to idlemail.py utility
+# specify which mailboxs on this repository will be monitored
+idle_check_mailboxes = INBOX;[Gmail]/Drafts;"[Gmail]/Sent Mail";[Gmail]/Chats
