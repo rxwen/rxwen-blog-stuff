@@ -51,4 +51,5 @@ macro index,pager gi "<change-folder>=inbox<enter>=" "Go to inbox"
 macro index,pager gs "<change-folder>=sent<enter>" "Go to sent messages"
 macro index,pager gd "<change-folder>=drafts<enter>" "Go to drafts"
 
-macro pager \cu |urlview\n "call urlview
+#macro pager \cu |urlview\n "call urlview
+macro pager \cu '<pipe-entry> email_converter.py | urlview<enter>' "all urlview"
