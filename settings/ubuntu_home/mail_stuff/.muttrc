@@ -20,6 +20,7 @@ source `FILE=$HOME/.mutt.alias; if [ ! -s "$FILE" ]; then FILE=/dev/null;fi;echo
 set alias_file=~/.mutt.alias
 
 auto_view text/html # use ~/.mailcap to view html file
+set delete=yes # delete without asking
 set sort=threads
 set sort_aux=reverse-date-received # sort order to use when in thread sort mode
 set pager_stop # don't move to next message when we hit pagedown if the pager is alread at the bottom of current message
