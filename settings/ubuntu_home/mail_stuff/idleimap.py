@@ -4,6 +4,8 @@
 # changes:
 #   1. instead of use a separate ~/.idleimaprc configuration file, this version will recognize configurations in ~/.offlineimaprc
 
+__VERSION__ = '1.0.0'
+
 from OpenSSL import SSL
 import sys
 import os.path
@@ -20,8 +22,12 @@ from twisted.internet import ssl, reactor
 from twisted.protocols.policies import TimeoutMixin
 from twisted.python import log
 
+class AwesomeMailNotifier(object):
+    def notify(self, title, message):
+        subprocess.Popen(["notify-send", "-t", "0", title, message])
+
 class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
-    def __init__(self, username, password, mailbox, account, idle_timeout, should_disable_mbnames=False):
+    def __init__(self, username, password, mailbox, account, idle_timeout, should_disable_mbnames=False, notifier=None):
         self.init_state = 'init'
         self.state_machine = { 'init': ('login', self.wait_for_hello)
                              , 'login': ('examine', self.login)
@@ -37,6 +43,7 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
         self.account = account
         self.idle_timeout = idle_timeout
         self.should_disable_mbnames = should_disable_mbnames
+        self.notifier = notifier
 
     def connectionMade(self):
         self.factory.resetDelay()
@@ -79,11 +86,14 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
 
     def idle(self, line):
         if re.match(r'\* \d+ (EXISTS|EXPUNGE)', line) is not None:
-            cmd = ['offlineimap', '-a', self.account, '-f', self.mailbox.replace('"', ''), '-o']
+            mailbox = self.mailbox.replace('"', '')
+            cmd = ['offlineimap', '-a', self.account, '-f', mailbox, '-o']
             if self.should_disable_mbnames:
                 cmd.extend(['-k', 'mbnames:enabled=no'])
-            subprocess.Popen(cmd)
+            subprocess.Popen(cmd).wait()
             self.sendLine('DONE')
+            if self.notifier:
+                self.notifier.notify("New Mail", "new mail in "+mailbox)
             return True
             print 'Done idling (new mail)'
         else:
@@ -104,16 +114,17 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
         print 'Done idle (timeout)'
 
 class ImapClientFactory(ReconnectingClientFactory):
-    def __init__(self, user, password, mailbox, account, timeout, should_disable_mbnames):
+    def __init__(self, user, password, mailbox, account, timeout, should_disable_mbnames, notifier = None):
         self.username = user
         self.password = password
         self.mailbox = mailbox
         self.account = account
         self.should_disable_mbnames = should_disable_mbnames 
         self.timeout = 60*timeout
+        self.notifier = notifier
 
     def buildProtocol(self, addr):
-        proto = ImapIdleClient(self.username, self.password, self.mailbox, self.account, self.timeout, self.should_disable_mbnames)
+        proto = ImapIdleClient(self.username, self.password, self.mailbox, self.account, self.timeout, self.should_disable_mbnames, self.notifier)
         proto.factory = self
         return proto
 
@@ -194,7 +205,9 @@ def get_account_detail(account_name, cfg):
 
 def parse_options():
     usage = "usage: %s [options] [accounts to sync (overrides config file)]"
-    parser = OptionParser(usage=usage)
+    parser = OptionParser(version = "%prog " + __VERSION__, 
+        description = "imap idle client",
+        usage=usage)
     parser.set_defaults(config=None)
     parser.add_option('-c', '--configuration', dest='config',
                       action='store', type='string',
@@ -246,7 +259,8 @@ def main():
 
     for (name, settings) in accounts.items():
         for mailbox in settings.mailboxes:
-            factory = ImapClientFactory(settings.user, settings.password, mailbox, name, settings.timeout, should_disable_mbnames)
+            notifier = AwesomeMailNotifier()
+            factory = ImapClientFactory(settings.user, settings.password, mailbox, name, settings.timeout, should_disable_mbnames, notifier)
             reactor.connectSSL(settings.server, settings.port, factory, ssl.ClientContextFactory())
 
     reactor.run()
