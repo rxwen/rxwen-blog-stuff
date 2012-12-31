@@ -4,7 +4,7 @@
 # changes:
 #   1. instead of use a separate ~/.idleimaprc configuration file, this version will recognize configurations in ~/.offlineimaprc
 
-__VERSION__ = '1.0.0'
+__VERSION__ = '1.0.1'
 
 from OpenSSL import SSL
 import sys
@@ -22,9 +22,15 @@ from twisted.internet import ssl, reactor
 from twisted.protocols.policies import TimeoutMixin
 from twisted.python import log
 
-class AwesomeMailNotifier(object):
+class MailNotifier(object):
     def notify(self, title, message):
         subprocess.Popen(["notify-send", "-t", "0", title, message])
+
+def get_process_output(cmd):
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    p.wait()
+    output = p.stdout.readlines()
+    return output
 
 class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
     def __init__(self, username, password, mailbox, account, idle_timeout, should_disable_mbnames=False, notifier=None):
@@ -90,10 +96,16 @@ class ImapIdleClient(LineOnlyReceiver, TimeoutMixin):
             cmd = ['offlineimap', '-a', self.account, '-f', mailbox, '-o']
             if self.should_disable_mbnames:
                 cmd.extend(['-k', 'mbnames:enabled=no'])
-            subprocess.Popen(cmd).wait()
+            out = get_process_output(cmd)
+            new_mail_count = 0
+            new_mail_pattern = " +Copy message \d+.* -> Maildir.*"
+            for line in out:
+                if re.match(new_mail_pattern, line) is not None:
+                    new_mail_count += 1
             self.sendLine('DONE')
-            if self.notifier:
-                self.notifier.notify("New Mail", "new mail in "+mailbox)
+
+            if new_mail_count > 0 and self.notifier:
+                self.notifier.notify("New Mail", "%d new mail in %s"%(new_mail_count, mailbox))
             return True
             print 'Done idling (new mail)'
         else:
@@ -259,7 +271,7 @@ def main():
 
     for (name, settings) in accounts.items():
         for mailbox in settings.mailboxes:
-            notifier = AwesomeMailNotifier()
+            notifier = MailNotifier()
             factory = ImapClientFactory(settings.user, settings.password, mailbox, name, settings.timeout, should_disable_mbnames, notifier)
             reactor.connectSSL(settings.server, settings.port, factory, ssl.ClientContextFactory())
 
