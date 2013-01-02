@@ -289,7 +289,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1" },            "r",     
         function () 
             cmd = awful.util.pread("dmenu_path | dmenu "
-                .."-i -nf '#888888' -nb '#552244' -sf '#ffffff' -sb '#285577' -p 'run as root'")
+                .."-i -nf '#aaaaaa' -nb '#cc3244' -sf '#ffffff' -sb '#285577' -p 'run as root'")
             if cmd and string.len(cmd)>0 then
                 awful.util.spawn("gksu "..cmd)
             end
