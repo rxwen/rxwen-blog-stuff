@@ -285,6 +285,15 @@ globalkeys = awful.util.table.join(
             end
         end),
 
+        -- use Win+alt+r to run a program as root
+    awful.key({ modkey, "Mod1" },            "r",     
+        function () 
+            cmd = awful.util.pread("dmenu_path | dmenu "
+                .."-i -nf '#888888' -nb '#552244' -sf '#ffffff' -sb '#285577' -p 'run as root'")
+            if cmd and string.len(cmd)>0 then
+                awful.util.spawn("gksu "..cmd)
+            end
+        end),
     awful.key({ modkey },            "r",     function () awful.util.spawn("dmenu_run "
         .."-i -nf '#888888' -nb '#222222' -sf '#ffffff' -sb '#285577'") end),
     awful.key({ "Mod1", "Control" }, "s",
