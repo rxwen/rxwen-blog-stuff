@@ -166,10 +166,10 @@ def get_repository_detail(repository_name, cfg):
 
         server_type = cfg.get(section, 'type')
         account = AccountOptions()
-        if server_type == "imap":
-            account.server = cfg.get(section, 'server')
-            if cfg.has_option(section, 'port'):
-                account.port = cfg.getint(section, 'port')
+        if server_type.lower() == "imap":
+            account.server = cfg.get(section, 'remotehost')
+            if cfg.has_option(section, 'remoteport'):
+                account.port = cfg.getint(section, 'remoteport')
         elif server_type == "Gmail":
             account.server = "imap.gmail.com"
             account.port = 993
