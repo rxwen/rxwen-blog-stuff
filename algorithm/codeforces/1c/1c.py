@@ -115,23 +115,41 @@ class LineEquation(object):
         else:
             return 'y=' + str(self.y)
 
+def get_area_with_herons_formula(a, b, c):
+    p = (a+b+c)/2
+    s = math.sqrt(p*(p-a)*(p-b)*(p-c))
+    return s
+
+def get_radius(a, b, c, s):
+    return a*b*c/(4*s)
+
+def get_radian_of_triangle_with_low_of_cosines(a, b, c):
+    r1 = math.acos((b**2+c**2-a**2)/(2*b*c))
+    r2 = math.acos((c**2+a**2-b**2)/(2*c*a))
+    r3 = math.acos((a**2+b**2-c**2)/(2*b*a))
+    return r1, r2, r3
+
+def get_gcd(a, b):
+    if b < math.pi/100:
+        return a
+    return get_gcd(b, math.fmod(a, b))
+
 if __name__ == "__main__":
-    #l = LineEquation(Point(0,1), Point(1,0))
-    #print l
-    #l = LineEquation(Point(1,1), Point(1,0))
-    #print l
-    #print l.GetMidperpendicular()
-    #l = LineEquation(Point(1,1), Point(0,1))
-    #print l
-    #l = LineEquation(Point(0,1), Point(2,0))
-    #print l
-    #l = LineEquation(Point(0,1), Point(3,0))
-    #print l
-    #print l.GetMidperpendicular()
-    #l = LineEquation(Point(0,0), Point(1,1))
-    #l2 = LineEquation(Point(0,1), Point(1,1))
-    #print l, l.GetMidperpendicular()
-    #print l2, l2.type, l2.GetMidperpendicular(), l2.GetMidperpendicular().type
-    #print l.GetCrossPoint(l2)
-    #print l.GetMidperpendicular().GetCrossPoint(l2.GetMidperpendicular())
-    #print Point(0,0).GetDistance(l.GetMidperpendicular().GetCrossPoint(l2.GetMidperpendicular()))
+
+    coords = raw_input().split()
+    p1 = Point(float(coords[0]), float(coords[1]))
+    coords = raw_input().split()
+    p2 = Point(float(coords[0]), float(coords[1]))
+    coords = raw_input().split()
+    p3 = Point(float(coords[0]), float(coords[1]))
+
+    a = p1.GetDistance(p2)
+    b = p2.GetDistance(p3)
+    c = p3.GetDistance(p1)
+    s = get_area_with_herons_formula(a, b, c)
+    r = get_radius(a, b, c, s)
+    r1, r2, r3 = get_radian_of_triangle_with_low_of_cosines(a, b, c)
+    r = a/2.0/math.sin(r1)
+    rgcd = 2.0*get_gcd(r1, get_gcd(r2, r3))
+    result = r*r*math.sin(rgcd)/2*(2*math.pi/rgcd)
+    print ("%.6f"%result)
