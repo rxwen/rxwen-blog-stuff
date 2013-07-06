@@ -506,6 +506,7 @@ end
 
 ---- Usage Example
 run_once("gnome-settings-daemon")
+run_once("gnome-sound-applet")
 run_once("gnome-keyring-daemon -s")
 ---- -- Use the second argument, if the programm you wanna start, 
 ---- -- differs from the what you want to search.
