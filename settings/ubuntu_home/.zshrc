@@ -49,3 +49,10 @@ PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
+
+# my own git_prompt_info function that does parse git directory status
+function git_prompt_info() {
+  ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+  ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
+  echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
