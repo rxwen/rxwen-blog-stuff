@@ -46,6 +46,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
+#PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(__git_ps1)%_$(prompt_char)%{$reset_color%} '
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
@@ -56,3 +57,6 @@ function git_prompt_info() {
   ref=$(command git rev-parse --short HEAD 2> /dev/null) || return
   echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
+
+export LC_ALL=en_us.UTF-8
+export LANG=en_us.UTF-8
