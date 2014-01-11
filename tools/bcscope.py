@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__ = '1.2.4'
+__VERSION__ = '1.2.5'
 __author__ = 'rx.wen218@gmail.com'
 
 import subprocess
@@ -209,7 +209,7 @@ if cmdline_options.output_file != default_database_name:
 print "done, cscope database saved in " + cmdline_options.output_file
 if cmdline_options.ctags:
     print "build ctags database"
-    cmd = ["ctags", "-L", file_list_name]
+    cmd = ["ctags", "-L", file_list_name, "--fields=l"]
     subprocess.Popen(cmd).wait()
     print "done, ctags database saved in tags"
 if not cmdline_options.preserve_filelist:
