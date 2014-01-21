@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__ = '1.2.5'
+__VERSION__ = '1.3.5'
 __author__ = 'rx.wen218@gmail.com'
 
 import subprocess
@@ -36,7 +36,7 @@ opt_parser.add_option("-q", "--quick", action="store_true", default=False,
         help="Build an inverted index for quick symbol searching. [default: %default]")
 opt_parser.add_option("-c", "--confirm", action="store_false", default=True, 
         help="confirm overwrite existing cscope database without interaction [default: %default]")
-opt_parser.add_option("-p", "--preserve-filelist", action="store_true", default=False, 
+opt_parser.add_option("-p", "--preserve-filelist", action="store_true", default=True, 
         help="don't delete cscope.files after the database has been generated [default: %default]")
 opt_parser.add_option("", "--include-dir", default=None, action="append",
         help="additional directories to be included in search, can be specified multiple times")
@@ -46,6 +46,8 @@ opt_parser.add_option("", "--exclude", default=None, action="append",
         help="file pattern (regular expression) to be excluded, can be specified multiple times")
 opt_parser.add_option("-t", "--ctags", action="store_true", default=False, 
         help="generate ctags database as well [default: %default]")
+opt_parser.add_option("-g", "--gtags", action="store_true", default=False, 
+        help="generate gtags database as well [default: %default]")
 (cmdline_options, args) = opt_parser.parse_args()
 
 # config application behavior
@@ -212,6 +214,11 @@ if cmdline_options.ctags:
     cmd = ["ctags", "-L", file_list_name, "--fields=l"]
     subprocess.Popen(cmd).wait()
     print "done, ctags database saved in tags"
+if cmdline_options.gtags:
+    print "build gtags database"
+    cmd = ["gtags", "-f", file_list_name]
+    subprocess.Popen(cmd).wait()
+    print "done, gtags database saved in GTAGS"
 if not cmdline_options.preserve_filelist:
     os.remove(file_list_name)
 
