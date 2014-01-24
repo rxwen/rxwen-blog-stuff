@@ -60,3 +60,9 @@ function git_prompt_info() {
 
 export LC_ALL=en_us.UTF-8
 export LANG=en_us.UTF-8
+
+# setup machine specific environment variables sotred in .env
+if [ -f ~/.env ] ; then
+    . ~/.env
+fi
+
