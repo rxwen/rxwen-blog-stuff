@@ -58,9 +58,6 @@ function git_prompt_info() {
   echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
-export LC_ALL=en_us.UTF-8
-export LANG=en_us.UTF-8
-
 # setup machine specific environment variables sotred in .env
 if [ -f ~/.env ] ; then
     . ~/.env
