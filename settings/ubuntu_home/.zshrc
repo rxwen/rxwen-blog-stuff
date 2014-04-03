@@ -15,7 +15,7 @@ ZSH_THEME="gentoo"
 # CASE_SENSITIVE="true"
 
 # Uncomment this to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment to change how often before auto-updates occur? (in days)
 # export UPDATE_ZSH_DAYS=13
@@ -46,7 +46,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
-#PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(__git_ps1)%_$(prompt_char)%{$reset_color%} '
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
@@ -62,4 +61,3 @@ function git_prompt_info() {
 if [ -f ~/.env ] ; then
     . ~/.env
 fi
-
