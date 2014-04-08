@@ -285,6 +285,25 @@ globalkeys = awful.util.table.join(
             end
         end),
 
+        -- use ctrl+alt+c to run a caculator
+    awful.key({ "Mod1", "Control" }, "c",
+        function () 
+            awful.prompt.run({ prompt = "<span color='yellow'><b> Calc: </b></span>" }, mypromptbox[mouse.screen].widget,
+            function (expr)
+                local result = awful.util.pread("python -c 'from math import *; print "..expr.."'")
+                --naughty.notify({ text = result, timeout = 10 })
+                naughty.notify({ title= expr.."=",
+                    text=result, 
+                    position="top_left", 
+                    font="Sans 16",
+                    border_color="black", 
+                    bg='#82B440', 
+                    timeout=6,
+                    --hover_timeout=8,
+                    --run = function() io.popen("echo -n "..result.." | xclip -i") end,
+                })
+            end)
+        end),
         -- use Win+alt+r to run a program as root
     awful.key({ modkey, "Mod1" },            "r",     
         function () 
