@@ -290,7 +290,7 @@ globalkeys = awful.util.table.join(
         function () 
             awful.prompt.run({ prompt = "<span color='yellow'><b> Calc: </b></span>" }, mypromptbox[mouse.screen].widget,
             function (expr)
-                local result = awful.util.pread("python -c 'from math import *; print "..expr.."'")
+                local result = awful.util.pread("python -c 'from __future__ import division; from math import *; print "..expr.."'")
                 --naughty.notify({ text = result, timeout = 10 })
                 naughty.notify({ title= expr.."=",
                     text=result, 
