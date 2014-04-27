@@ -1,4 +1,3 @@
--- api reference: http://awesome.naquadah.org/doc/api/index.html
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -10,7 +9,6 @@ require("naughty")
 
 -- Load Debian menu entries
 require("debian.menu")
--- require("logger")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -338,10 +336,12 @@ globalkeys = awful.util.table.join(
 
         -- Check throught the clients if the title match the desired title
         local desired_title=string.lower(command)
+        if desired_title:sub(#desired_title) == '\n' then
+            desired_title = desired_title:sub(0, #desired_title-1)
+        end
         for k, c in pairs(client.get()) do
             if c.name then
                 local title=string.lower(c.name)
-                --if string.match(title, desired_title) then
                 if title == desired_title then
                     for i, v in ipairs(c:tags()) do
                         awful.tag.viewonly(v)
@@ -485,51 +485,6 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 previous_client = nil
 current_screen = nil
 client.add_signal("unfocus", function(c) previous_client = c end)
-
--- install liblua5.1-filesystem0 on ubuntu to enable lfs
-require("lfs") 
--- {{{ Run programm once
-local function processwalker()
-   local function yieldprocess()
-      for dir in lfs.dir("/proc") do
-        -- All directories in /proc containing a number, represent a process
-        if tonumber(dir) ~= nil then
-          local f, err = io.open("/proc/"..dir.."/cmdline")
-          if f then
-            local cmdline = f:read("*all")
-            f:close()
-            if cmdline ~= "" then
-              coroutine.yield(cmdline)
-            end
-          end
-        end
-      end
-    end
-    return coroutine.wrap(yieldprocess)
-end
-
-local function run_once(process, cmd)
-   assert(type(process) == "string")
-   local regex_killer = {
-      ["+"]  = "%+", ["-"] = "%-",
-      ["*"]  = "%*", ["?"]  = "%?" }
-
-   for p in processwalker() do
-      if p:find(process:gsub("[-+?*]", regex_killer)) then
-     return
-      end
-   end
-   return awful.util.spawn(cmd or process)
-end
--- }}}
-
----- Usage Example
-run_once("gnome-settings-daemon")
-run_once("gnome-sound-applet")
-run_once("gnome-keyring-daemon -s")
----- -- Use the second argument, if the programm you wanna start, 
----- -- differs from the what you want to search.
----- run_once("redshift", "nice -n19 redshift -l 51:14 -t 5700:4500")
 
 function batteryInfo(adapter)
     local ffile_name = "charge"
