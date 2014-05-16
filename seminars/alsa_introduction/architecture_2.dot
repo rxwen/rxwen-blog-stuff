@@ -1,0 +1,35 @@
+digraph G {
+    node [shape=record];
+
+    cx92745_snd_platform_device [label="{platform_device|cx92745_snd_platform_device}",color="indigo"];
+    cx92745_snd_soc_device [label="{snd_soc_device|cx92745_snd_soc_device}",color="indigo"];
+    cx92745_snd_soc_card [label="{snd_soc_card|cx92745_snd_soc_card}",color="indigo"];
+    cx92745_snd_soc_dai_link [label="{snd_soc_dai_link|cx92745_snd_soc_dai_link}",color="indigo"];
+
+    cx92745_snd_soc_platform [label="{snd_soc_platform|cx92745_snd_soc_platform}",color="mintcream"];
+    cx92745_snd_soc_cpu_dai [label="{snd_soc_dai|cx92745_snd_soc_cpu_dai}",color="mintcream"];
+    cx92745_pcm_ops [label="{snd_pcm_ops|cx92745_pcm_ops}",color="mintcream"];
+    pcm [label="{snd_pcm|pcm}",color="mintcream"];
+
+
+    soc_codec_dev_cx20709 [label="{snd_soc_codec_device|soc_codec_dev_cx20709}",color="orange"];
+    cx20709_snd_controls [label="{snd_kcontrol_new|cx20709_snd_controls}",color="orange"];
+    codec [label="{snd_soc_codec|codec}",color="orange"];
+    soc_codec_cx20709_dai [label="{snd_soc_dai|soc_codec_cx20709_dai}",color="orange"];
+    cx20709_dai_ops [label="{snd_soc_dai_ops|cx20709_dai_ops}",color="orange"];
+
+    cx92745_snd_platform_device -> cx92745_snd_soc_device;
+    cx92745_snd_soc_device -> cx92745_snd_soc_card;
+    cx92745_snd_soc_device -> soc_codec_dev_cx20709;
+    cx92745_snd_soc_card -> cx92745_snd_soc_platform;
+    cx92745_snd_soc_card -> cx92745_snd_soc_dai_link;
+    cx92745_snd_soc_card -> codec;
+    cx92745_snd_soc_platform -> cx92745_pcm_ops;
+    cx92745_snd_soc_dai_link -> cx92745_snd_soc_cpu_dai;
+    cx92745_snd_soc_dai_link -> soc_codec_cx20709_dai;
+    cx92745_snd_soc_dai_link -> pcm;
+    codec -> soc_codec_cx20709_dai;
+    codec -> cx20709_snd_controls;
+    soc_codec_cx20709_dai -> cx20709_dai_ops;
+
+}

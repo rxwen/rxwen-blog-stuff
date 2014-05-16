@@ -1,0 +1,366 @@
+% small.tex
+\documentclass[CJK]{beamer}
+%\usepackage{fontspec}
+\usepackage{xeCJK}
+%\setmainfont{Microsoft YaHei}
+\setCJKmainfont{Microsoft YaHei}
+%\usetheme{default}
+\usetheme{Boadilla}
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+
+\title[ALSA音频系统介绍]{ALSA音频系统介绍}
+\author{Raymond Wen}
+
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{大纲}
+    \tableofcontents[pausesections]
+\end{frame}
+
+\section{ALSA的发展历史}
+\begin{frame}[t]
+    \frametitle{历史}
+    \begin{block}{}
+        \begin{itemize}
+            \item ALSA: Advanced Linux Sound Architecture 
+            \item OSS: Open Sound System
+        \end{itemize}
+    \end{block}
+    \begin{figure}[b]
+        %\includegraphics[width=\textwidth]{"history.png"}
+        \includegraphics[height=160bp]{"history.png"}
+    \end{figure}
+\end{frame}
+
+\section{ALSA的结构}
+\begin{frame}[t]
+    \frametitle{Linux 中的音频系统层次 - 架构}
+    \begin{figure}
+        \includegraphics[height=200bp]{"linux_audio_layers.png"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{ALSA的特点 - 架构}
+    \begin{itemize}
+        \item 对声卡的支持广泛
+        \item 模块化的结构
+        \item 线程安全的设计,支持多核处理器
+        \item 友好的用户接口
+        \item 兼容OSS接口
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{ALSA的组成 - 架构}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \begin{itemize}
+                \item ALSA 设备驱动
+                    \begin{itemize}
+                        \item machine driver
+                        \item platform driver
+                        \item codec driver
+                    \end{itemize}
+                \item ALSA 库: asound.so
+                \item ALSA 工具
+                    \begin{itemize}
+                        \item amixer
+                        \item aplay
+                        \item arecord
+                    \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[height=150bp]{"alsa_components_layer.png"}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{ALSA驱动设备结构 - 驱动}
+    \begin{figure}
+        \includegraphics[height=120bp]{"alsa_devices.png"}
+    \end{figure}
+    \begin{verbatim}
+    ls /dev/snd
+        controlC0 pcmC0D0c pcmC0D0p timer
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}
+    \frametitle{ALSA中音频数据的结构 - 驱动}
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{itemize}
+                \item Buffer 
+                \item Period
+                \item Frame
+                \item Sample
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[height=150bp]{"alsa_data.jpg"}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频数据示例 - 驱动}
+
+    \begin{alertblock}{}
+        假定需要播放 stereo, 16bit, 44.1 KHz 的音频流
+    \end{alertblock}
+    \pause
+    \begin{exampleblock}{}
+        \begin{itemize}
+            \item 'stereo' = 2通道
+            \item sample 大小 = 16 bits = 2 bytes
+            \item frame 大小 = 2通道*sample大小 = 4 bytes
+            \item 每毫秒 frame 数 = 44100/1000 = 44.1 
+            \item period 大小 = 20毫秒*44.1*4 = 3528 bytes
+            \item buffer 大小 = 4*3528 = 14112
+            \item bps = 4*44100 = 176400 bytes/sec
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\section{IPVDP中的应用}
+\begin{frame}
+    \frametitle{IPVDP中的硬件结构 - 驱动}
+    \begin{figure}
+        \includegraphics[height=120bp]{"hw_arch.jpg"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{IPVDP中音频驱动的结构 - 驱动}
+    \begin{figure}
+        \includegraphics[height=200bp]{"architecture.png"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{IPVDP中音频驱动的结构 - 驱动}
+    \begin{figure}
+        \includegraphics[height=200bp]{"architecture_2.png"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{添加控制节点 - 驱动}
+    \begin{itemize}
+        \item 定义控制节点 struct snd\_kcontrol\_new
+        \item 添加snd\_kcontrol\_new到snd\_soc\_codec
+        \item 利用预定义的宏
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{定义snd\_kcontrol\_new - 驱动}
+    \begin{verbatim}
+    static struct snd_kcontrol_new my_control __devinitdata = {  
+        .iface = SNDRV_CTL_ELEM_IFACE_MIXER,  
+        .name = "PCM Playback Switch",  
+        .index = 0,  
+        .access = SNDRV_CTL_ELEM_ACCESS_READWRITE,  
+        .private_value = 0xffff,  
+        .info = my_control_info,  
+        .get = my_control_get,  
+        .put = my_control_put  
+    };
+
+    snd_ctl_add(card, my_control);
+    //name 属性很重要,是ALSA用来分类的依据
+    //     命名规则为: 源 方向 功能
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{通过宏添加控制节点 - 驱动}
+    \begin{verbatim}
+static const struct snd_kcontrol_new cx20709_snd_controls[]= {
+  SOC_DOUBLE_R_TLV("PCM Playback Volume", DAC1_GAIN_LEFT,	
+      DAC2_GAIN_RIGHT, 0, 0x4F, 0, db_scale),
+  SOC_SINGLE(  "Lineout Playback Volume", DAC3_GAIN_SUB,		 
+      0, 0xBF, 0),
+  SOC_SINGLE_BOOL_EXT("Mic Stream Switch", 
+      (unsigned long)&dsp_stream_mic_enable, 
+      cx20709_stream_get, cx20709_stream_put),
+  SOC_ENUM_EXT("Lineout Source Select", input_source_enum[0],
+      cx20709_input_source_get, cx20709_input_source_put),
+}
+
+snd_soc_add_controls(codec, cx20709_snd_controls, 
+  ARRAY_SIZE(cx20709_snd_controls))
+
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{应用程序使用控制节点 - 驱动}
+    \begin{verbatim}
+
+    amixer sset 'PCM' 80%
+    amixer sset 'Lineout' 60%
+    amixer sset 'MIC Stream' off
+    amixer sset 'Lineout Source Select' 'Scale_out'
+
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频通道设置 - 架构}
+        \includegraphics[height=200bp]{"ipvdp_sys_arch.png"}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频通道设置 - 驱动}
+        \includegraphics[height=120bp]{"hw_arch.jpg"}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频通道设置 - 驱动}
+    \includegraphics[height=50bp]{"audio_path_scene1.png"}
+    \newline
+    \includegraphics[height=120bp]{"audio_path_normal.png"}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频通道设置 - 驱动}
+    \includegraphics[height=50bp]{"audio_path_scene2.png"}
+    \newline
+    \includegraphics[height=120bp]{"audio_path_main_dc.png"}
+\end{frame}
+
+\begin{frame}
+    \frametitle{音频通道设置 - 驱动}
+    \includegraphics[height=50bp]{"audio_path_scene3.png"}
+    \newline
+    \includegraphics[height=120bp]{"audio_path_subphone.png"}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{切换音频通道 - 应用}
+    \begin{verbatim}
+    amixer sset 'Class D power' off
+    amixer sset 'Mic AGC' on
+    amixer sset 'AEC1 Tail Length' 32
+    amixer sset 'EQ' on
+    amixer sset 'LEC' off
+    amixer sset 'Stream Mixer Mute' off
+    amixer sset 'Linein ADC Mute' off
+    amixer sset 'Lineout DAC Mute' off
+    amixer sset 'Speaker DAC Mute' off
+    amixer sset 'Mic ADC Mute' off
+    amixer sset 'Voicein Source Select' 'Stream2_out'
+    amixer sset 'Speaker Source Select' 'Scale_out'
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{切换音频通道 - 应用}
+    \begin{verbatim}
+    提供命令切换:
+        audio_path 0|1|2
+
+    提供api调用切换:
+        setAudioPathMode(mode);
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}
+    \frametitle{耳机插入事件检测 - 驱动}
+    \includegraphics[height=140bp]{"jack_detection.png"}
+    示例: soc-jack.c from alsa driver
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{ALSA应用程序的流程 - 应用}
+    \begin{verbatim}
+      open_the_device();
+      set_the_parameters_of_the_device();
+      while (!done) {
+           /* one or both of these */
+           receive_audio_data_from_the_device();
+           deliver_audio_data_to_the_device();
+      }
+      close the device
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{ALSA应用程序的流程 - 应用}
+    \begin{verbatim}
+      snd_pcm_open(&handle, "default", 
+          SND_PCM_STREAM_PLAYBACK, 0);
+      snd_pcm_hw_params_alloca(&params);
+      snd_pcm_hw_params_set_format();
+      snd_pcm_hw_params_set_channels();
+      snd_pcm_hw_params_set_rate_near();
+      snd_pcm_hw_params_set_period_time_near();
+      snd_pcm_hw_params_set_buffer_time_near();
+      snd_pcm_hw_params(handle, params);
+      while (!done) {
+          snd_pcm_write(handle, data, count);
+      }
+      snd_pcm_drain(handle);
+      snd_pcm_close(handle);
+    \end{verbatim}
+    示例: aplay.c from alsa utils
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{混音的实现 - 应用}
+    \begin{alertblock}{需求}
+        \begin{columns}
+            \begin{column}{0.7\textwidth}
+                \begin{itemize}
+                    \item 同时播放两路以上的数字音频(混音)
+                    \item 使用默认设备会得到音频设备冲突的错误
+                \end{itemize}
+            \end{column}
+            \begin{column}{0.3\textwidth}
+                \includegraphics[height=40bp]{"mix.png"}
+            \end{column}
+        \end{columns}
+    \end{alertblock}
+    \pause
+    \begin{exampleblock}{dmix插件}
+        \begin{itemize}
+            \item ALSA支持插件
+            \item 插件生成虚拟设备
+            \item 指定使用dmix插件的虚拟设备: plug:dmix
+            \begin{itemize}
+                \item snd\_pcm\_open(\&handle, "plug:dmix", SND\_PCM\_STREAM\_PLAYBACK, 0)
+                \item 
+                \item aplay -D "plug:dmix" test.wav
+            \end{itemize}
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{总结}
+    \begin{itemize}
+        \item ALSA的架构
+        \item ALSA驱动的组成
+        \item 添加控制节点 
+        \item ALSA应用程序的结构
+    \end{itemize}
+\end{frame}
+
+\end{document}
