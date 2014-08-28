@@ -45,7 +45,8 @@ plugins=(git autojump)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
+#PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d $(git_prompt_info)%_$(prompt_char)%{$reset_color%} '
+PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m%{$fg_bold[blue]%}:%1d %{$fg_bold[magenta]%}$(git_prompt_info)%{$fg_bold[blue]%}$(prompt_char)%{$reset_color%} '
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
