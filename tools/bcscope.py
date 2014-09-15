@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__ = '1.3.5'
+__VERSION__ = '1.4.1'
 __author__ = 'rx.wen218@gmail.com'
 
 import subprocess
@@ -19,7 +19,7 @@ default_cfg_name = ".bcscope.cfg"
 # parse command line options
 opt_parser = OptionParser(version = "%prog " + __VERSION__, 
             description = "command line tool for generating cscope database",
-            usage = "%prog [-o file] [file type: c++(default)/c#/python/java]")
+            usage = "%prog [-o file] [file type: c++(default)/c#/python/java/ruby]")
 opt_parser.add_option("-o", "--output", dest="output_file", default=default_database_name, 
         help="cscope database file")
 opt_parser.add_option("-i", "--input", dest="input_file", default=default_cfg_name, 
@@ -54,7 +54,8 @@ opt_parser.add_option("-g", "--gtags", action="store_true", default=False,
 valid_lan_types = {"c++": "cpp\|c\|cxx\|cc\|h\|hpp\|hxx",
     "java": "java",
     "c#": "cs",
-    "python": "py"}
+    "python": "py",
+    "ruby": "rb"}
 lan_type = ''
 if len(args) == 0:
 # no language specified, default to c++
