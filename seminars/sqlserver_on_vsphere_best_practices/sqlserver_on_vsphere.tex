@@ -1,0 +1,259 @@
+\documentclass[CJK]{beamer}
+\usetheme{Boadilla}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title[MS SQL Server on vSphere Best Practices]{MS SQL Server on vSphere Best Practices}
+\author{Raymond Wen}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{Topics}
+    \tableofcontents[pausesections]
+\end{frame}
+
+\section{vSphere Basics}
+\subsection{Why Use vSphere}
+\begin{frame}[t]
+    \frametitle{Why Use vSphere}
+        \begin{itemize}
+            \item Scalability
+            \item Management
+            \item Availability
+            \item Cost
+            \item Consolidation
+            \pause
+            \begin{figure}[b]
+                \includegraphics[width=\textwidth]{"server_consolidation.png"}
+            \end{figure}
+        \end{itemize}
+\end{frame}
+
+\subsection{vSphere Architecture}
+\begin{frame}[t]
+    \frametitle{vSphere Architecture}
+    \begin{figure}[b]
+        \includegraphics[width=250pt]{"vsphere_architecture.png"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{vSphere Components}
+        \begin{itemize}
+            \item VMware ESXi
+            \item VMware vCenter Server
+            \item VMware vSphere Client/Web Client/CLI/SDK
+            \item vSphere Virtual Machine File System (VMFS)
+            \item vSphere Virtual SMP
+            \item vSphere vMotion
+            \item vSphere Storage vMotion
+            \item vSphere High Availability
+            \item vSphere Distributed Resource Scheduler (DRS)
+            \item vSphere Storage DRS
+            \item vSphere Fault Tolerance
+        \end{itemize}
+\end{frame}
+
+\section{Migrating SQL Server to vSphere}
+\begin{frame}[t]
+    \frametitle{Migrating SQL Server to vSphere}
+    \begin{itemize}
+        \item Understand database workloads
+        \item Understand availablity and recovery requirements
+        \item Capture resource utilization baseline
+        \item Plan the migration
+        \item Understand database consolidation approaches
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Understand database workloads}
+    The classfication of database server indiciates resource requirements.
+    \begin{itemize}
+        \item Mission-critical databases (Tier 1 databases)
+        \item Essential databases
+        \item Support databases
+    \end{itemize}
+    Resource needs are defined in terms of CPU, memory, disk and network IO, user connections, transaction throughput, query effiency/latencies, database size.
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Understand availability and recovery requirements}
+    Understand the database's availability and recovery requirements helps identify technology to use.
+    \begin{itemize}
+        \item vSphere Technologies
+        \begin{itemize}
+            \item vSphere High Availability
+            \item vSphere Fault Tolerance
+            \item vSphere DRS
+            \item vSphere vMotion
+        \end{itemize}
+        \item \href{http://msdn.microsoft.com/en-us/library/ms190202(v=sql.110).aspx}{Microsoft SQL Server Technologies}
+        \begin{itemize}
+            \item \href{http://msdn.microsoft.com/en-us/library/ms189852(v=sql.110).aspx}{Database Mirroring}
+            \item \href{http://msdn.microsoft.com/en-us/library/hh510230(v=sql.110).aspx}{AlwaysOn Availability Groups}
+            \item \href{http://msdn.microsoft.com/en-us/library/ms189134(v=sql.110).aspx}{AlwaysOn Failover Cluster Instances}
+            \item \href{http://msdn.microsoft.com/en-us/library/ms187103(v=sql.110).aspx}{Log Shipping}
+        \end{itemize}
+        \item Backup and Restore
+            \begin{itemize}
+                \item In-guest, software agent-based backup
+                \item VMware Data Recovery
+                \item Array-based backup
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Capture resource utilization baseline}
+    \begin{itemize}
+        \item Establish the baseline on physical deployment
+        \item VMware Capacity Planer
+        \item Use performance counter
+        \item Collect the data over a period of time long enough to reflect all variations in the usage patterns
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Plan the migration}
+    \begin{itemize}
+        \item Consider OS, SQL Server version, patches, hotfix needs
+        \item Design vSphere architeture meets requirements
+        \item Follow \href{http://technet.microsoft.com/en-us/sqlserver/jj901640}{Microsoft Guidances}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Understand database consolidation approaches - Tranditional}
+        \includegraphics[width=\textwidth]{"sqlserver_consolidation_tran.png"}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Understand database consolidation approaches - vSphere}
+        \includegraphics[width=\textwidth]{"sqlserver_consolidation_vsphere.png"}
+\end{frame}
+
+\section{vSphere Best Practices}
+\subsection{vSphere Host Best Practices for SQL Server}
+\begin{frame}[t]
+    \frametitle{vSphere Host Bset Practices for SQL Server}
+    \begin{itemize}
+        \item Use vSphere which performs better than hosted products, VMware Workstation, VMware Fusion
+        \item Use the latest hardware 
+        \item Follow \href{http://technet.microsoft.com/en-us/sqlserver/bb671430.aspx}{Microsoft SQL Server best practices}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{vSphere Host Bset Practices for SQL Server}
+    CPU configuration
+    \begin{itemize}
+        \item CPU Allocation
+        \begin{itemize}
+            \item Maintain 1:1 ratio of vCPU and CPU for tier 1 database for lower latency
+            \item Reasonable CPU overcommitment for lower tier 1 database for larger throughput
+        \end{itemize}
+        \item NUMA Considerations
+        \begin{itemize}
+            \item Allocate vCPU number less than the number of cores in each physical NUMA node
+            \item Configure vNUMA to enable SQL Server NUMA optimization to take advantage of managing memory locality
+        \end{itemize}
+        \item Hyperthreading
+        \begin{itemize}
+            \item Disable hyperthreading for tier 1 databases
+            \item Enable hyperthreading for higher throughput
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{vSphere Host Bset Practices for SQL Server}
+    Memory configuration
+    \begin{itemize}
+        \item Set virtual machine memory size to less than NUMA node memory amount to avoid latency
+        \item Enable Large Page
+        \item Set memory reservation for tier 1 database to avoid memory ballooning and swapping
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{vSphere Host Bset Practices for SQL Server}
+    Storage configuration
+    \begin{itemize}
+        \item VMFS vs RDM
+        \item In terms of storage protocol, Fibre Channel performs better than iSCSI and NFS
+        \begin{figure}[b]
+            \includegraphics[width=200pt]{"storage_protocol_compare.png"}
+        \end{figure}
+        \item Avoid lazy zeroing
+        \item Place SQL Server binary, log and data files to separate VMDKs
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{vSphere Host Bset Practices for SQL Server}
+    Network configuration
+    \begin{itemize}
+        \item Use NIC teaming
+        \item Use separate physical NICs for management traffic and virtual machine traffic
+        \item Use dedicate network adapter for iSCSI
+    \end{itemize}
+\end{frame}
+
+\subsection{SQL Server In-Guest Best Practices}
+\begin{frame}[t]
+    \frametitle{vSphere In-Guest Best Practices}
+    \begin{itemize}
+        \item Max and min memory configuration
+        \item Grant lock pages priviledge to database account
+        \item Use large pages
+    \end{itemize}
+\end{frame}
+
+\section{Performance Metrics}
+\subsection{Performance Metrics}
+\begin{frame}[t]
+    \frametitle{Performance Metrics}
+    Test environment
+    \begin{itemize}
+        \item High-end OLTP workload derived from \href{http://www.tpc.org/tpce/default.asp}{TPC-E1}
+        \item 2.69G AMD Opteron, 64GB memory
+        \item Windows 2008, SQL Server 2008 Enterprise, VMware ESX 4.0
+    \end{itemize}
+    \begin{figure}[b]
+        \includegraphics[width=180pt]{"test_environment_hw.png"}
+    \end{figure}
+    \url{http://www.vmware.com/files/pdf/perf_vsphere_sql_scalability.pdf}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Performance Metrics}
+    \begin{figure}[b]
+        \includegraphics[width=\textwidth]{"scale_up_performance_vs_native.png"}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Performance Metrics}
+    \begin{figure}[b]
+        \includegraphics[width=\textwidth]{"scale_out_consolidation_performance.png"}
+    \end{figure}
+\end{frame}
+
+\subsection{Ongoing Performance Monitoring and Tuning}
+\begin{frame}[t]
+    \frametitle{Ongoing Performance Monitoring and Tuning}
+    \begin{itemize}
+        \item vSphere client
+        \item resxtop
+        \item SQL Server monitoring tools: Performance Counters, Profiler, Dynamic Management Views
+        \item Focus on performance bottlenecks instead of time-base measurements
+    \end{itemize}
+\end{frame}
+
+\end{document}
