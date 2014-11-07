@@ -43,7 +43,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git fasd tmux)
+plugins=(git fasd tmux zsh-syntax-highlighting golang docker)
 export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
@@ -69,3 +69,4 @@ function git_prompt_info() {
 if [ -f ~/.env ] ; then
     . ~/.env
 fi
+
