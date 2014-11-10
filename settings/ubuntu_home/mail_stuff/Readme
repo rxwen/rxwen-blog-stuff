@@ -1,0 +1,12 @@
+install:
+        mutt [MUA, Message User Agent], 
+        w3m [text based browser for viewing html type mail in mutt],
+        offlineimap [MRA, Message Retrieval Agent], 
+        msmtp [MTA, Message Transfer Agent], the default msmtp in ubuntu doesn't support gnome-keyring, need to compile my own msmtp binary to enable keyring support and replace the default one, use msmtp-gnome-tool.py tool to manage keyring password
+
+        procmail & fetchmail isn't used
+
+and place their configuration files in $HOME
+
+
+add idlemail.py as utility to start offlineimap process when there are new messages to be synced on the server. run idlemail.py as a daemon.

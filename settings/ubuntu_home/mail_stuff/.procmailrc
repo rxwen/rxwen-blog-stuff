@@ -1,0 +1,5 @@
+MAILDIR=/home/LOCAL_USER_NAME/mail/
+# set DEFAULT to an absolute path ending with a /, so that 
+# mail will be saved in maildir format, rather than a huge single file
+DEFAULT=/home/LOCAL_USER_NAME/mail/USER_NAME@gmail.com/
+VERBOSE=on

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.rmd.app2" android:versionCode="1" android:versionName="1.0">
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+		<activity android:name=".App2Main" android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="com.rmd.app2act" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
+		<service android:name=".App2Service">
+			<intent-filter>
+				<action android:name="com.rmd.app2svc" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</service>
+	</application>
+	<uses-sdk android:minSdkVersion="3" />
+
+</manifest> 

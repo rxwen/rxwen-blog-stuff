@@ -1,0 +1,35 @@
+digraph G {
+    rankdir=TB;
+    ranksep=.75; 
+    nodesep=1.0;
+    size="7.5,7.5";
+
+    //node [shape=plaintext,
+        //color=blue,
+        //label="",
+        //style=solid|dashed|dotted|bold|filled|diagonals|rounded|invis,
+        //fontcolor=black,
+        //group="group_name",[> if end points of an edge belong to the same group, dot tries to avoid corssing and keep edges straight <]
+        //image="path"];
+    "1992" [shape=plaintext]
+    "1998" [shape=plaintext]
+    "2002" [shape=plaintext]
+    "OSS" [shape=plaintext]
+    "ALSA" [shape=plaintext]
+    
+    
+    node [shape=box];
+    "1992" -> "1998" -> "2002";
+    "OSS" -> "started by Hannu Savolainen" [style=invis];
+    "started by Hannu Savolainen" -> "deprecated by linux"; 
+    "ALSA" -> "started by Jaroslav Kysela" [style=invis];
+    "started by Jaroslav Kysela" -> "adopted by linux 2.5"; 
+
+
+    { rank=same; "OSS"; "ALSA"; }
+    { rank=same; "1992"; "started by Hannu Savolainen"; }
+    { rank=same; "1998"; "started by Jaroslav Kysela"; }
+    { rank=same; "2002"; "deprecated by linux"; "adopted by linux 2.5"; }
+
+
+}
