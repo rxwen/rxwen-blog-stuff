@@ -13,3 +13,8 @@ while [ $i -lt $len ]; do
             let i++
         done
 
+# add my account to docker group to avoid having to run docker as root: sudo usermod -a -G docker current_user_name
+# change docker run time root dir: sudo ln -s /home/raymond/projects/docker/runtime_root /var/lib/docker
+
+# for chinese input, user fcitx-googlepinyin
+# add zsh-completion & zsh-syntax-highlighter plugins for on-my-zsh (place in ~/.oh-my-zsh/custom/plugins/)
