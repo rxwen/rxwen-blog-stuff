@@ -18,3 +18,6 @@ while [ $i -lt $len ]; do
 
 # for chinese input, user fcitx-googlepinyin
 # add zsh-completion & zsh-syntax-highlighter plugins for on-my-zsh (place in ~/.oh-my-zsh/custom/plugins/)
+
+# for serial port accessing, install ckermit
+# create "KERNEL=="ttyUSB*", MODE="0666" rule in /etc/udev/rules.d/50-usb-tty.rules,  then use kermit -l /dev/ttyUSB* -b 115200 to access
