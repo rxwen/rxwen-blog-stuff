@@ -21,3 +21,6 @@ while [ $i -lt $len ]; do
 
 # for serial port accessing, install ckermit
 # create "KERNEL=="ttyUSB*", MODE="0666" rule in /etc/udev/rules.d/50-usb-tty.rules,  then use kermit -l /dev/ttyUSB* -b 115200 to access
+
+# additional tools
+# smplayer gnome-applets
