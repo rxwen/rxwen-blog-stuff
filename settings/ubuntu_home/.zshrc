@@ -37,6 +37,9 @@ DISABLE_AUTO_UPDATE="true"
 # much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+# config Ctrl+U to delete from cursor to the beginning of line, to mimic bash behavior
+bindkey \^u backward-kill-line
+
 # configuration for zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
