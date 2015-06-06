@@ -15,6 +15,8 @@ while [ $i -lt $len ]; do
 
 # add my account to docker group to avoid having to run docker as root: sudo usermod -a -G docker current_user_name
 # change docker run time root dir: sudo ln -s /home/raymond/projects/docker/runtime_root /var/lib/docker
+# the docker.io/docker in ubuntu repository isn't maintained by docker team and it's out of date,
+# it's recommended to use this command to install docker: wget -qO- https://get.docker.com/ | sh
 
 # for chinese input, user fcitx-googlepinyin
 # add zsh-completion & zsh-syntax-highlighter plugins for on-my-zsh (place in ~/.oh-my-zsh/custom/plugins/)
