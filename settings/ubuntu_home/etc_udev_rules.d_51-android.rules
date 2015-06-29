@@ -1,5 +1,7 @@
 #db protocol on passion (xiaomi)
 SUBSYSTEM=="usb", ATTR{idVendor}=="2717", ATTR{idProduct}=="9039", MODE="0660", GROUP="plugdev"
+#db protocol on passion (hongmi)
+SUBSYSTEM=="usb", ATTR{idVendor}=="2717", ATTR{idProduct}=="1248", MODE="0660", GROUP="plugdev"
 #db protocol on passion (Nexus One)
 SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", ATTR{idProduct}=="4e12", MODE="0660", GROUP="plugdev"
 # fastboot protocol on passion (Nexus One)
