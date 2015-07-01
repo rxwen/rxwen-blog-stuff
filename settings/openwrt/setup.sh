@@ -10,6 +10,7 @@ opkg install ntfs-3g samba luci-app-samba
 
 opkg install pdnsd
 
+opkg install libpolarssl
 # download shadowsocks from: https://github.com/shadowsocks/openwrt-shadowsocks
 # update /etc/shadowsocks/config.json accordingly
 
