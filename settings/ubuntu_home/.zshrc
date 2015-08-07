@@ -41,7 +41,7 @@ DISABLE_AUTO_UPDATE="true"
 bindkey \^u backward-kill-line
 
 # configuration for zsh-completions
-fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src/ $fpath)
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
