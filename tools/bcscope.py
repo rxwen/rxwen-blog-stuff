@@ -36,7 +36,7 @@ opt_parser.add_option("-q", "--quick", action="store_true", default=False,
         help="Build an inverted index for quick symbol searching. [default: %default]")
 opt_parser.add_option("-c", "--confirm", action="store_false", default=True, 
         help="confirm overwrite existing cscope database without interaction [default: %default]")
-opt_parser.add_option("-p", "--preserve-filelist", action="store_true", default=True, 
+opt_parser.add_option("-p", "--preserve-filelist", action="store_true", default=False, 
         help="don't delete cscope.files after the database has been generated [default: %default]")
 opt_parser.add_option("", "--include-dir", default=None, action="append",
         help="additional directories to be included in search, can be specified multiple times")
