@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# use sudo update-rc.d shadowsocks defaults command to start shadowsocks service automatically
+
+start(){
+    sslocal -c /opt/shadowsocks.json -d start
+}
+
+stop(){
+    sslocal -c /opt/shadowsocks.json -d stop
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    reload)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 {start|reload|stop}"
+        exit 1
+        ;;
+esac
