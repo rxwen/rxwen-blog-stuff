@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/home/raymond/android-sdk-linux_x86/samples/android-9/SipDemo/src'
-let g:netrw_dirhist_2='/home/raymond/projects/android_src/external/sip_exe/jni'
-let g:netrw_dirhist_3='/home/raymond/ndk_test/jni'
-let g:netrw_dirhist_4='/home/raymond/projects/linux-2.6.36/net'
-let g:netrw_dirhist_5='/home/raymond/projects/android_src/external/sip_jni/jni'
-let g:netrw_dirhist_6='/home/raymond/gittest/.git'
