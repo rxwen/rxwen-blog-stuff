@@ -4,7 +4,7 @@ Windows Registry Editor Version 5.00
 @="Debug with &WinDbg"
 
 [HKEY_CLASSES_ROOT\exefile\shell\WinDbg\command]
-@="e:\\debuggers\\windbg.exe \"%1\""
+@="c:\\tools\\debuggers\\x64\\windbg.exe \"%1\""
 
 [HKEY_CLASSES_ROOT\.dmp]
 @="Debugger.Dump"
@@ -12,7 +12,7 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\Debugger.Dump]
 
 [HKEY_CLASSES_ROOT\Debugger.Dump\DefaultIcon]
-@="e:\\debuggers\\windbg.exe"
+@="c:\\tools\\debuggers\\x64\\windbg.exe"
 
 [HKEY_CLASSES_ROOT\Debugger.Dump\Shell]
 
@@ -20,5 +20,5 @@ Windows Registry Editor Version 5.00
 @="Debug This Dump"
 
 [HKEY_CLASSES_ROOT\Debugger.Dump\Shell\Debug_Without_Remote\Command]
-@="\"e:\\debuggers\\windbg.exe\" -z \"%1\"
+@="\"c:\\tools\\debuggers\\x64\\windbg.exe\" -z \"%1\"
 
