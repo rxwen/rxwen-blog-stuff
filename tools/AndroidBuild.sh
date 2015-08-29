@@ -13,7 +13,7 @@
 # export ENABLE_FAST_BUILDING=yes
 # export TARGET_BUILD_VARIANT=eng
 
-export TARGET_PRODUCT=beagleboneblack
+export TARGET_PRODUCT=${TARGET_PRODUCT?beagleboneblack}
 
 # export TARGET_SIMULATOR=true
 # export TARGET_SIMULATOR_WITH_BINDER=true
