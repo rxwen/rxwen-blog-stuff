@@ -1,0 +1,19 @@
+"3.8.2 (created: 2014/02/13 23:52:43)
+
+map pn :set!<Space>network.proxy.type=0<Return>
+map pm :set!<Space>network.proxy.type=1<Return>
+map pa :set!<Space>network.proxy.type=2<Return>
+map <C-A-[> :tabprevious<Return>
+map <C-A-]> :tabnext<Return>
+set noautocomplete
+set complete=lt
+set titlestring=Firefox
+set gui=nonavigation
+set hintchars=sadfjkewcmpgh
+set titlestring=Firefox
+set autocomplete
+highlight Hint font-weight:bold;color:black;background-color:#ffe269;padding:0px 5px 0px 5px;border:solid 1px #e3be23;border-radius: 5px;
+highlight HintElem ""
+cmap <c-p> <s-tab>
+cmap <c-n> <tab>
+
