@@ -1,7 +1,7 @@
 set TOOLS_PATH=C:\tools
 set GOROOT_VARIABLE=%TOOLS_PATH%\go
 set GOPATH_VARIABLE=%USERPROFILE%\projects\go
-REM setx PATH "%TOOLS_PATH%\vim\vim74;%TOOLS_PATH%\cygwin64\bin;%PATH%;C:\Windows\Microsoft.NET\Framework\v4.0.30319;" /M
+@REM setx PATH "%TOOLS_PATH%\vim\vim74;%TOOLS_PATH%\cygwin64\bin;%PATH%;C:\Windows\Microsoft.NET\Framework\v4.0.30319;" /M
 setx GOPATH %GOPATH_VARIABLE%
 setx GOBIN %GOPATH_VARIABLE%\bin
 setx GOROOT %GOROOT_VARIABLE%
