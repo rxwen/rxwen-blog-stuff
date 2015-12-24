@@ -6,7 +6,7 @@ __author__ = 'rx.wen218@gmail.com'
 
 import sys
 import os
-from bcscope_utils import androidmk_parser
+from adepends_utils import androidmk_parser
 from optparse import OptionParser
 
 modules = {}
