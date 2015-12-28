@@ -1,3 +1,5 @@
+// perror is available in mysql package on osx, install with homebrew
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
