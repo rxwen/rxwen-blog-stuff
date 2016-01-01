@@ -25,7 +25,7 @@ fgit-log() {
 fgit-reflog() {
     local reflogs sha
     reflogs=$(git reflog) &&
-        sha=$(echo "$reflogs" | fzf --tac +s +m -e) &&
+        sha=$(echo "$reflogs" | fzf +s +m -e --reverse ) &&
         git checkout $(echo "$sha" | sed "s/ .*//")
 }
 
@@ -34,7 +34,7 @@ fgit-branch() {
     local branches branch
     branches=$(git branch --all | grep -v HEAD) &&
         branch=$(echo "$branches" |
-    fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+    fzf --reverse -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
         git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
@@ -45,7 +45,7 @@ fgit-tag() {
     git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
     target=$(
     (echo "$tags"; echo "$branches") |
-    fzf --no-hscroll --ansi +m -d "\t" -n 2) || return
+    fzf --reverse --no-hscroll --ansi +m -d "\t" -n 2) || return
     git checkout $(echo "$target" | awk '{print $2}')
 }
 
@@ -70,7 +70,7 @@ fgit-stash() {
     local out q k sha
     while out=$(
         git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
-        fzf --ansi --no-sort --query="$q" --print-query \
+        fzf --ansi --reverse --no-sort --query="$q" --print-query \
             --expect=ctrl-d,ctrl-b);
     do
         mapfile -t out <<< "$out"
