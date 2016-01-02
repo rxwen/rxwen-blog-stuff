@@ -1,3 +1,23 @@
+# Setup fzf
+# ---------
+if [[ ! "$PATH" == */home/raymond/.fzf/bin* ]]; then
+  export PATH="$PATH:/home/raymond/.fzf/bin"
+fi
+
+# Man path
+# --------
+if [[ ! "$MANPATH" == */home/raymond/.fzf/man* && -d "/home/raymond/.fzf/man" ]]; then
+  export MANPATH="$MANPATH:/home/raymond/.fzf/man"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/home/raymond/.fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/home/raymond/.fzf/shell/key-bindings.zsh"
+
 
 # fgit-log - git commit browser (enter for show, ctrl-d for diff)
 fgit-log() {
