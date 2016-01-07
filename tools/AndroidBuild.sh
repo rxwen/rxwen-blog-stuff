@@ -21,13 +21,7 @@ fi
 # export TARGET_SIMULATOR=true
 # export TARGET_SIMULATOR_WITH_BINDER=true
 
-# GALAXYTAB_ADB_ID=31308D4DCAE700EC
-# CRESPO_ADB_ID=36337DDFB24900EC
-
-# ADB=/home/richard/sdk_droid/platform-tools/adb
 ADB=${HOME}/projects/android_sdk/platform-tools/adb
-
-# adb -s 31308D4DCAE700EC shell
 
 function Gettop
 {
