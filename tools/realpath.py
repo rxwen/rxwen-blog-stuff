@@ -9,6 +9,7 @@ import sys
 __VERSION__ = '1.0.0'
 
 def copy_sys_clipboard(real_path):
+    # copy with pbcopy command on osx
     proc = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
     proc.communicate(real_path)
 
