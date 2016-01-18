@@ -1,1 +1,0 @@
-COMMAND firefox -remote openURL\(%s,new-tab\)
