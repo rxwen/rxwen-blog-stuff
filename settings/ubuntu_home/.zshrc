@@ -73,5 +73,3 @@ if [ -f ~/.env ] ; then
     . ~/.env
 fi
 
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
