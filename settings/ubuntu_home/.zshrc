@@ -46,7 +46,7 @@ fpath=(~/.oh-my-zsh/custom/plugins/zsh-completions/src/ $fpath)
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git fasd tmux zsh-syntax-highlighting golang docker repo pip git-extras colored-man)
+plugins=(git fasd tmux zsh-syntax-highlighting golang repo pip git-extras colored-man)
 export ZSH_TMUX_AUTOSTART=true
 export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOCONNECT=false
