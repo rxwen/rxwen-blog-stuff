@@ -1,0 +1,5 @@
+- copy [btsync](https://www.getsync.com/) to /usr/local/bin
+- copy start_btsync.sh to /usr/local/bin
+- copy btsync.service to /etc/systemd/system
+- run sudo systemctl enable btsync
+- access http://ip to visit btsync management portal
