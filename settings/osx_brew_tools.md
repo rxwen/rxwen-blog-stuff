@@ -4,4 +4,4 @@ iproute2mac md5sha1sum zsh python macvim ctags cscope gpg git git-extras tig tmu
 # srecord
 
 brew cask install
-wireshark java mactex
+wireshark java mactex ngrok
