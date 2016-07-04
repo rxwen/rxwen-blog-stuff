@@ -17,8 +17,8 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\Debugger.Dump\Shell]
 
 [HKEY_CLASSES_ROOT\Debugger.Dump\Shell\Debug_Without_Remote]
-@="Debug This Dump"
+@="Open with &WinDbg"
 
 [HKEY_CLASSES_ROOT\Debugger.Dump\Shell\Debug_Without_Remote\Command]
-@="\"c:\\tools\\debuggers\\x64\\windbg.exe\" -z \"%1\"
+@="\"c:\\tools\\Debuggers\\x86\\windbg.exe\" -z \"%1\""
 
