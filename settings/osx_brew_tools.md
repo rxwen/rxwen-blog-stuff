@@ -1,7 +1,7 @@
 brew install
-iproute2mac md5sha1sum zsh python macvim ctags cscope gpg git git-extras tig tmux nmap doxygen graphviz astyle pandoc iftop p7zip unrar tofrodos jq ag proxychains-ng mycli autoconf automake libtool plantuml docker docker-compose docker-machine platformio httpie polipo autossh
+iproute2mac md5sha1sum zsh python macvim ctags cscope gpg git git-extras tig tmux nmap doxygen graphviz astyle pandoc iftop p7zip unrar tofrodos jq ag proxychains-ng mycli autoconf automake libtool plantuml docker docker-compose docker-machine platformio httpie polipo autossh cmake
 
 # srecord
-
+# reattach-to-user-namespace --wrap-pbcopy-and-pbpaste
 brew cask install
-wireshark java mactex ngrok
+wireshark java mactex ngrok macvim --with-override-system-vim
