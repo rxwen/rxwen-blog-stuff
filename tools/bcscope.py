@@ -55,7 +55,8 @@ valid_lan_types = {"c++": "cpp\|c\|cxx\|cc\|h\|hpp\|hxx",
     "java": "java",
     "c#": "cs",
     "python": "py",
-    "ruby": "rb"}
+    "ruby": "rb",
+    "js": "js"}
 lan_type = ''
 if len(args) == 0:
 # no language specified, default to c++
