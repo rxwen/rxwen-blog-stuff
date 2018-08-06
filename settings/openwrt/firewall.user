@@ -8,5 +8,5 @@
 ipset -N gfwlist iphash
 iptables -t nat -A PREROUTING -m set ! --match-set gfwlist dst -j RETURN
 iptables -t nat -A PREROUTING -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-port 1080
-iptables -t nat -A PREROUTING -p udp -d 8.8.8.8 --dport 53 -j REDIRECT --to-port 1053
-iptables -t nat -A PREROUTING -p udp -d 8.8.4.4 --dport 53 -j REDIRECT --to-port 1053
+#iptables -t nat -A PREROUTING -p udp -d 8.8.8.8 --dport 53 -j REDIRECT --to-port 1053
+iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 1053
