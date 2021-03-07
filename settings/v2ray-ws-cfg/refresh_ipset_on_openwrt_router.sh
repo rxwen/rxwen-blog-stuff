@@ -5,6 +5,8 @@
 #echo "add apple ip range"
 ## https://support.apple.com/en-us/HT210060
 #echo "17.0.0.0/8" >> /root/chnroute.txt
+# nslookup seattle.showmethemoney.top | grep "Address 1" | awk '{ print $3 }'
+# nslookup sv.showmethemoney.top | grep "Address 1" | awk '{ print $3 }'
 
 ipset destroy chnroute
 #ipset -N chnroute hash:net maxelem 65536
