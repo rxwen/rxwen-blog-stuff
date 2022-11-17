@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 __VERSION__ = '1.4.1'
@@ -8,9 +8,11 @@ import subprocess
 import sys
 import shutil
 import os
+import platform
 from optparse import OptionParser
 
 file_list_name = "cscope.files"
+file_list_name_ctag = "ctag.files"
 default_database_name = "cscope.out"
 default_database_name_in = "cscope.in.out"
 default_database_name_po = "cscope.po.out"
@@ -51,12 +53,12 @@ opt_parser.add_option("-g", "--gtags", action="store_true", default=False,
 (cmdline_options, args) = opt_parser.parse_args()
 
 # config application behavior
-valid_lan_types = {"c++": "cpp\|c\|cxx\|cc\|h\|hpp\|hxx",
-    "java": "java",
-    "c#": "cs",
-    "python": "py",
-    "ruby": "rb",
-    "js": "js"}
+valid_lan_types = {"c++": ".*\.(h|c|cpp|cxx|hpp)",
+    "java": ".*\.java",
+    "c#": ".*\.cs",
+    "python": ".*\.py",
+    "ruby": ".*\.rb",
+    "js": ".*\.js"}
 lan_type = ''
 if len(args) == 0:
 # no language specified, default to c++
@@ -75,7 +77,6 @@ for arg in args:
         for (k, v) in valid_lan_types.items():
             print "\t" + k
         sys.exit(-1)
-lan_pattern = '.+\.\(' + lan_pattern + '\)$'
 
 # take care of accidently overwrite existing database file
 if not cmdline_options.confirm:
@@ -90,6 +91,9 @@ if not cmdline_options.confirm:
            sys.exit(0)
 
 file_list = open(file_list_name, "w")
+ctag_file_list = None
+if cmdline_options.ctags:
+    ctag_file_list = open(file_list_name_ctag, "w")
 # should we check more directories?
 dirs = []
 excluded_dirs = []
@@ -137,39 +141,6 @@ def include_dirs_from_cfg(dir_path, cfg_name):
 
 include_dirs_from_cfg("./", cmdline_options.input_file)
 
-# find source files in all directories
-def find_files(d, pattern, file_list):
-    import re
-    source_files = []
-    for (root, subdirs, files) in os.walk(d, followlinks=True):
-        for f in files:
-            fpath = os.path.join(root, f)
-            if re.match(pattern, fpath):
-                # check if the file matches exclude_pattern
-                should_exclude = False
-                if cmdline_options.exclude:
-                    for exclude_pattern in cmdline_options.exclude:
-                        if re.match(exclude_pattern, fpath):
-                            should_exclude = True
-                            if cmdline_options.verbose:
-                                print "exclude " + fpath
-                            break
-                if not should_exclude:
-                    # get real path of symbolic link
-                    # cscope can't deal with symbolic link
-                    fpath = convert_path(os.path.realpath(fpath))
-                    source_files.append(fpath + "\n")
-        i = 0
-        while i < len(subdirs):
-            d = subdirs[i]
-            fpath = convert_path(os.path.join(root, d))
-            if excluded_dirs.count(fpath) > 0:
-                subdirs.remove(d)
-            else:
-                i += 1
-        
-    file_list.writelines(source_files)
-
 if cmdline_options.recursive:
 # include cfg files in other directories
     for d in dirs:
@@ -189,12 +160,32 @@ for d in excluded_dirs:
     excluded_dirs[j] = convert_path(d)
     j += 1
 
+findcmd = "find "
+if platform.system() == "Darwin":
+    findcmd += "-E "
+# find -E .. ../../platform/efr32 -iregex ".*\.(h|c|cpp|cxx|hpp)$" -not -path "../../platform/efr32/*"
 for d in dirs:
     print "find " + lan_type + "source files in " + d
-    # change lan_pattern so that it works on python
-    lan_pattern = lan_pattern.replace("\(", "(").replace("\)", ")").replace("\|", "|")
-    find_files(d, lan_pattern, file_list)
+    findcmd += "%s "%d
+if platform.system() != "Darwin":
+    findcmd += "-regextype posix-extended "
+findcmd += "-iregex .*\.(h|c|cpp|cxx|hpp)$"
+
+
+for d in excluded_dirs:
+    findcmd += " -not -ipath %s*"%d
+
+print findcmd
+proc = subprocess.Popen(findcmd.split(" "), stdout=subprocess.PIPE)
+for line in proc.stdout:
+    file_list.write('\"' + line.replace("\n", "") + '\"\n')
+    if cmdline_options.ctags:
+        ctag_file_list.write('' + line.replace("\n", "") + '\n')
+
 file_list.close()
+if cmdline_options.ctags:
+    ctag_file_list.close()
+
 
 # actually generate database
 print "build cscope database"
@@ -213,7 +204,7 @@ if cmdline_options.output_file != default_database_name:
 print "done, cscope database saved in " + cmdline_options.output_file
 if cmdline_options.ctags:
     print "build ctags database"
-    cmd = ["ctags", "-L", file_list_name, "--fields=l"]
+    cmd = ["ctags", "-L", file_list_name_ctag, "--fields=l"]
     subprocess.Popen(cmd).wait()
     print "done, ctags database saved in tags"
 if cmdline_options.gtags:
@@ -223,4 +214,5 @@ if cmdline_options.gtags:
     print "done, gtags database saved in GTAGS"
 if not cmdline_options.preserve_filelist:
     os.remove(file_list_name)
+    os.remove(file_list_name_ctag)
 
