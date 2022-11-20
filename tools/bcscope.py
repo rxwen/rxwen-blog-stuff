@@ -214,5 +214,6 @@ if cmdline_options.gtags:
     print "done, gtags database saved in GTAGS"
 if not cmdline_options.preserve_filelist:
     os.remove(file_list_name)
-    os.remove(file_list_name_ctag)
+    if cmdline_options.ctags:
+        os.remove(file_list_name_ctag)
 
