@@ -1,7 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__VERSION__ = '1.4.1'
+__VERSION__ = '1.5.2'
 __author__ = 'rx.wen218@gmail.com'
 
 import subprocess
@@ -67,15 +67,15 @@ if len(args) == 0:
 lan_pattern = ''
 for arg in args:
     lan_type += arg + ' '
-    if valid_lan_types.has_key(arg):
+    if arg in valid_lan_types:
         if len(lan_pattern) > 0:
             lan_pattern += '\|'
         lan_pattern += valid_lan_types[arg]
     else:
-        print "invalid language type: " + arg 
-        print "must be one of:"
+        print("invalid language type: " + arg)
+        print("must be one of:")
         for (k, v) in valid_lan_types.items():
-            print "\t" + k
+            print("\t" + k)
         sys.exit(-1)
 
 # take care of accidently overwrite existing database file
@@ -113,7 +113,7 @@ def include_dirs_from_cfg(dir_path, cfg_name):
     cfg_file = os.path.join(dir_path, cfg_name)
     if os.path.isfile(cfg_file):
         if cmdline_options.verbose:
-            print "read configuration file from " + cfg_file
+            print("read configuration file from " + cfg_file)
         f = open(cfg_file)
         for line in f:
             line = line.strip() # remove possible \n char
@@ -136,7 +136,7 @@ def include_dirs_from_cfg(dir_path, cfg_name):
                     if search_dirs.count(line) == 0:
                         search_dirs.append(line)
                 elif cmdline_options.verbose:
-                    print line + " is not a directory, omit it"
+                    print(line + " is not a directory, omit it")
         f.close()
 
 include_dirs_from_cfg("./", cmdline_options.input_file)
@@ -165,7 +165,7 @@ if platform.system() == "Darwin":
     findcmd += "-E "
 # find -E .. ../../platform/efr32 -iregex ".*\.(h|c|cpp|cxx|hpp)$" -not -path "../../platform/efr32/*"
 for d in dirs:
-    print "find " + lan_type + "source files in " + d
+    print("find " + lan_type + "source files in " + d)
     findcmd += "%s "%d
 if platform.system() != "Darwin":
     findcmd += "-regextype posix-extended "
@@ -175,9 +175,10 @@ findcmd += "-iregex .*\.(h|c|cpp|cxx|hpp)$"
 for d in excluded_dirs:
     findcmd += " -not -ipath %s*"%d
 
-print findcmd
+print(findcmd)
 proc = subprocess.Popen(findcmd.split(" "), stdout=subprocess.PIPE)
 for line in proc.stdout:
+    line = line.decode()
     file_list.write('\"' + line.replace("\n", "") + '\"\n')
     if cmdline_options.ctags:
         ctag_file_list.write('' + line.replace("\n", "") + '\n')
@@ -188,7 +189,7 @@ if cmdline_options.ctags:
 
 
 # actually generate database
-print "build cscope database"
+print("build cscope database")
 cmd = ["cscope", "-b"]
 if cmdline_options.quick:
     cmd.append("-q")
@@ -201,17 +202,17 @@ if cmdline_options.output_file != default_database_name:
         shutil.move(default_database_name_in, cmdline_options.output_file+".in")
     if os.path.isfile(default_database_name_po):
         shutil.move(default_database_name_po, cmdline_options.output_file+".po")
-print "done, cscope database saved in " + cmdline_options.output_file
+print("done, cscope database saved in " + cmdline_options.output_file)
 if cmdline_options.ctags:
-    print "build ctags database"
+    print("build ctags database")
     cmd = ["ctags", "-L", file_list_name_ctag, "--fields=l"]
     subprocess.Popen(cmd).wait()
-    print "done, ctags database saved in tags"
+    print("done, ctags database saved in tags")
 if cmdline_options.gtags:
-    print "build gtags database"
+    print("build gtags database")
     cmd = ["gtags", "-f", file_list_name]
     subprocess.Popen(cmd).wait()
-    print "done, gtags database saved in GTAGS"
+    print("done, gtags database saved in GTAGS")
 if not cmdline_options.preserve_filelist:
     os.remove(file_list_name)
     if cmdline_options.ctags:
