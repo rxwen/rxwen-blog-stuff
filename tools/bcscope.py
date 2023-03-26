@@ -53,12 +53,14 @@ opt_parser.add_option("-g", "--gtags", action="store_true", default=False,
 (cmdline_options, args) = opt_parser.parse_args()
 
 # config application behavior
-valid_lan_types = {"c++": ".*\.(h|c|cpp|cxx|hpp)",
-    "java": ".*\.java",
-    "c#": ".*\.cs",
-    "python": ".*\.py",
-    "ruby": ".*\.rb",
-    "js": ".*\.js"}
+valid_lan_types = {"c++": "h|c|cpp|cxx|hpp",
+    "c": "h|c",
+    "java": "java",
+    "c#": "cs",
+    "python": "py",
+    "ruby": "rb",
+    "assembly": "s",
+    "js": "js"}
 lan_type = ''
 if len(args) == 0:
 # no language specified, default to c++
@@ -69,7 +71,7 @@ for arg in args:
     lan_type += arg + ' '
     if arg in valid_lan_types:
         if len(lan_pattern) > 0:
-            lan_pattern += '\|'
+            lan_pattern += '|'
         lan_pattern += valid_lan_types[arg]
     else:
         print("invalid language type: " + arg)
@@ -77,6 +79,7 @@ for arg in args:
         for (k, v) in valid_lan_types.items():
             print("\t" + k)
         sys.exit(-1)
+print(lan_pattern)
 
 # take care of accidently overwrite existing database file
 if not cmdline_options.confirm:
@@ -169,7 +172,7 @@ for d in dirs:
     findcmd += "%s "%d
 if platform.system() != "Darwin":
     findcmd += "-regextype posix-extended "
-findcmd += "-iregex .*\.(h|c|cpp|cxx|hpp)$"
+findcmd += "-iregex .*\.(" + lan_pattern + ")$"
 
 
 for d in excluded_dirs:
