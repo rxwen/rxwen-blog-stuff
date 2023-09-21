@@ -9,7 +9,6 @@ setx JAVA_HOME %TOOLS_PATH%\jdk-11.0.2
 
 REM set PATHVAL=%PATH%
 set PATHVAL=%TOOLS_PATH%\apps
-set PATHVAL=%PATHVAL%;%TOOLS_PATH%\Python27;%TOOLS_PATH%\Python27\scripts
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\windbg\x64
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\nmap
 set PATHVAL=%PATHVAL%;%JAVA_HOME%\bin
@@ -28,6 +27,7 @@ set PATHVAL=%PATHVAL%;%TOOLS_PATH%\ffmpeg\bin
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\flutter\bin
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\everything
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Local\Programs\Python\Python311\Scripts;%USERPROFILE%\AppData\Local\Programs\Python\Python311
+set PATHVAL=%PATHVAL%;%TOOLS_PATH%\Python27;%TOOLS_PATH%\Python27\scripts
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Local\Programs\Microsoft VS Code
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Roaming\nmp
@@ -36,3 +36,6 @@ setx PATH %PATHVAL%
 REM md %TOOLS_PATH%
 REM xcopy C:\src\windows_tools\vim c:\tools\vim\ /O /E /Y
 REM reg import windbg_context_menu.reg
+REM powershell run Install-Module -name PSFzf -RequiredVersion 2.0.0
+REM powershell run Install-Module -name ZLocation
+REM powershell run Install-Module -name posh-git
