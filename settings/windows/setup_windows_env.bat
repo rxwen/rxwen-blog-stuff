@@ -26,6 +26,7 @@ set PATHVAL=%PATHVAL%;%TOOLS_PATH%\ditto
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\ffmpeg\bin
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\flutter\bin
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\everything
+set PATHVAL=%PATHVAL%;%%JAVA_HOME%%\bin
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Local\Programs\Python\Python311\Scripts;%USERPROFILE%\AppData\Local\Programs\Python\Python311
 set PATHVAL=%PATHVAL%;%TOOLS_PATH%\Python27;%TOOLS_PATH%\Python27\scripts
 set PATHVAL=%PATHVAL%;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps
