@@ -164,19 +164,27 @@ for d in excluded_dirs:
     j += 1
 
 findcmd = "find "
-if platform.system() == "Darwin":
-    findcmd += "-E "
-# find -E .. ../../platform/efr32 -iregex ".*\.(h|c|cpp|cxx|hpp)$" -not -path "../../platform/efr32/*"
-for d in dirs:
-    print("find " + lan_type + "source files in " + d)
-    findcmd += "%s "%d
-if platform.system() != "Darwin":
-    findcmd += "-regextype posix-extended "
-findcmd += "-iregex .*\.(" + lan_pattern + ")$"
+if platform.system() == "Windows":
+    findcmd = "fd --type file"
+    for e in lan_pattern.split('|'):
+        findcmd += " -e %s" % e
+    for d in dirs:
+        print("find " + lan_type + "source files in " + d)
+        findcmd += " %s"%d
+else:
+    if platform.system() == "Darwin":
+        findcmd += "-E "
+    # find -E .. ../../platform/efr32 -iregex ".*\.(h|c|cpp|cxx|hpp)$" -not -path "../../platform/efr32/*"
+    for d in dirs:
+        print("find " + lan_type + "source files in " + d)
+        findcmd += "%s "%d
+    if platform.system() != "Darwin":
+        findcmd += "-regextype posix-extended "
+    findcmd += "-iregex .*\.(" + lan_pattern + ")$"
 
 
-for d in excluded_dirs:
-    findcmd += " -not -ipath %s*"%d
+    for d in excluded_dirs:
+        findcmd += " -not -ipath %s*"%d
 
 print(findcmd)
 proc = subprocess.Popen(findcmd.split(" "), stdout=subprocess.PIPE)
