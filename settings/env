@@ -1,0 +1,8 @@
+export PATH="$PATH:$HOME/.local/bin"
+export JAVA_HOME=$HOME/opt/jdk-19.0.1
+export PATH=$JAVA_HOME/bin:$PATH
+export ANDROID_SDK=$HOME/projects/android_sdk
+export PATH=$ANDROID_SDK/cmdline-tools/latest/bin:$PATH
+export PATH=$ANDROID_SDK/platform-tools/:$PATH
+export PATH=$PATH:$HOME/projects/flutter/bin
+export PATH=$PATH:$HOME/projects/go/bin
