@@ -12,7 +12,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # add zsh-completion & zsh-syntax-highlighter plugins for on-my-zsh (place in ~/.oh-my-zsh/custom/plugins/)
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-wget https://raw.githubusercontent.com/clvv/fasd/master/fasd
 chmod +x fasd
 sudo mv fasd /usr/local/bin
 
@@ -21,7 +20,7 @@ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 git clone https://github.com/rxwen/myvim_vundle ~/.vim && cd ~/.vim && git submodule update --init --recursive
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+~/.fzf/install --all
 # for serial port accessing, install ckermit
 # create "KERNEL=="ttyUSB*", MODE="0666" rule in /etc/udev/rules.d/50-usb-tty.rules,  then use kermit -l /dev/ttyUSB* -b 115200 to access
 
