@@ -18,7 +18,7 @@ sudo mv fasd /usr/local/bin
 
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
-git clone https://github.com/rxwen/myvim_vundle ~/.vim
+git clone https://github.com/rxwen/myvim_vundle ~/.vim && cd ~/.vim && git submodule update --init --recursive
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
