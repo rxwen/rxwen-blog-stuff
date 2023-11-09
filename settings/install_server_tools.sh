@@ -19,6 +19,8 @@ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
 git clone https://github.com/rxwen/myvim_vundle ~/.vim && cd ~/.vim && git submodule update --init --recursive
 
+sed -i 's/plugins=(git)/plugins=(git fasd zsh-syntax-highlighting zsh-autosuggestions git-extras kubectl)/g' ~/.zshrc
+
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
 # for serial port accessing, install ckermit
