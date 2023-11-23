@@ -6,7 +6,8 @@ export PATH=$ANDROID_SDK/cmdline-tools/latest/bin:$PATH
 export PATH=$ANDROID_SDK/platform-tools/:$PATH
 export PATH=$PATH:$HOME/projects/flutter/bin
 export PATH=$PATH:$HOME/projects/go/bin
-
 export GEM_HOME=$HOME/.gem
 export PATH=$GEM_HOME/bin:$PATH
 export PATH=$GEM_HOME/ruby/3.2.0/bin:$PATH
+export GOPATH=$HOME/projects/go_root/
+export PATH=$PATH:$GOPATH/bin
