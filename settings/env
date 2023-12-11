@@ -1,5 +1,6 @@
 export PATH="$PATH:$HOME/.local/bin"
-export JAVA_HOME=$HOME/opt/jdk-19.0.1
+#export JAVA_HOME=$HOME/projects/jdk-11.0.2
+export JAVA_HOME=$HOME/projects/jdk-19.0.1
 export PATH=$JAVA_HOME/bin:$PATH
 export ANDROID_SDK=$HOME/projects/android_sdk
 export PATH=$ANDROID_SDK/cmdline-tools/latest/bin:$PATH
@@ -11,3 +12,9 @@ export PATH=$GEM_HOME/bin:$PATH
 export PATH=$GEM_HOME/ruby/3.2.0/bin:$PATH
 export GOPATH=$HOME/projects/go_root/
 export PATH=$PATH:$GOPATH/bin
+export FVM_HOME=$HOME/.fvm
+export PATH=$PATH:$HOME/.pub-cache/bin
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
