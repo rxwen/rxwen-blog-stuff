@@ -12,6 +12,7 @@ RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/
 # add zsh-completion & zsh-syntax-highlighter plugins for on-my-zsh (place in ~/.oh-my-zsh/custom/plugins/)
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 chmod +x fasd
 sudo mv fasd /usr/local/bin
 
@@ -19,7 +20,7 @@ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 
 git clone https://github.com/rxwen/myvim_vundle ~/.vim && cd ~/.vim && git submodule update --init --recursive
 
-sed -i 's/plugins=(git)/plugins=(git fasd zsh-syntax-highlighting zsh-autosuggestions git-extras kubectl)/g' ~/.zshrc
+sed -i 's/plugins=(git)/plugins=(git fasd zsh-syntax-highlighting zsh-completions zsh-autosuggestions git-extras kubectl)/g' ~/.zshrc
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
