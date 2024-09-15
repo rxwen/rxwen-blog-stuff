@@ -41,6 +41,7 @@ setx PATH "%PATHVAL%"
 REM md %TOOLS_PATH%
 REM xcopy C:\src\windows_tools\vim c:\tools\vim\ /O /E /Y
 REM reg import windbg_context_menu.reg
-REM powershell run Install-Module -name PSFzf -RequiredVersion 2.0.0
-REM powershell run Install-Module -name ZLocation
-REM powershell run Install-Module -name posh-git
+
+REM install clink for cmd https://chrisant996.github.io/clink/clink.html
+REM install clink z plugin https://github.com/skywind3000/z.lua
+REM install clink fzf plugin https://github.com/chrisant996/clink-fzf
