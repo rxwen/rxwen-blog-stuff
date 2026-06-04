@@ -1,0 +1,35 @@
+# yazi keymap, create symbol link to ~/.config/yazi/keymap.toml
+[[mgr.prepend_keymap]]
+on   = [ "T" ]
+run  = "plugin toggle-pane min-preview"
+desc = "Toggle preview pane"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-d>", "n" ]
+run  = "cd ~/Downloads"
+desc = "Cd to ~/Downloads"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-d>", "p" ]
+run  = "cd ~/projects"
+desc = "Cd to ~/projects"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-d>", "m" ]
+run  = "cd ~/Documents"
+desc = "Cd to ~/Documents"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-d>", "d" ]
+run  = "cd ~/Desktop"
+desc = "Cd to ~/Desktop"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-d>", "h" ]
+run  = "cd ~/"
+desc = "Cd to ~/"
+
+[[mgr.prepend_keymap]]
+on   = [ "<F7>" ]
+run  = "create"
+desc = "create new file or directory"
