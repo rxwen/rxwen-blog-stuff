@@ -42,6 +42,11 @@ setopt SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUP
        HIST_IGNORE_SPACE HIST_FIND_NO_DUPS HIST_SAVE_NO_DUPS
 
 # ============================================================================
+# Word boundaries (Ctrl+W, Alt+B/F): treat / . - as separators
+# ============================================================================
+WORDCHARS=${WORDCHARS//[\/.-]}   # stop at / . -
+
+# ============================================================================
 # Prompt / shell tools (each guarded — safe on hosts where the tool is absent)
 # ============================================================================
 command -v starship >/dev/null && eval "$(starship init zsh)"
