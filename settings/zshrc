@@ -64,6 +64,8 @@ if command -v fzf >/dev/null; then
   fi
 fi
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # zoxide fzf completion for `z`
 if command -v zoxide >/dev/null && command -v fzf >/dev/null; then
   _zoxide_fzf_complete() {
@@ -121,4 +123,3 @@ else
   # macOS / BSD path uses -G instead
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
