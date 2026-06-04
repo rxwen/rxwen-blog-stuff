@@ -93,10 +93,12 @@ command -v pyenv >/dev/null && eval "$(pyenv init -)"
 # Interactive UX plugins (autosuggestions; syntax-highlighting MUST be last)
 # ============================================================================
 _src "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
-     /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+     /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+     "$HOME/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 _src "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
-     /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+     /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+     "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 unset -f _src
 
