@@ -1,0 +1,110 @@
+# ============================================================================
+# Environment + platform detection
+# ============================================================================
+[ -f ~/.env ] && . ~/.env        # per-host config & secrets (NOT in git)
+
+# Homebrew prefix: Apple Silicon, Intel, or Linuxbrew. Empty if no brew.
+# (probe known dirs instead of `brew --prefix` to avoid a subprocess at startup)
+BREW_PREFIX=""
+for _d in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew "$HOME/.linuxbrew"; do
+  [[ -x $_d/bin/brew ]] && { BREW_PREFIX=$_d; break; }
+done
+unset _d
+
+# source the first readable file among the candidates given
+_src() { local f; for f in "$@"; do [[ -r $f ]] && { source "$f"; return 0; }; done; return 1; }
+
+# ============================================================================
+# Auto-start tmux on local (non-SSH) interactive shells
+# ============================================================================
+if [[ -z "$TMUX" && ! -v SSH_CONNECTION ]] && command -v tmux >/dev/null; then
+  tmux new-session
+fi
+
+# ============================================================================
+# Completion
+# ============================================================================
+for _d in "$BREW_PREFIX/share/zsh-completions" /usr/share/zsh-completions; do
+  [[ -d $_d ]] && fpath=("$_d" $fpath)
+done
+unset _d
+autoload -Uz compinit && compinit -u   # -u: tolerate group-writable dirs (Homebrew, etc.)
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
+
+# ============================================================================
+# History (10M entries, shared across sessions)
+# ============================================================================
+export HISTFILE=~/.zsh_history
+export HISTSIZE=10000000
+export SAVEHIST=10000000
+setopt SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS \
+       HIST_IGNORE_SPACE HIST_FIND_NO_DUPS HIST_SAVE_NO_DUPS
+
+# ============================================================================
+# Prompt / shell tools (each guarded — safe on hosts where the tool is absent)
+# ============================================================================
+command -v starship >/dev/null && eval "$(starship init zsh)"
+command -v zoxide   >/dev/null && eval "$(zoxide init zsh)"
+command -v atuin    >/dev/null && eval "$(atuin init zsh)"   # Ctrl+R history
+
+# fzf — Ctrl+T / **<Tab>. Prefer the built-in integration; fall back for old fzf.
+if command -v fzf >/dev/null; then
+  if fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
+  else
+    _src /usr/share/doc/fzf/examples/key-bindings.zsh "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+    _src /usr/share/doc/fzf/examples/completion.zsh   "$BREW_PREFIX/opt/fzf/shell/completion.zsh"
+  fi
+fi
+
+# zoxide fzf completion for `z`
+if command -v zoxide >/dev/null && command -v fzf >/dev/null; then
+  _zoxide_fzf_complete() {
+    local sel
+    sel="$(zoxide query --list -- ${words[2,-1]} \
+          | fzf --height 40% --reverse --query="${words[-1]}" --select-1 --exit-0)"
+    [[ -n "$sel" ]] && compadd -U -Q -- "${(q-)sel}"
+  }
+  compdef _zoxide_fzf_complete z
+fi
+
+# ============================================================================
+# Language toolchains / PATH
+# ============================================================================
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || { [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"; }
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
+
+[[ -d $HOME/.rvm/bin ]] && export PATH="$PATH:$HOME/.rvm/bin"
+[[ -f $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
+
+# ============================================================================
+# Tool completions
+# ============================================================================
+[[ -f ~/.dart-cli-completion/zsh-config.zsh ]] && . ~/.dart-cli-completion/zsh-config.zsh
+[[ -f ~/.local/google-cloud-sdk/completion.zsh.inc ]] && . ~/.local/google-cloud-sdk/completion.zsh.inc
+
+# ============================================================================
+# Interactive UX plugins (autosuggestions; syntax-highlighting MUST be last)
+# ============================================================================
+_src "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+     /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+_src "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+     /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+unset -f _src
+
+# ============================================================================
+# Aliases (optional — eza/bat)
+# ============================================================================
+# alias ls="eza --icons --group-directories-first"
+# alias ll="eza -l --icons --sort=name"
+# alias lt="eza --tree --icons --level=2"
+# alias cat="bat --paging=never --style=plain"
+
