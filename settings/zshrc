@@ -28,6 +28,7 @@ for _d in "$BREW_PREFIX/share/zsh-completions" /usr/share/zsh-completions; do
   [[ -d $_d ]] && fpath=("$_d" $fpath)
 done
 unset _d
+[[ -d ~/.zsh/completions ]] && fpath=(~/.zsh/completions $fpath)
 autoload -Uz compinit && compinit -u   # -u: tolerate group-writable dirs (Homebrew, etc.)
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive

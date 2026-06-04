@@ -1,0 +1,27 @@
+#compdef pkgtool
+compdef _pkgtool pkgtool
+
+_pkgtool() {
+	local -a opts
+	local current completion_current
+	current=${words[-1]}
+	# urfave/cli disables completion when "--" appears in args, so map bare "--"
+	# to "-". Both strip to empty prefix in printFlagSuggestions, showing all flags.
+	if [[ "${current}" == "--" ]]; then
+		completion_current="-"
+	else
+		completion_current="${current}"
+	fi
+	# Always pass the current word so the binary handles file completion itself.
+	opts=("${(@f)$(${words[@]:0:#words[@]-1} "${completion_current}" --generate-shell-completion 2>/dev/null)}")
+
+	if [[ "${opts[1]}" != "" ]]; then
+		_describe 'values' opts
+	else
+		_files
+	fi
+}
+
+if [ "$funcstack[1]" = "_pkgtool" ]; then
+	_pkgtool
+fi
