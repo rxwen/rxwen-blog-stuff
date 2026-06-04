@@ -107,4 +107,8 @@ unset -f _src
 # alias ll="eza -l --icons --sort=name"
 # alias lt="eza --tree --icons --level=2"
 # alias cat="bat --paging=never --style=plain"
-
+if [[ "$(uname -s)" == "Linux" ]]; then
+  alias ls='ls --color=auto'
+else
+  # macOS / BSD path uses -G instead
+fi
