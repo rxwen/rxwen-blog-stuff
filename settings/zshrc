@@ -120,3 +120,5 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 else
   # macOS / BSD path uses -G instead
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
