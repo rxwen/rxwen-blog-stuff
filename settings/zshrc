@@ -43,6 +43,12 @@ setopt SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUP
        HIST_IGNORE_SPACE HIST_FIND_NO_DUPS HIST_SAVE_NO_DUPS
 
 # ============================================================================
+# Keybindings: force emacs mode (Ctrl+A/E, Ctrl+W, etc.)
+# Otherwise zsh picks vi keys because $EDITOR (nvim) contains "vi".
+# ============================================================================
+bindkey -e
+
+# ============================================================================
 # Word boundaries (Ctrl+W, Alt+B/F): treat / . - as separators
 # ============================================================================
 WORDCHARS=${WORDCHARS//[\/.-]}   # stop at / . -
@@ -120,6 +126,8 @@ unset -f _src
 if [[ "$(uname -s)" == "Linux" ]]; then
   alias ls='ls --color=auto'
 else
-  # macOS / BSD path uses -G instead
+  # macOS / BSD: enable color for ls (and grep) via CLICOLOR
+  export CLICOLOR=1
+  alias ls='ls -G'
 fi
 
