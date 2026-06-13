@@ -33,6 +33,15 @@ autoload -Uz compinit && compinit -u   # -u: tolerate group-writable dirs (Homeb
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
 
+# Colorize the completion menu. zsh uses GNU-style $LS_COLORS here (NOT the
+# BSD LSCOLORS/CLICOLOR that `ls -G` reads), so populate it via (g)dircolors.
+if [[ -z $LS_COLORS ]]; then
+  if command -v gdircolors >/dev/null; then eval "$(gdircolors -b)"
+  elif command -v dircolors >/dev/null; then eval "$(dircolors -b)"
+  fi
+fi
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 # ============================================================================
 # History (10M entries, shared across sessions)
 # ============================================================================
