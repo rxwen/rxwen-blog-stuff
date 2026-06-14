@@ -133,6 +133,52 @@ WantedBy=default.target
 - Change `%h/vaults` to the parent directory that holds your vaults.
 - Listens on `127.0.0.1:18080`; with the dedicated-port setup, do **not** add `--baseurl` (WebDAV is served at the root path).
 
+#### Serving vaults scattered across different locations — rclone's `combine` backend
+
+If your vault directories live in different places (not under one common parent), use rclone's
+**`combine`** backend to mount several distinct directories under a single WebDAV root, each at its
+own subpath.
+
+First create a `combine` remote:
+
+```bash
+rclone config create obsidian combine \
+  upstreams "llm=/home/USER/Documents/llm_wikis other=/home/USER/projects/notes"
+```
+
+This writes the following to `~/.config/rclone/rclone.conf`:
+
+```ini
+[obsidian]
+type = combine
+upstreams = llm=/home/USER/Documents/llm_wikis other=/home/USER/projects/notes
+```
+
+Each `name=path` pair becomes one top-level directory in the merged view.
+
+Then change the systemd `ExecStart` to serve this remote (note it is `obsidian:`, not a path):
+
+```ini
+ExecStart=%h/.local/bin/rclone serve webdav obsidian: --addr 127.0.0.1:18080 --htpasswd %h/.config/rclone/htpasswd
+```
+
+Reload and restart:
+
+```bash
+systemctl --user daemon-reload && systemctl --user restart webdav
+```
+
+The WebDAV root now exposes two trees, `/llm/...` and `/other/...`, which clients access by subpath:
+
+```
+https://YOUR_DOMAIN:6443/llm/llm_wiki_slam/
+https://YOUR_DOMAIN:6443/other/...
+```
+
+> `combine` maps each directory to a **distinct subpath**. If instead you want to overlay multiple
+> directories into the **same** namespace, that is the `union` backend — but syncing a vault
+> generally doesn't need it.
+
 ### B.2 frpc — Tunnel Client
 
 `~/.config/frp/frpc.toml`:
