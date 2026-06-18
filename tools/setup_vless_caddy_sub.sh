@@ -2,7 +2,16 @@
 # =============================================================================
 # VPS Setup Script
 # Purpose: Install Xray (VLESS+REALITY) + Caddy Subscription Server
-# Usage: Set environment variables then run this script
+#
+# Two subscription-server modes, auto-selected:
+#   * No domain  -> plain HTTP on SUB_PORT (default 8080), gated by URL token.
+#   * With domain (SUB_DOMAIN set) -> HTTPS on SUB_HTTPS_PORT (default 8443):
+#       - Aliyun keys present -> DNS-01 cert (custom Caddy build w/ alidns).
+#       - no keys             -> automatic HTTP-01 cert (stock Caddy, needs
+#                                port 80 open + an A-record pointing here).
+#
+# Configure via environment variables OR command-line flags (flags win).
+# Run with -h / --help for the full flag list.
 # =============================================================================
 
 set -euo pipefail
@@ -24,42 +33,116 @@ warn()    { echo -e "${YELLOW}[WARN]${NC} $*"; }
 error()   { echo -e "${RED}[ERROR]${NC} $*"; exit 1; }
 section() { echo -e "\n${BOLD}${CYAN}=== $* ===${NC}"; }
 
-# -----------------------------------------------------------------------------
-# Check environment variables
-# -----------------------------------------------------------------------------
-section "Checking Environment Variables"
+usage() {
+    cat <<'USAGE'
+Usage: setup_vless_caddy_sub.sh [options]
 
-MISSING=0
+Options (each also settable via the same-named environment variable):
+  --reality-sni <domain>     REALITY camouflage domain (borrowed, e.g.
+                             www.microsoft.com). REQUIRED. [REALITY_SNI]
+  --node-name <name>         Friendly node / subscription title.
+                             Default: <hostname>-REALITY. [NODE_NAME]
 
-check_env() {
-    local var=$1
-    local desc=$2
-    if [ -z "${!var:-}" ]; then
-        echo -e "  ${RED}✗${NC} ${BOLD}${var}${NC} not set — ${desc}"
-        MISSING=$((MISSING + 1))
-    else
-        echo -e "  ${GREEN}✓${NC} ${BOLD}${var}${NC} = ${!var}"
-    fi
+  --domain <domain>          Subscription domain. If set, the subscription
+                             server runs over HTTPS. If omitted, it runs over
+                             plain HTTP. [SUB_DOMAIN]
+  --sub-port <port>          HTTP port used in no-domain mode. Default 8080.
+                             [SUB_PORT]
+  --https-port <port>        HTTPS port used in domain mode. Default 8443.
+                             [SUB_HTTPS_PORT]
+
+  --ali-key-id <id>          Aliyun AccessKey ID     (enables DNS-01 in domain
+  --ali-key-secret <secret>  Aliyun AccessKey Secret  mode). Both optional.
+                             [ALI_ACCESS_KEY_ID / ALI_ACCESS_KEY_SECRET]
+
+  -h, --help                 Show this help and exit.
+
+Examples:
+  # No domain (HTTP, token-gated):
+  REALITY_SNI=www.microsoft.com NODE_NAME=hk-node bash setup_vless_caddy_sub.sh
+
+  # Domain, automatic HTTP-01 cert (needs port 80 open + A-record):
+  bash setup_vless_caddy_sub.sh --reality-sni www.microsoft.com \
+       --domain sub.example.com
+
+  # Domain, DNS-01 cert via Aliyun (works even with port 80/443 busy):
+  bash setup_vless_caddy_sub.sh --reality-sni www.microsoft.com \
+       --domain sub.example.com --ali-key-id LTAIxxx --ali-key-secret xxx
+USAGE
 }
 
-check_env "SUB_DOMAIN"            "Subscription domain, e.g. sub.example.com"
-check_env "ALI_ACCESS_KEY_ID"     "Aliyun AccessKey ID"
-check_env "ALI_ACCESS_KEY_SECRET" "Aliyun AccessKey Secret"
-check_env "REALITY_SNI"           "REALITY camouflage domain, e.g. www.example.com"
+# -----------------------------------------------------------------------------
+# Resolve configuration: environment defaults, then override with CLI flags.
+# -----------------------------------------------------------------------------
+REALITY_SNI="${REALITY_SNI:-}"
+NODE_NAME="${NODE_NAME:-}"
+SUB_DOMAIN="${SUB_DOMAIN:-}"
+SUB_PORT="${SUB_PORT:-8080}"
+SUB_HTTPS_PORT="${SUB_HTTPS_PORT:-8443}"
+ALI_ACCESS_KEY_ID="${ALI_ACCESS_KEY_ID:-}"
+ALI_ACCESS_KEY_SECRET="${ALI_ACCESS_KEY_SECRET:-}"
 
-if [ $MISSING -gt 0 ]; then
-    echo ""
-    echo -e "${RED}Missing ${MISSING} required environment variable(s). Set them and re-run:${NC}"
-    echo ""
-    echo "  export SUB_DOMAIN=\"sub.example.com\""
-    echo "  export ALI_ACCESS_KEY_ID=\"LTAIxxxxxxxxxxxxxxxxx\""
-    echo "  export ALI_ACCESS_KEY_SECRET=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\""
+need_val() { [ $# -ge 2 ] || error "Option '$1' requires a value (see --help)"; }
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --reality-sni|--sni)   need_val "$@"; REALITY_SNI="$2";           shift 2 ;;
+        --node-name)           need_val "$@"; NODE_NAME="$2";             shift 2 ;;
+        --domain|--sub-domain) need_val "$@"; SUB_DOMAIN="$2";            shift 2 ;;
+        --sub-port)            need_val "$@"; SUB_PORT="$2";              shift 2 ;;
+        --https-port)          need_val "$@"; SUB_HTTPS_PORT="$2";        shift 2 ;;
+        --ali-key-id)          need_val "$@"; ALI_ACCESS_KEY_ID="$2";     shift 2 ;;
+        --ali-key-secret)      need_val "$@"; ALI_ACCESS_KEY_SECRET="$2"; shift 2 ;;
+        -h|--help)             usage; exit 0 ;;
+        *) error "Unknown argument: $1 (see --help)" ;;
+    esac
+done
+
+NODE_NAME="${NODE_NAME:-$(hostname)-REALITY}"
+
+# -----------------------------------------------------------------------------
+# Validate and derive mode
+# -----------------------------------------------------------------------------
+section "Checking Configuration"
+
+[ -n "$REALITY_SNI" ] || {
+    echo -e "${RED}REALITY_SNI is required.${NC} Set it and re-run, e.g.:"
     echo "  export REALITY_SNI=\"www.microsoft.com\""
+    echo "  # or: --reality-sni www.microsoft.com"
     echo ""
+    echo "Run with --help for all options."
     exit 1
+}
+
+if [ -n "$SUB_DOMAIN" ]; then
+    USE_TLS=true
+    if [ -n "$ALI_ACCESS_KEY_ID" ] && [ -n "$ALI_ACCESS_KEY_SECRET" ]; then
+        USE_ALIDNS=true
+        CERT_METHOD="DNS-01 (Aliyun alidns)"
+    else
+        USE_ALIDNS=false
+        CERT_METHOD="HTTP-01 (automatic, needs port 80 + A-record)"
+    fi
+    SUB_SCHEME="https"
+    SUB_LISTEN_PORT="$SUB_HTTPS_PORT"
+    SITE_ADDRESS="${SUB_DOMAIN}:${SUB_HTTPS_PORT}"
+else
+    USE_TLS=false
+    USE_ALIDNS=false
+    CERT_METHOD="none (plain HTTP)"
+    SUB_SCHEME="http"
+    SUB_LISTEN_PORT="$SUB_PORT"
+    SITE_ADDRESS=":${SUB_PORT}"
 fi
 
-success "All environment variables are set"
+success "REALITY SNI:   $REALITY_SNI"
+success "Node name:     $NODE_NAME"
+if [ "$USE_TLS" = true ]; then
+    success "Mode:          HTTPS  (domain: $SUB_DOMAIN, port: $SUB_HTTPS_PORT)"
+    success "Cert method:   $CERT_METHOD"
+else
+    success "Mode:          HTTP   (port: $SUB_PORT, token-gated)"
+fi
 
 # -----------------------------------------------------------------------------
 # Check root privileges
@@ -91,8 +174,13 @@ UUID=$(xray uuid)
 success "UUID:      $UUID"
 
 KEYPAIR=$(xray x25519)
-PRIVATE_KEY=$(echo "$KEYPAIR" | grep "Private key" | awk '{print $3}')
-PUBLIC_KEY=$(echo "$KEYPAIR" | grep "Public key" | awk '{print $3}')
+# Output format differs across Xray versions:
+#   old (<= v1.8):  "Private key: xxx"      / "Public key: xxx"
+#   new (v26.x):    "PrivateKey: xxx"       / "Password (PublicKey): xxx"
+# Match case-insensitively on private/public and take the last field (the key).
+PRIVATE_KEY=$(echo "$KEYPAIR" | grep -i "private" | awk '{print $NF}')
+PUBLIC_KEY=$(echo "$KEYPAIR"  | grep -i "public"  | awk '{print $NF}')
+[ -n "$PRIVATE_KEY" ] && [ -n "$PUBLIC_KEY" ] || error "Failed to parse keys from 'xray x25519' output:\n$KEYPAIR"
 success "PrivateKey: $PRIVATE_KEY"
 success "PublicKey:  $PUBLIC_KEY"
 
@@ -182,26 +270,40 @@ fi
 # -----------------------------------------------------------------------------
 section "Installing Caddy"
 
-apt install -y -qq debian-keyring debian-archive-keyring apt-transport-https
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
-  | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg 2>/dev/null
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
-  | tee /etc/apt/sources.list.d/caddy-stable.list > /dev/null
-apt update -qq
-apt install -y -qq caddy
-success "Caddy base version installed"
+install_caddy_repo() {
+    apt install -y -qq debian-keyring debian-archive-keyring apt-transport-https
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' \
+      | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg 2>/dev/null
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
+      | tee /etc/apt/sources.list.d/caddy-stable.list > /dev/null
+    apt update -qq
+    apt install -y -qq caddy
+}
 
-info "Downloading Caddy with alidns plugin..."
-systemctl stop caddy
-curl -fsSL \
-  "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Falidns" \
-  -o /usr/bin/caddy
-chmod +x /usr/bin/caddy
-
-if caddy list-modules 2>/dev/null | grep -q "alidns"; then
-    success "alidns plugin loaded: $(caddy version)"
+# Stock Caddy (provides the systemd unit + caddy user). Skip if already present.
+if command -v caddy >/dev/null 2>&1; then
+    success "Caddy already installed, skipping: $(caddy version | head -1)"
 else
-    error "alidns plugin failed to load"
+    install_caddy_repo
+    success "Caddy installed: $(caddy version | head -1)"
+fi
+
+# DNS-01 needs the alidns plugin, which the stock package lacks. Overlay a custom
+# build over the package binary (keeping the package's systemd unit + user).
+if [ "$USE_ALIDNS" = true ]; then
+    if caddy list-modules 2>/dev/null | grep -q "alidns"; then
+        success "alidns plugin already present: $(caddy version | head -1)"
+    else
+        info "Downloading Caddy with alidns plugin (for DNS-01)..."
+        systemctl stop caddy 2>/dev/null || true
+        curl -fsSL \
+          "https://caddyserver.com/api/download?os=linux&arch=amd64&p=github.com%2Fcaddy-dns%2Falidns" \
+          -o /usr/bin/caddy
+        chmod +x /usr/bin/caddy
+        caddy list-modules 2>/dev/null | grep -q "alidns" \
+            || error "alidns plugin failed to load"
+        success "alidns plugin loaded: $(caddy version | head -1)"
+    fi
 fi
 
 # -----------------------------------------------------------------------------
@@ -212,10 +314,25 @@ section "Generating Subscription Token and VLESS URL"
 SUB_TOKEN=$(openssl rand -hex 20)
 success "Subscription token: $SUB_TOKEN"
 
-SERVER_IP=$(curl -s https://api.ipify.org || curl -s https://ifconfig.me)
+# Base64 form of the friendly name, for the Clash "profile-title" response header
+# (clients display this as the subscription title instead of the URL token).
+SUB_TITLE_B64=$(printf '%s' "$NODE_NAME" | base64 -w 0)
+
+SERVER_IP=$(curl -s --max-time 10 https://api.ipify.org || curl -s --max-time 10 https://ifconfig.me)
+[ -n "$SERVER_IP" ] || error "Could not determine public IP address"
 success "Server IP: $SERVER_IP"
 
-VLESS_URL="vless://${UUID}@${SERVER_IP}:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${REALITY_SNI}&fp=chrome&pbk=${PUBLIC_KEY}&sid=${SHORT_ID}&type=tcp#$(hostname)"
+# Subscription URL host: the domain in HTTPS mode, the public IP in HTTP mode.
+if [ "$USE_TLS" = true ]; then
+    SUB_HOST="$SUB_DOMAIN"
+else
+    SUB_HOST="$SERVER_IP"
+fi
+SUB_BASE_URL="${SUB_SCHEME}://${SUB_HOST}:${SUB_LISTEN_PORT}/sub/${SUB_TOKEN}"
+
+# The VLESS node itself always connects to the server IP on 443 (REALITY),
+# regardless of subscription-server mode.
+VLESS_URL="vless://${UUID}@${SERVER_IP}:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=${REALITY_SNI}&fp=chrome&pbk=${PUBLIC_KEY}&sid=${SHORT_ID}&type=tcp#${NODE_NAME}"
 success "VLESS URL generated"
 
 # -----------------------------------------------------------------------------
@@ -229,8 +346,7 @@ mkdir -p /etc/caddy/sub
 echo -n "$VLESS_URL" | base64 -w 0 > /etc/caddy/sub/base64.txt
 success "Base64 subscription file created"
 
-# Clash YAML subscription file
-NODE_NAME="$(hostname)-REALITY"
+# Clash YAML subscription file (NODE_NAME defined earlier)
 cat > /etc/caddy/sub/clash.yaml << EOF
 mixed-port: 7890
 allow-lan: false
@@ -289,15 +405,27 @@ success "Clash YAML subscription file created"
 # -----------------------------------------------------------------------------
 section "Writing Caddyfile"
 
-cat > /etc/caddy/Caddyfile << EOF
-{
+# Optional global block: only DNS-01 mode needs the acme_dns directive.
+GLOBAL_BLOCK=""
+if [ "$USE_ALIDNS" = true ]; then
+    GLOBAL_BLOCK="{
     acme_dns alidns {
         access_key_id     ${ALI_ACCESS_KEY_ID}
         access_key_secret ${ALI_ACCESS_KEY_SECRET}
     }
 }
 
-${SUB_DOMAIN}:8443 {
+"
+fi
+
+# Site address is either ':<port>' (HTTP, all interfaces) or
+# '<domain>:<port>' (HTTPS, Caddy auto-provisions a cert for the domain).
+cat > /etc/caddy/Caddyfile << EOF
+${GLOBAL_BLOCK}${SITE_ADDRESS} {
+
+    # Friendly subscription title for Clash-family clients (Clash Verge / Mihomo /
+    # Stash). Base64-encoded so non-ASCII names work. Applied to every response.
+    header profile-title "base64:${SUB_TITLE_B64}"
 
     # Smart dispatch: return format based on client User-Agent
     handle /sub/${SUB_TOKEN} {
@@ -403,10 +531,28 @@ fi
 # -----------------------------------------------------------------------------
 section "Configuring Firewall"
 
-ufw allow 443/tcp  > /dev/null
-ufw allow 8443/tcp > /dev/null
+# Allow SSH FIRST — enabling ufw with a default-deny policy and no SSH rule
+# would lock you out of the server. Detect the active sshd port (defaults to 22).
+SSH_PORT=$(sshd -T 2>/dev/null | awk '/^port /{print $2; exit}')
+SSH_PORT=${SSH_PORT:-22}
+ufw allow "${SSH_PORT}/tcp"   > /dev/null
+ufw allow 443/tcp             > /dev/null   # Xray VLESS+REALITY
+
+OPENED="${SSH_PORT} (SSH), 443 (Xray)"
+if [ "$USE_TLS" = true ]; then
+    ufw allow "${SUB_HTTPS_PORT}/tcp" > /dev/null
+    OPENED="${OPENED}, ${SUB_HTTPS_PORT} (HTTPS sub)"
+    if [ "$USE_ALIDNS" = false ]; then
+        # Automatic HTTP-01 ACME challenge is served on port 80.
+        ufw allow 80/tcp > /dev/null
+        OPENED="${OPENED}, 80 (ACME HTTP-01)"
+    fi
+else
+    ufw allow "${SUB_PORT}/tcp" > /dev/null
+    OPENED="${OPENED}, ${SUB_PORT} (HTTP sub)"
+fi
 ufw --force enable > /dev/null
-success "Ports 443 and 8443 are open"
+success "Ports open: ${OPENED}"
 
 # -----------------------------------------------------------------------------
 # 11. Save and print summary
@@ -421,9 +567,13 @@ cat > "$SUMMARY_FILE" << EOF
 ================================================================
 
 [Server Info]
-  IP Address:       ${SERVER_IP}
-  Subscription Domain: ${SUB_DOMAIN}
+  IP Address:          ${SERVER_IP}
+  Subscription Mode:   ${SUB_SCHEME^^}
+  Subscription Host:   ${SUB_HOST}
+  Subscription Port:   ${SUB_LISTEN_PORT}
+  Cert Method:         ${CERT_METHOD}
   Camouflage Domain:   ${REALITY_SNI}
+  Node Name:           ${NODE_NAME}
 
 [Xray Node Parameters]
   UUID:         ${UUID}
@@ -441,13 +591,35 @@ cat > "$SUMMARY_FILE" << EOF
 
 [Subscription URLs]
   Unified (auto-detect client):
-  https://${SUB_DOMAIN}:8443/sub/${SUB_TOKEN}
+  ${SUB_BASE_URL}
 
   Base64 format (Shadowrocket / v2rayNG / PassWall):
-  https://${SUB_DOMAIN}:8443/sub/${SUB_TOKEN}/base64
+  ${SUB_BASE_URL}/base64
 
   Clash YAML format (Clash Verge / Stash / OpenClash):
-  https://${SUB_DOMAIN}:8443/sub/${SUB_TOKEN}/clash
+  ${SUB_BASE_URL}/clash
+
+[Client Setup]
+  The server auto-detects your client by User-Agent and returns the right
+  format, so the "Unified" URL above works for every client below. Append
+  /clash or /base64 only if you need to force a format.
+
+  Clash Verge / Mihomo / Stash:
+    Profiles -> New -> paste the Unified URL -> Import.
+    The node and subscription both show as "${NODE_NAME}".
+
+  v2rayN (Windows) / v2rayNG (Android):
+    Subscriptions -> add a group -> paste the Unified URL -> Update.
+    (Returns base64; node shows as "${NODE_NAME}".)
+
+  Shadowrocket (iOS):
+    + -> Type: Subscribe -> paste the Unified URL -> Done -> pull to update.
+
+  Single-node import (no subscription) — paste the VLESS URL above directly:
+    most clients support "Import from clipboard" / scan-QR of that URL.
+
+  Note: re-running this script rotates the token, UUID and keys, so every
+  client must re-import afterwards.
 
 [Config File Paths]
   Xray config:    /usr/local/etc/xray/config.json
@@ -468,7 +640,15 @@ EOF
 cat "$SUMMARY_FILE"
 
 echo ""
-info "Certificate issuance may take 1-2 minutes. Monitor with:"
-echo "  journalctl -u caddy -f | grep -i cert"
+if [ "$USE_TLS" = true ]; then
+    info "Certificate issuance may take 1-2 minutes. Monitor with:"
+    echo "  journalctl -u caddy -f | grep -i cert"
+    if [ "$USE_ALIDNS" = false ]; then
+        warn "HTTP-01 mode: ensure ${SUB_DOMAIN} has an A-record -> ${SERVER_IP} and port 80 is reachable."
+    fi
+else
+    warn "Subscription is served over plain HTTP — protected only by the URL token."
+    warn "Keep the subscription URL secret; rotate it by re-running if it leaks."
+fi
 echo ""
 info "Summary saved to: $SUMMARY_FILE"
