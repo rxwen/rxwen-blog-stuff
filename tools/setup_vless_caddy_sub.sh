@@ -158,6 +158,37 @@ apt install -y -qq curl wget unzip ufw
 success "System packages updated"
 
 # -----------------------------------------------------------------------------
+# Optimize network: enable BBR congestion control + larger TCP buffers.
+# Cubic collapses throughput on high-latency, lossy paths (e.g. crossing the
+# GFW) because it treats random packet loss as congestion and shrinks the
+# window. BBR paces by measured bandwidth x RTT and ignores random loss, so it
+# sustains throughput; the larger buffers let a single flow fill a high
+# bandwidth-delay-product pipe (a ~200 ms RTT link needs multi-MB buffers).
+# -----------------------------------------------------------------------------
+section "Optimizing Network (BBR)"
+
+modprobe tcp_bbr 2>/dev/null || true
+echo tcp_bbr > /etc/modules-load.d/bbr.conf   # load the module on every boot
+
+cat > /etc/sysctl.d/99-bbr.conf << 'SYSCTL'
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 65536 16777216
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_fastopen = 3
+SYSCTL
+sysctl -p /etc/sysctl.d/99-bbr.conf > /dev/null
+
+if [ "$(sysctl -n net.ipv4.tcp_congestion_control)" = "bbr" ]; then
+    success "BBR enabled (qdisc=fq, TCP buffers up to 16 MiB)"
+else
+    warn "BBR not active; kernel may lack tcp_bbr (needs >= 4.9). Continuing."
+fi
+
+# -----------------------------------------------------------------------------
 # 1. Install Xray
 # -----------------------------------------------------------------------------
 section "Installing Xray"
