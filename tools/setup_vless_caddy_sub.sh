@@ -154,7 +154,7 @@ fi
 # -----------------------------------------------------------------------------
 section "Updating System Packages"
 apt update -qq
-apt install -y -qq curl wget unzip ufw
+apt install -y -qq curl wget unzip ufw qrencode
 success "System packages updated"
 
 # -----------------------------------------------------------------------------
@@ -669,6 +669,25 @@ cat > "$SUMMARY_FILE" << EOF
 EOF
 
 cat "$SUMMARY_FILE"
+
+# -----------------------------------------------------------------------------
+# QR codes for quick mobile import (Shadowrocket etc.)
+# qrencode renders directly in the terminal with -t ANSIUTF8; scan it with the
+# phone camera / the client's built-in "scan QR" import.
+# -----------------------------------------------------------------------------
+if command -v qrencode >/dev/null 2>&1; then
+    section "QR Codes (scan with your phone)"
+
+    echo -e "${BOLD}Subscription (Shadowrocket / v2rayNG / Clash — auto-detect):${NC}"
+    echo "  ${SUB_BASE_URL}"
+    qrencode -t ANSIUTF8 "$SUB_BASE_URL"
+    echo ""
+
+    echo -e "${BOLD}Single node (VLESS — import without a subscription):${NC}"
+    qrencode -t ANSIUTF8 "$VLESS_URL"
+else
+    warn "qrencode not installed; skipping QR codes. Install with: apt install -y qrencode"
+fi
 
 echo ""
 if [ "$USE_TLS" = true ]; then
