@@ -683,10 +683,15 @@ if command -v qrencode >/dev/null 2>&1; then
     # -m 1 trims the quiet-zone margin (default 4) so the code is compact enough
     # to fit in a terminal window while still scanning reliably.
     qrencode -t ANSIUTF8 -m 1 "$SUB_BASE_URL"
-    echo -e "${BOLD}Single node (VLESS — import without a subscription):${NC}"
 else
     warn "qrencode not installed; skipping QR codes. Install with: apt install -y qrencode"
 fi
+
+# Plain VLESS URL: copy this to register the node with tools/vless_subs.py
+# (vless_subs.py add '<url>') or to import it directly into a client.
+echo ""
+echo -e "${BOLD}Single node (VLESS — import without a subscription):${NC}"
+echo "  ${VLESS_URL}"
 
 echo ""
 if [ "$USE_TLS" = true ]; then
