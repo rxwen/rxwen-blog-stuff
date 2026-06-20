@@ -680,11 +680,10 @@ if command -v qrencode >/dev/null 2>&1; then
 
     echo -e "${BOLD}Subscription (Shadowrocket / v2rayNG / Clash — auto-detect):${NC}"
     echo "  ${SUB_BASE_URL}"
-    qrencode -t ANSIUTF8 "$SUB_BASE_URL"
-    echo ""
-
+    # -m 1 trims the quiet-zone margin (default 4) so the code is compact enough
+    # to fit in a terminal window while still scanning reliably.
+    qrencode -t ANSIUTF8 -m 1 "$SUB_BASE_URL"
     echo -e "${BOLD}Single node (VLESS — import without a subscription):${NC}"
-    qrencode -t ANSIUTF8 "$VLESS_URL"
 else
     warn "qrencode not installed; skipping QR codes. Install with: apt install -y qrencode"
 fi
