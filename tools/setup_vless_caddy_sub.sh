@@ -564,7 +564,9 @@ section "Configuring Firewall"
 
 # Allow SSH FIRST — enabling ufw with a default-deny policy and no SSH rule
 # would lock you out of the server. Detect the active sshd port (defaults to 22).
-SSH_PORT=$(sshd -T 2>/dev/null | awk '/^port /{print $2; exit}')
+# `|| true` keeps a non-zero `sshd -T` (some cloud images) from tripping
+# `set -euo pipefail` and aborting the whole script before the :-22 fallback.
+SSH_PORT=$( (sshd -T 2>/dev/null || true) | awk '/^port /{print $2; exit}')
 SSH_PORT=${SSH_PORT:-22}
 ufw allow "${SSH_PORT}/tcp"   > /dev/null
 ufw allow 443/tcp             > /dev/null   # Xray VLESS+REALITY
