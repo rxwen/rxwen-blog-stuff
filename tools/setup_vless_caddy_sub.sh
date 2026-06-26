@@ -54,6 +54,8 @@ Options (each also settable via the same-named environment variable):
   --ali-key-id <id>          Aliyun AccessKey ID     (enables DNS-01 in domain
   --ali-key-secret <secret>  Aliyun AccessKey Secret  mode). Both optional.
                              [ALI_ACCESS_KEY_ID / ALI_ACCESS_KEY_SECRET]
+  --override-subscription    Generate a new subscription token instead of
+                             reusing the existing one. [OVERRIDE_SUBSCRIPTION]
 
   -h, --help                 Show this help and exit.
 
@@ -81,6 +83,7 @@ SUB_PORT="${SUB_PORT:-8080}"
 SUB_HTTPS_PORT="${SUB_HTTPS_PORT:-8443}"
 ALI_ACCESS_KEY_ID="${ALI_ACCESS_KEY_ID:-}"
 ALI_ACCESS_KEY_SECRET="${ALI_ACCESS_KEY_SECRET:-}"
+OVERRIDE_SUBSCRIPTION="${OVERRIDE_SUBSCRIPTION:-false}"
 
 need_val() { [ $# -ge 2 ] || error "Option '$1' requires a value (see --help)"; }
 
@@ -93,12 +96,18 @@ while [ $# -gt 0 ]; do
         --https-port)          need_val "$@"; SUB_HTTPS_PORT="$2";        shift 2 ;;
         --ali-key-id)          need_val "$@"; ALI_ACCESS_KEY_ID="$2";     shift 2 ;;
         --ali-key-secret)      need_val "$@"; ALI_ACCESS_KEY_SECRET="$2"; shift 2 ;;
+        --override-subscription) OVERRIDE_SUBSCRIPTION=true;             shift ;;
         -h|--help)             usage; exit 0 ;;
         *) error "Unknown argument: $1 (see --help)" ;;
     esac
 done
 
 NODE_NAME="${NODE_NAME:-$(hostname)-REALITY}"
+case "${OVERRIDE_SUBSCRIPTION,,}" in
+    true|1|yes|y|on) OVERRIDE_SUBSCRIPTION=true ;;
+    false|0|no|n|off|"") OVERRIDE_SUBSCRIPTION=false ;;
+    *) error "OVERRIDE_SUBSCRIPTION must be true/false (or use --override-subscription)" ;;
+esac
 
 # -----------------------------------------------------------------------------
 # Validate and derive mode
@@ -342,7 +351,26 @@ fi
 # -----------------------------------------------------------------------------
 section "Generating Subscription Token and VLESS URL"
 
-SUB_TOKEN=$(openssl rand -hex 20)
+SUB_TOKEN=""
+
+if [ "$OVERRIDE_SUBSCRIPTION" != true ]; then
+    if [ -f /etc/caddy/Caddyfile ]; then
+        SUB_TOKEN=$(grep -m1 -Eo '/sub/[A-Za-z0-9_-]+' /etc/caddy/Caddyfile 2>/dev/null | cut -d/ -f3 || true)
+        if [ -n "$SUB_TOKEN" ]; then
+            success "Reusing subscription token from existing Caddyfile"
+            info "Existing subscription URL token is being kept; use --override-subscription to rotate it."
+        fi
+    fi
+fi
+
+if [ -z "$SUB_TOKEN" ]; then
+    SUB_TOKEN=$(openssl rand -hex 20)
+    if [ "$OVERRIDE_SUBSCRIPTION" = true ]; then
+        success "Generated new subscription token (--override-subscription)"
+    else
+        success "Generated new subscription token"
+    fi
+fi
 success "Subscription token: $SUB_TOKEN"
 
 # Base64 form of the friendly name, for the Clash "profile-title" response header
@@ -651,8 +679,10 @@ cat > "$SUMMARY_FILE" << EOF
   Single-node import (no subscription) — paste the VLESS URL above directly:
     most clients support "Import from clipboard" / scan-QR of that URL.
 
-  Note: re-running this script rotates the token, UUID and keys, so every
-  client must re-import afterwards.
+  Note: re-running this script keeps the subscription URL token stable by
+  default. Use --override-subscription to rotate it if the URL leaks. UUID and
+  REALITY keys still rotate on every run, so update any central node registry
+  with the new VLESS URL above after reinstalling.
 
 [Config File Paths]
   Xray config:    /usr/local/etc/xray/config.json
@@ -704,7 +734,7 @@ if [ "$USE_TLS" = true ]; then
     fi
 else
     warn "Subscription is served over plain HTTP — protected only by the URL token."
-    warn "Keep the subscription URL secret; rotate it by re-running if it leaks."
+    warn "Keep the subscription URL secret; rotate it with --override-subscription if it leaks."
 fi
 echo ""
 info "Summary saved to: $SUMMARY_FILE"
