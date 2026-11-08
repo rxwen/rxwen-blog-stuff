@@ -1,0 +1,52 @@
+[Unit]
+Description=Oracle Always Free 保活（温和维持 CPU/网络越过闲置阈值）
+Documentation=file:/opt/oracle-keepalive/keepalive.py
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+ExecStart=/usr/bin/python3 /opt/oracle-keepalive/keepalive.py run
+
+# --- 自恢复 ---
+Restart=always
+RestartSec=10
+WatchdogSec=120
+
+# --- 资源硬上限：即使脚本失控也越不过，保护主业务（colcon/ROS2） ---
+CPUQuota=70%
+CPUWeight=10
+MemoryMax=200M
+Nice=19
+IOSchedulingClass=idle
+
+# --- 运行身份：专用无登录系统用户（部署时创建，见文件末注释） ---
+User=oracle-keepalive
+Group=oracle-keepalive
+
+# --- 运行时状态目录：/var/lib/oracle-keepalive (0755, 故 status 子命令可被任何用户读取) ---
+StateDirectory=oracle-keepalive
+StateDirectoryMode=0755
+
+# --- 加固沙箱 ---
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=yes
+LockPersonality=yes
+
+[Install]
+WantedBy=multi-user.target
+
+# 部署步骤：
+#   sudo useradd --system --no-create-home --shell /usr/sbin/nologin oracle-keepalive
+#   sudo install -d -m 0755 /opt/oracle-keepalive
+#   sudo install -m 0755 keepalive.py /opt/oracle-keepalive/keepalive.py
+#   sudo install -m 0644 oracle-keepalive.service /etc/systemd/system/oracle-keepalive.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now oracle-keepalive
+# 查看状态： python3 /opt/oracle-keepalive/keepalive.py status
